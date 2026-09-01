@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal de Capacitación RR y AS400</title>
+  
+  <style>
+    /* Reset Básico y Desplazamiento Suave */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #0d1b2a;
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar Horizontal Fija */
+    .navbar {
+      background-color: #00b4d8;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+    }
+
+    .navbar h1 {
+      color: #0d1b2a;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .navbar ul {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    .navbar a {
+      color: #0d1b2a;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ffffff;
+    }
+
+    /* Contenedor Principal */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px 60px 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Compensación de Scroll para la Navbar Fija */
+    .module-section {
+      scroll-margin-top: 90px;
+      width: 100%;
+    }
+
+    /* Cuadro Banner para Títulos */
+    .module-header-box {
+      background: #1b263b;
+      border-left: 6px solid #00b4d8;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .module-header-box h2 {
+      color: #90e0ef;
+      font-size: 1.6rem;
+      font-weight: 700;
+    }
+
+    /* Layout Flex para Secciones con Video y Tarjetas */
+    .module-row {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .full-width-section {
+      width: 100%;
+    }
+
+    /* Disposición vertical de barras largas */
+    .cards-grid-fullwidth {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    /* División Decorativa */
+    .section-divider {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #00b4d8, transparent);
+      margin: 20px 0;
+    }
+
+    /* Ajuste para Video Vertical (9:16) */
+    .video-section {
+      flex: 1;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      max-height: 520px;
+      background-color: #1b263b;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-wrapper video {
+      width: 100%;
+      max-height: 520px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Sección de Tarjetas de Comandos */
+    .cards-section {
+      flex: 1;
+      width: 100%;
+    }
+
+    .cards-title {
+      font-size: 1.2rem;
+      color: #90e0ef;
+      margin-bottom: 15px;
+    }
+
+    .cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* Tarjetas Verticales / Barras */
+    .card-vertical {
+      width: 100%;
+      min-height: 46px;
+      background: #1b263b;
+      border-left: 4px solid #00b4d8;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding: 12px 18px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #e0e1dd;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    }
+
+    .card-vertical:hover {
+      transform: scale(1.015);
+      background-color: #2b3a4e;
+      color: #ffffff;
+      box-shadow: 0 6px 15px rgba(0, 180, 216, 0.35);
+    }
+
+    .highlight-card {
+      border-left-color: #ffd166;
+    }
+
+    /* ==========================================
+       ESTILOS SECCIÓN PROCESOS Y VENTANA MODAL
+       ========================================== */
+    .processes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .process-card {
+      background: #1b263b;
+      border-top: 4px solid #00b4d8;
+      border-radius: 10px;
+      padding: 22px 20px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    .process-card h3 {
+      color: #ffffff;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .process-card p {
+      color: #90e0ef;
+      font-size: 0.88rem;
+    }
+
+    /* Efecto de agrandado al pasar el cursor */
+    .process-card:hover {
+      transform: translateY(-6px) scale(1.04);
+      background-color: #2b3a4e;
+      box-shadow: 0 10px 22px rgba(0, 180, 216, 0.4);
+    }
+
+    /* Fondo de la Ventana Emergente (Modal) */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(13, 27, 42, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Caja de Contenido Modal */
+    .modal-content {
+      background: #1b263b;
+      border: 2px solid #00b4d8;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 650px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 30px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      position: relative;
+      transform: translateY(-20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #2b3a4e;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+
+    .modal-header h3 {
+      color: #00b4d8;
+      font-size: 1.3rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: #e0e1dd;
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s ease;
+    }
+
+    .close-btn:hover {
+      color: #ffd166;
+    }
+
+    .modal-body ol {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-body li {
+      color: #e0e1dd;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .modal-body ul {
+      padding-left: 20px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .modal-body ul li {
+      list-style-type: circle;
+      color: #90e0ef;
+    }
+
+    .sub-section-title {
+      color: #ffd166;
+      font-weight: 600;
+      margin-top: 10px;
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .module-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navegación Aqua Fija -->
+  <nav class="navbar">
+    <h1>Portal Capacitación RR / AS400</h1>
+    <ul>
+      <li><a href="#modulo1">Búsqueda General</a></li>
+      <li><a href="#modulo2">Ventana Suscriptor</a></li>
+      <li><a href="#modulo3">Otros Comandos</a></li>
+      <li><a href="#procesos">Procesos Guiados</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido Principal -->
+  <main class="main-container">
+    
+    <!-- MÓDULO 1: COMANDOS DE BÚSQUEDA -->
+    <section id="modulo1" class="module-section">
+      <div class="module-header-box">
+        <h2>Comandos de Búsqueda Principal</h2>
+      </div>
+
+      <div class="module-row">
+        <!-- Video 1 -->
+        <div class="video-section">
+          <div class="video-wrapper">
+            <video controls preload="metadata">
+              <source src="media/Bunny.mp4" type="video/mp4">
+              Tu navegador no soporta el reproductor de video.
+            </video>
+          </div>
+        </div>
+
+        <!-- Tarjetas -->
+        <div class="cards-section">
+          <h3 class="cards-title">Atajos de Búsqueda Rápidos</h3>
+          <div class="cards-grid">
+            <div class="card-vertical">📌 F7: Búsqueda por número de cuenta</div>
+            <div class="card-vertical">📌 F8: Nombre del titular o empresa</div>
+            <div class="card-vertical">📌 F5: Parte principal de la dirección</div>
+            <div class="card-vertical">📌 F10: Placa más complemento</div>
+            <div class="card-vertical">📌 F13: Buscar por serial de equipo</div>
+            <div class="card-vertical">📌 F14: Búsqueda por número telefónico</div>
+            <div class="card-vertical highlight-card">⚡ F21 + F15: Teléfono (Búsqueda alternativa)</div>
+            <div class="card-vertical highlight-card">⚡ F21 + F17: Búsqueda por correo electrónico</div>
+            <div class="card-vertical highlight-card">⚡ F21 + F18: Búsqueda por número de contrato</div>
+            <div class="card-vertical highlight-card">⚡ F21 + F20: Búsqueda por dirección MAC</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- MÓDULO 2: VENTANA DEL SUSCRIPTOR -->
+    <section id="modulo2" class="module-section">
+      <div class="module-header-box">
+        <h2>Gestión Desde la Ventana del Suscriptor</h2>
+      </div>
+
+      <div class="module-row">
+        <!-- Tarjetas -->
+        <div class="cards-section">
+          <h3 class="cards-title">Comandos en Ventana del Suscriptor</h3>
+          <div class="cards-grid">
+            <div class="card-vertical">📌 F7: Ver notas del suscriptor</div>
+            <div class="card-vertical">📌 F8: Ver dirección de correo electrónico</div>
+            <div class="card-vertical">📌 F10: Consulta de equipos o inventarios</div>
+            <div class="card-vertical">📌 F13: Historial de factura o crédito</div>
+            <div class="card-vertical">📌 F19: Órdenes de trabajo (OT) / Llamadas de servicio (LLS)</div>
+            <div class="card-vertical highlight-card">⚡ F21: Búsquedas adicionales (Ej: F21 + F18 + 2 Av.Pág = Fecha límite de pago)</div>
+            <div class="card-vertical">📌 F24: Opción 'B' para gestión de campañas</div>
+          </div>
+        </div>
+
+        <!-- Video 2 -->
+        <div class="video-section">
+          <div class="video-wrapper">
+            <video controls preload="metadata">
+              <source src="media/Pantera.mp4" type="video/mp4">
+              Tu navegador no soporta el reproductor de video.
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- MÓDULO 3: OTROS COMANDOS -->
+    <section id="modulo3" class="module-section full-width-section">
+      <div class="module-header-box">
+        <h2>Otros Comandos y Consultas Especiales</h2>
+      </div>
+
+      <div class="cards-grid-fullwidth">
+        <div class="card-vertical highlight-card">⚡ F24 + B: Consultar la campaña</div>
+        <div class="card-vertical highlight-card">⚡ F24 + B + F6: Campañas finalizadas</div>
+        <div class="card-vertical">📌 F16: Consulta de nodo</div>
+        <div class="card-vertical highlight-card">⚡ F16 + F14: Consulta de estrato</div>
+        <div class="card-vertical highlight-card">⚡ F22 + F13: Consulta registro de llamadas / historial de marcación</div>
+        <div class="card-vertical highlight-card">⚡ F22 + F13 + F16: Consulta de PQR (Petición, Queja o Recurso)</div>
+        <div class="card-vertical highlight-card">⚡ F19 + F16: Consulta de Llamadas de Servicio (LLS)</div>
+        <div class="card-vertical highlight-card">⚡ F19 + F17: Consulta de Órdenes de Trabajo (OT)</div>
+        <div class="card-vertical highlight-card">⚡ F21 + F24: Consulta equipos financiados (Repetidores y Dongles)</div>
+        <div class="card-vertical">📌 F13: Historial de factura o crédito</div>
+        <div class="card-vertical highlight-card">⚡ F15 + F6: Crear una Orden de Trabajo (OT)</div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- SECCIÓN: PROCESOS GUIADOS PASO A PASO -->
+    <section id="procesos" class="module-section full-width-section">
+      <div class="module-header-box">
+        <h2>Procesos Específicos Paso a Paso</h2>
+      </div>
+
+      <div class="processes-grid">
+        
+        <!-- Card 1: Creación de PQR -->
+        <div class="process-card" onclick="openModal('modal-pqr-creacion')">
+          <h3>📋 Creación de PQR</h3>
+          <p>Pasos para registrar marcaciones, notas y finalizar radicado.</p>
+        </div>
+
+        <!-- Card 2: Ajuste Creer en el Cliente / Ajuste en Línea -->
+        <div class="process-card" onclick="openModal('modal-ajuste')">
+          <h3>💰 Ajuste Creer en el Cliente</h3>
+          <p>Procedimiento en RR/AS400 y escalamiento en plataforma DIME.</p>
+        </div>
+
+        <!-- Card 3: Replanteamiento de Acometida -->
+        <div class="process-card" onclick="openModal('modal-acometida')">
+          <h3>🔧 Replanteamiento de Acometida</h3>
+          <p>Creación de OT, asignación de toma, código de vendedor y ajuste sin costo.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- VENTANAS EMERGENTES (MODALES) -->
+
+  <!-- Modal 1: Creación de PQR -->
+  <div id="modal-pqr-creacion" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-pqr-creacion')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Paso a Paso: Creación de PQR</h3>
+        <button class="close-btn" onclick="closeModal('modal-pqr-creacion')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ol>
+          <li>Presiona <strong>F22</strong> para ingresar y registrar la marcación correspondiente.</li>
+          <li>Presiona <strong>Enter</strong> para confirmar.</li>
+          <li>Finaliza presionando la combinación <strong>F5 + F5</strong> para completar la radicación.</li>
+          <li>Ingresa a <strong>F7</strong> para dejar registradas las notas detalladas de la solicitud.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Ajuste Creer en el Cliente -->
+  <div id="modal-ajuste" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-ajuste')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Paso a Paso: Generar Ajuste Creer en el Cliente / Ajuste en Línea</h3>
+        <button class="close-btn" onclick="closeModal('modal-ajuste')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <span class="sub-section-title">Parte 1: Gestión en Sistema RR / AS400</span>
+        <ol>
+          <li>Presiona <strong>F22</strong> para dejar marcaciones.</li>
+          <li>Ingresa el código según corresponda:
+            <ul>
+              <li><strong>AJU-CEC</strong>: Ajuste Creer en el Cliente</li>
+              <li><strong>AJU CLL</strong>: Ajuste en Línea</li>
+            </ul>
+          </li>
+          <li>Presiona <strong>Enter</strong>.</li>
+          <li>Diligencia los campos <strong>Answer</strong> y <strong>Close</strong> (si aplica).</li>
+          <li>Presiona <strong>F7</strong> <strong>+ F6</strong> para crear la carpeta con el nombre <em>"Creer en el cliente"</em> o <em>"Ajuste en línea"</em>.</li>
+        </ol>
+
+        <span class="sub-section-title">Parte 2: Escalamiento en Aplicativo DIME</span>
+        <ol start="6">
+          <li>Ingresa al aplicativo <strong>DIME</strong> con tus credenciales.</li>
+          <li>Navega a la sección <strong>"Mis accesos"</strong> y selecciona <strong>"Ajuste Online"</strong>.</li>
+          <li>Haz clic en <strong>"Escalar solicitud"</strong>.</li>
+          <li>Digita el número de cuenta donde fue solicitado el ajuste.</li>
+          <li>En el campo <strong>Ticket PQR</strong>, ingresa el número de radicado generado previamente en RR.</li>
+          <li>El sistema traerá automáticamente el Nombre, Dirección y Estado. Selecciona el tipo de ajuste (Móvil, Hogar o Prepago).</li>
+          <li>Selecciona la subcategoría correspondiente y haz clic en <strong>Escalar Solicitud</strong>.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Replanteamiento de Acometida -->
+  <div id="modal-acometida" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-acometida')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Paso a Paso: Replanteamiento de Acometida</h3>
+        <button class="close-btn" onclick="closeModal('modal-acometida')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <span class="sub-section-title">Gestión General de OT:</span>
+        <ol>
+          <li>Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT).</li>
+          <li>Coloca un <strong>1</strong> en el campo <strong>TOMA</strong>.</li>
+          <li>Presiona <strong>F2 + F2</strong> y cambia las opciones de <strong>Y</strong> a <strong>N</strong>.</li>
+          <li>Deja las notas respectivas especificando claramente si se trata de un <em>replanteamiento de acometida interna</em> o <em>externa</em>.</li>
+          <li>Ingresa tu <strong>código de vendedor</strong>.</li>
+          <li>En el campo <em>Clase de orden</em>, escribe <strong>VO</strong>.</li>
+          <li>Presiona <strong>F2</strong> para continuar con la agenda de la visita.</li>
+          <li>Ingresa al aplicativo externo correspondiente para programar la visita técnica.</li>
+        </ol>
+
+        <span class="sub-section-title">En caso de Replanteamiento SIN COSTO:</span>
+        <ol start="9">
+          <li>Para enviar la orden sin costo se debe retirar el valor borrando el "1".</li>
+          <li>Ingresa a <strong>F15</strong> y presiona <strong>Enter</strong> para continuar en la última orden.</li>
+          <li>Quita el <strong>1</strong> del campo <strong>TOMA</strong> y presiona <strong>Enter</strong>.</li>
+          <li>Presiona <strong>F2 + F2</strong>, cambia la <strong>Y</strong> por <strong>N</strong> y presiona <strong>Enter</strong> para finalizar.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT PARA CONTROLAR EL MODAL -->
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeModalOnOuterClick(event, id) {
+      if (event.target.id === id) {
+        closeModal(id);
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+/* Reset Básico y Desplazamiento Suave */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0d1b2a;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar Horizontal (Azul Aqua) */
+.navbar {
+  background-color: #00b4d8;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 70px;
+}
+
+.navbar h1 {
+  color: #0d1b2a;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.navbar a {
+  color: #0d1b2a;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #ffffff;
+}
+
+/* Contenedor Principal */
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px 60px 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Compensación de Scroll para la Navbar Fija */
+.module-section {
+  scroll-margin-top: 90px;
+  width: 100%;
+}
+
+/* Cuadro/Banner de Fondo para los Títulos */
+.module-header-box {
+  background: #1b263b;
+  border-left: 6px solid #00b4d8;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.module-header-box h2 {
+  color: #90e0ef;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* Filas de Módulos (Layout Flex) */
+.module-row {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+/* Sección de ancho completo para Otros Comandos */
+.full-width-section {
+  width: 100%;
+}
+
+/* Grid de 3 columnas para la sección final */
+.cards-grid-3cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 15px;
+}
+
+/* División decorativa entre módulos */
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #00b4d8, transparent);
+  margin: 20px 0;
+}
+
+/* Sección de Video Ajustada para Formato Vertical 9:16 */
+.video-section {
+  flex: 1;
+  width: 100%;
+  max-width: 360px; /* Limita el ancho del reproductor */
+  margin: 0 auto;
+}
+
+.video-wrapper {
+  width: 100%;
+  max-height: 520px; /* Evita que el video se estire verticalmente */
+  background-color: #1b263b;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-wrapper video {
+  width: 100%;
+  max-height: 520px;
+  object-fit: contain; /* Mantiene la proporción original sin distorsionar */
+  display: block;
+}
+
+/* Sección de Tarjetas */
+.cards-section {
+  flex: 1;
+  width: 100%;
+}
+
+.cards-title {
+  font-size: 1.2rem;
+  color: #90e0ef;
+  margin-bottom: 15px;
+}
+
+.cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Tarjetas Verticales Animadas */
+.card-vertical {
+  width: 100%;
+  min-height: 44px;
+  background: #1b263b;
+  border-left: 4px solid #00b4d8;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e0e1dd;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.card-vertical:hover {
+  transform: scale(1.03);
+  background-color: #2b3a4e;
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(0, 180, 216, 0.35);
+}
+
+/* Estilo especial para resaltar comandos combinados */
+.highlight-card {
+  border-left-color: #ffd166;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 900px) {
+  .module-row {
+    flex-direction: column;
+  }
+}
