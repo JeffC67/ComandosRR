@@ -14,6 +14,102 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+
+    /* ==========================================
+       MEDIA QUERIES Y DISEÑO RESPONSIVE
+       ========================================== */
+
+    @media (max-width: 1200px) {
+      .main-container {
+        max-width: 100%;
+        padding: 20px 15px 40px 15px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .navbar {
+        padding: 1rem;
+        height: auto;
+        flex-direction: column;
+        gap: 12px;
+        position: relative; /* Opcional si prefieres que la barra se mueva en móviles */
+      }
+
+      .navbar ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 15px;
+      }
+
+      .navbar h1 {
+        font-size: 1.2rem;
+        text-align: center;
+      }
+
+      .module-row {
+        flex-direction: column;
+        gap: 25px;
+      }
+
+      .module-section {
+        scroll-margin-top: 130px; /* Ajuste por altura variable de la navbar en móvil */
+      }
+
+      .video-section {
+        max-width: 100%;
+      }
+
+      .video-wrapper,
+      .video-wrapper video {
+        max-height: 400px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        padding: 0.8rem 0.5rem;
+      }
+
+      .navbar ul {
+        gap: 8px 12px;
+      }
+
+      .navbar a {
+        font-size: 0.85rem;
+      }
+
+      .module-header-box h2 {
+        font-size: 1.3rem;
+      }
+
+      .cards-title {
+        font-size: 1.05rem;
+      }
+
+      .card-vertical {
+        font-size: 0.88rem;
+        padding: 10px 14px;
+        min-height: 42px;
+      }
+
+      .processes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        width: 95%;
+        padding: 20px 15px;
+        max-height: 90vh;
+      }
+
+      .modal-header h3 {
+        font-size: 1.1rem;
+      }
+
+      .modal-body li {
+        font-size: 0.88rem;
+      }
+    }
     html {
       scroll-behavior: smooth;
     }
