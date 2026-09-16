@@ -63,6 +63,13 @@ function openModal(id) {
   currentModalIndex = 0;
   updateModalSteps(0);
 
+  // Reiniciar la búsqueda del modal al abrirlo
+  const searchInput = modal.querySelector('.modal-search-input');
+  if (searchInput) {
+    searchInput.value = '';
+    filterProcesses(searchInput);
+  }
+
   // Focus en el botón de cerrar para accesibilidad
   setTimeout(() => {
     const closeBtn = modal.querySelector('.close-btn');
@@ -75,12 +82,44 @@ function closeModal(id) {
   if (!modal) return;
 
   modal.classList.remove('active');
-  document.body.style.overflow = '';
+
+  // Solo desbloquear el scroll si no queda ningún modal abierto
+  const anyActive = document.querySelector('.modal-overlay.active');
+  if (!anyActive) {
+    document.body.style.overflow = '';
+  }
 }
 
 function closeModalOnOuterClick(event, id) {
   if (event.target.id === id) {
     closeModal(id);
+  }
+}
+
+function filterProcesses(input) {
+  const modal = input.closest('.modal-overlay');
+  const query = input.value.trim().toLowerCase();
+  const cards = modal.querySelectorAll('.process-card');
+  const noResults = modal.querySelector('.modal-no-results');
+  const emptyState = modal.querySelector('.modal-empty');
+
+  let matches = 0;
+  cards.forEach(card => {
+    const title = card.querySelector('h3').textContent.toLowerCase();
+    const desc = card.querySelector('p').textContent.toLowerCase();
+    const isMatch = query === '' || title.includes(query) || desc.includes(query);
+    card.classList.toggle('hidden', !isMatch);
+    if (isMatch) matches++;
+  });
+
+  if (emptyState) {
+    emptyState.classList.toggle('hidden', query !== '');
+  }
+
+  if (noResults) {
+    const showNoResults = query !== '' && (cards.length === 0 || matches === 0);
+    noResults.textContent = `No se encontró ningún proceso que coincida con "${input.value.trim()}".`;
+    noResults.classList.toggle('hidden', !showNoResults);
   }
 }
 

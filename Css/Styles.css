@@ -697,6 +697,200 @@ button {
   transform: translateX(4px);
 }
 
+/* Tarjetas de categoría (HOGAR / MÓVIL) */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-8);
+}
+
+.category-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-10) var(--space-8);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-med), box-shadow var(--transition-med),
+              border-color var(--transition-med);
+}
+
+.category-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+}
+
+.category-card:last-child::before {
+  background: linear-gradient(90deg, var(--color-accent), #fbbf24);
+}
+
+.category-card .category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(14, 165, 233, 0.05));
+  color: var(--color-primary);
+  font-size: 2.25rem;
+}
+
+.category-card:last-child .category-icon {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+  color: var(--color-accent);
+}
+
+.category-card h3 {
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.category-card p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  flex: 1;
+}
+
+.category-card .category-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(14, 165, 233, 0.25);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.category-card:last-child .category-badge {
+  color: var(--color-accent);
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.category-card .process-open {
+  color: var(--color-primary);
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(14, 165, 233, 0.4);
+}
+
+/* Cards de proceso dentro del modal de categoría */
+.modal-processes {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.modal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  padding: var(--space-10) var(--space-6);
+}
+
+.modal-empty .modal-empty-icon {
+  font-size: 2.5rem;
+}
+
+.modal-empty p {
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+}
+
+/* Barra de búsqueda en modales de categoría */
+.modal-search {
+  position: relative;
+  margin-bottom: var(--space-6);
+}
+
+.modal-search svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-dim);
+  pointer-events: none;
+}
+
+.modal-search-input {
+  width: 100%;
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  padding: 12px 16px 12px 40px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.modal-search-input::placeholder {
+  color: var(--color-text-dim);
+}
+
+.modal-search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+.modal-no-results {
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Caja de notas dentro del modal */
+.modal-note {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-left: 4px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-top: var(--space-5);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.modal-note strong {
+  color: var(--color-accent);
+}
+
+.modal-note code {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  color: var(--color-text);
+}
+
 /* ---------- 12. MODALES ---------- */
 .modal-overlay {
   position: fixed;

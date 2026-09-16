@@ -109,7 +109,7 @@
             <div class="hero-stat">
               <span class="stat-icon" aria-hidden="true">📋</span>
               <div>
-                <div class="stat-value">3</div>
+                <div class="stat-value">8</div>
                 <div class="stat-label">Procesos guiados</div>
               </div>
             </div>
@@ -362,49 +362,28 @@
         <h2>Procesos Específicos Paso a Paso <span class="module-header-sub">Guías interactivas para los procedimientos más frecuentes</span></h2>
       </div>
 
-      <div class="processes-grid">
+      <div class="category-grid">
 
-        <!-- Card 1: Creación de PQR -->
-        <div class="process-card" onclick="openModal('modal-pqr-creacion')" role="button" tabindex="0" aria-label="Abrir proceso: Creación de PQR">
-          <div class="process-icon" aria-hidden="true">📋</div>
-          <h3>Creación de PQR</h3>
-          <p>Pasos para registrar marcaciones, notas y finalizar el radicado de una solicitud.</p>
-          <div class="process-meta">
-            <span>⏱ 2 min</span>
-            <span>🔄 4 pasos</span>
-          </div>
+        <!-- Card categoría: HOGAR -->
+        <div class="category-card" onclick="openModal('modal-categoria-hogar')" role="button" tabindex="0" aria-label="Abrir procesos de la categoría HOGAR">
+          <div class="category-icon" aria-hidden="true">🏠</div>
+          <h3>HOGAR</h3>
+          <p>Procesos guiados para la atención de servicios del hogar.</p>
+          <span class="category-badge">8 procesos</span>
           <span class="process-open">
-            Ver proceso
+            Ver procesos
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </span>
         </div>
 
-        <!-- Card 2: Ajuste Creer en el Cliente -->
-        <div class="process-card" data-type="accent" onclick="openModal('modal-ajuste')" role="button" tabindex="0" aria-label="Abrir proceso: Ajuste Creer en el Cliente">
-          <div class="process-icon" aria-hidden="true">💰</div>
-          <h3>Ajuste Creer en el Cliente</h3>
-          <p>Procedimiento en RR/AS400 y escalamiento en plataforma DIME para ajustes online.</p>
-          <div class="process-meta">
-            <span>⏱ 5 min</span>
-            <span>🔄 12 pasos</span>
-          </div>
+        <!-- Card categoría: MÓVIL -->
+        <div class="category-card" onclick="openModal('modal-categoria-movil')" role="button" tabindex="0" aria-label="Abrir procesos de la categoría MÓVIL">
+          <div class="category-icon" aria-hidden="true">📱</div>
+          <h3>MÓVIL</h3>
+          <p>Procesos guiados para la atención de servicios móviles.</p>
+          <span class="category-badge">Próximamente</span>
           <span class="process-open">
-            Ver proceso
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </span>
-        </div>
-
-        <!-- Card 3: Replanteamiento de Acometida -->
-        <div class="process-card" data-type="success" onclick="openModal('modal-acometida')" role="button" tabindex="0" aria-label="Abrir proceso: Replanteamiento de Acometida">
-          <div class="process-icon" aria-hidden="true">🔧</div>
-          <h3>Replanteamiento de Acometida</h3>
-          <p>Creación de OT, asignación de toma, código de vendedor y ajuste sin costo.</p>
-          <div class="process-meta">
-            <span>⏱ 8 min</span>
-            <span>🔄 12 pasos</span>
-          </div>
-          <span class="process-open">
-            Ver proceso
+            Ver procesos
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </span>
         </div>
@@ -427,6 +406,182 @@
   </footer>
 
   <!-- ==================== MODALES ==================== -->
+
+  <!-- Modal categoría: HOGAR -->
+  <div id="modal-categoria-hogar" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-categoria-hogar')" role="dialog" aria-modal="true" aria-labelledby="categoria-hogar-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">🏠</span>
+          <div>
+            <h3 id="categoria-hogar-title">Procesos HOGAR</h3>
+            <span class="modal-subtitle">Guías interactivas para servicios del hogar</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-categoria-hogar')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" class="modal-search-input" placeholder="Buscar proceso..." aria-label="Buscar proceso" oninput="filterProcesses(this)">
+        </div>
+
+        <div class="processes-grid modal-processes">
+
+          <!-- Proceso: Creación de PQR -->
+          <div class="process-card" onclick="openModal('modal-pqr-creacion')" role="button" tabindex="0" aria-label="Abrir proceso: Creación de PQR">
+            <div class="process-icon" aria-hidden="true">📋</div>
+            <h3>Creación de PQR</h3>
+            <p>Pasos para registrar marcaciones, notas y finalizar el radicado de una solicitud.</p>
+            <div class="process-meta">
+              <span>⏱ 2 min</span>
+              <span>🔄 4 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+          <!-- Proceso: Ajuste Creer en el Cliente -->
+          <div class="process-card" data-type="accent" onclick="openModal('modal-ajuste')" role="button" tabindex="0" aria-label="Abrir proceso: Ajuste Creer en el Cliente">
+            <div class="process-icon" aria-hidden="true">💰</div>
+            <h3>Ajuste Creer en el Cliente</h3>
+            <p>Procedimiento en RR/AS400 y escalamiento en plataforma DIME para ajustes online.</p>
+            <div class="process-meta">
+              <span>⏱ 5 min</span>
+              <span>🔄 12 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+          <!-- Proceso: Replanteamiento de Acometida -->
+          <div class="process-card" data-type="success" onclick="openModal('modal-acometida')" role="button" tabindex="0" aria-label="Abrir proceso: Replanteamiento de Acometida">
+            <div class="process-icon" aria-hidden="true">🔧</div>
+            <h3>Replanteamiento de Acometida</h3>
+            <p>Creación de OT, asignación de toma, código de vendedor y ajuste sin costo.</p>
+            <div class="process-meta">
+              <span>⏱ 8 min</span>
+              <span>🔄 12 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+          <!-- Proceso: Desactivar un Deco -->
+          <div class="process-card" onclick="openModal('modal-desactivar-deco')" role="button" tabindex="0" aria-label="Abrir proceso: Desactivar un Deco">
+            <div class="process-icon" aria-hidden="true">🔌</div>
+            <h3>Desactivar un Deco</h3>
+            <p>Creación de OT para retirar o desactivar un decodificador y ajustar su inventario.</p>
+            <div class="process-meta">
+              <span>⏱ 5 min</span>
+              <span>🔄 13 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+          <!-- Proceso: Cambio de Servicio entre Decos -->
+          <div class="process-card" data-type="accent" onclick="openModal('modal-cambio-decos')" role="button" tabindex="0" aria-label="Abrir proceso: Cambio de Servicio entre Decos">
+            <div class="process-icon" aria-hidden="true">🔄</div>
+            <h3>Cambio de Servicio entre Decos</h3>
+            <p>OT para intercambiar decos y tarjetas indicando el cambio con la letra C.</p>
+            <div class="process-meta">
+              <span>⏱ 3 min</span>
+              <span>🔄 5 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+          <!-- Proceso: Reactivación de Decos -->
+          <div class="process-card" data-type="success" onclick="openModal('modal-reactivacion-decos')" role="button" tabindex="0" aria-label="Abrir proceso: Reactivación de Decos">
+            <div class="process-icon" aria-hidden="true">✅</div>
+            <h3>Reactivación de Decos</h3>
+            <p>OT para reactivar el servicio, ajustando inventario con (+) y aprovisionando equipos.</p>
+            <div class="process-meta">
+              <span>⏱ 6 min</span>
+              <span>🔄 15 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+          <!-- Proceso: Activar un Paquete Premium -->
+          <div class="process-card" data-type="accent" onclick="openModal('modal-activar-premium')" role="button" tabindex="0" aria-label="Abrir proceso: Activar un Paquete Premium">
+            <div class="process-icon" aria-hidden="true">📺</div>
+            <h3>Activar un Paquete Premium</h3>
+            <p>OT para activar paquetes premium de canales y aprovisionar los códigos.</p>
+            <div class="process-meta">
+              <span>⏱ 6 min</span>
+              <span>🔄 14 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+          <!-- Proceso: Envío de Control TV Rojo -->
+          <div class="process-card" onclick="openModal('modal-envio-control-rojo')" role="button" tabindex="0" aria-label="Abrir proceso: Envío de Control TV Rojo">
+            <div class="process-icon" aria-hidden="true">🕹️</div>
+            <h3>Envío de Control TV Rojo</h3>
+            <p>OT para enviar el control Claro 4 (rojo) y ajustar su compra con el código CCCTP.</p>
+            <div class="process-meta">
+              <span>⏱ 3 min</span>
+              <span>🔄 8 pasos</span>
+            </div>
+            <span class="process-open">
+              Ver proceso
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </span>
+          </div>
+
+        </div>
+        <div class="modal-no-results hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal categoría: MÓVIL -->
+  <div id="modal-categoria-movil" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-categoria-movil')" role="dialog" aria-modal="true" aria-labelledby="categoria-movil-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">📱</span>
+          <div>
+            <h3 id="categoria-movil-title">Procesos MÓVIL</h3>
+            <span class="modal-subtitle">Guías interactivas para servicios móviles</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-categoria-movil')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" class="modal-search-input" placeholder="Buscar proceso..." aria-label="Buscar proceso" oninput="filterProcesses(this)">
+        </div>
+        <div class="modal-empty">
+          <span class="modal-empty-icon" aria-hidden="true">🚧</span>
+          <p>No hay procesos disponibles todavía en esta categoría.</p>
+        </div>
+        <div class="modal-no-results hidden"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal 1: Creación de PQR -->
   <div id="modal-pqr-creacion" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-pqr-creacion')" role="dialog" aria-modal="true" aria-labelledby="pqr-title">
@@ -631,6 +786,311 @@
           <span class="nav-dot"></span>
         </div>
         <button class="modal-nav-btn next primary" onclick="nextModalStep()" aria-label="Siguiente paso">
+          Siguiente
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14 0"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Desactivar un Deco -->
+  <div id="modal-desactivar-deco" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-desactivar-deco')" role="dialog" aria-modal="true" aria-labelledby="desactivar-deco-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">🔌</span>
+          <div>
+            <h3 id="desactivar-deco-title">Desactivar un Deco</h3>
+            <span class="modal-subtitle">Retiro y desactivación de decodificadores</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-desactivar-deco')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-progress">
+        <div class="progress-steps">
+          <div class="progress-step active">
+            <span class="progress-dot">1</span>
+            <span class="progress-label">Proceso completo</span>
+            <span class="progress-line"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-body-block">
+          <ol>
+            <li>Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT).</li>
+            <li>Ajusta el <strong>inventario</strong> del equipo.</li>
+            <li>Presiona <strong>F2</strong> para avanzar.</li>
+            <li>Cambia las opciones de <strong>"Y"</strong> por <strong>"N"</strong>.</li>
+            <li>En <em>Clase de orden</em>, escribe <strong>VO</strong>.</li>
+            <li>Deja las <strong>notas correspondientes</strong>.</li>
+            <li>Ingresa el <strong>código de vendedor</strong> del agente o <strong>9999</strong>.</li>
+            <li>Presiona <strong>F24</strong> para avanzar.</li>
+            <li>Cambia por <strong>"D"</strong> en el estado.</li>
+            <li>Cambia el estado a <strong>AD</strong>.</li>
+            <li>Presiona <strong>F2</strong> para actualizar.</li>
+            <li>Presiona <strong>Enter + Enter</strong>.</li>
+            <li>Presiona <strong>F2 y F2</strong>.</li>
+          </ol>
+          <div class="modal-note">
+            <strong>Nota:</strong> Solicitar los seriales de los decos en caso de ser necesario. Validar el inventario. <code>NDO</code> y <code>NDA</code> significan equipos en arriendo.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-nav">
+        <button class="modal-nav-btn prev" onclick="prevModalStep()" aria-label="Paso anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Anterior
+        </button>
+        <div class="nav-steps-indicator">
+          <span class="nav-dot active"></span>
+        </div>
+        <button class="modal-nav-btn next primary" onclick="nextModalStep()" aria-label="Siguiente paso" disabled>
+          Siguiente
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14 0"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Cambio de Servicio entre Decos -->
+  <div id="modal-cambio-decos" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-cambio-decos')" role="dialog" aria-modal="true" aria-labelledby="cambio-decos-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">🔄</span>
+          <div>
+            <h3 id="cambio-decos-title">Cambio de Servicio entre Decos</h3>
+            <span class="modal-subtitle">Intercambio de decos y tarjetas con OT</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-cambio-decos')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-progress">
+        <div class="progress-steps">
+          <div class="progress-step active">
+            <span class="progress-dot">1</span>
+            <span class="progress-label">Proceso completo</span>
+            <span class="progress-line"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-body-block">
+          <ol>
+            <li>Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT).</li>
+            <li>Presiona <strong>F24</strong>.</li>
+            <li>Presiona <strong>F2</strong>.</li>
+            <li>Coloca la <strong>"C"</strong> para indicar el cambio entre los decos y las tarjetas.</li>
+            <li>Con <strong>"D"</strong> quita el equipo anterior y con <strong>"C"</strong> realiza el cambio.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="modal-nav">
+        <button class="modal-nav-btn prev" onclick="prevModalStep()" aria-label="Paso anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Anterior
+        </button>
+        <div class="nav-steps-indicator">
+          <span class="nav-dot active"></span>
+        </div>
+        <button class="modal-nav-btn next primary" onclick="nextModalStep()" aria-label="Siguiente paso" disabled>
+          Siguiente
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14 0"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Reactivación de Decos -->
+  <div id="modal-reactivacion-decos" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-reactivacion-decos')" role="dialog" aria-modal="true" aria-labelledby="reactivacion-decos-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">✅</span>
+          <div>
+            <h3 id="reactivacion-decos-title">Reactivación de Decos</h3>
+            <span class="modal-subtitle">Reactivación de servicio y aprovisionamiento</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-reactivacion-decos')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-progress">
+        <div class="progress-steps">
+          <div class="progress-step active">
+            <span class="progress-dot">1</span>
+            <span class="progress-label">Proceso completo</span>
+            <span class="progress-line"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-body-block">
+          <ol>
+            <li>Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT).</li>
+            <li>Ajusta el inventario con el signo <strong>"+"</strong> y el número del equipo.</li>
+            <li>Presiona <strong>F2</strong>.</li>
+            <li>Cambia la <strong>"Y"</strong> por <strong>"N"</strong>.</li>
+            <li>En <em>Clase de orden</em>, escribe <strong>VO</strong>.</li>
+            <li>Ingresa el <strong>código de vendedor</strong> asignado o <strong>9999</strong>.</li>
+            <li>Presiona <strong>F2</strong>.</li>
+            <li>Coloca la <strong>"C"</strong> para cambiar el campo.</li>
+            <li>En el estado coloca <strong>"AS"</strong> para activar.</li>
+            <li>Aprovisiona los <strong>servicios</strong> necesarios en la card.</li>
+            <li>Aprovisiona los <strong>equipos en arriendo</strong>.</li>
+            <li>Presiona <strong>F2</strong>.</li>
+            <li>Presiona <strong>Enter</strong>.</li>
+            <li>Presiona <strong>F2</strong>.</li>
+            <li>Presiona <strong>F2</strong>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="modal-nav">
+        <button class="modal-nav-btn prev" onclick="prevModalStep()" aria-label="Paso anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Anterior
+        </button>
+        <div class="nav-steps-indicator">
+          <span class="nav-dot active"></span>
+        </div>
+        <button class="modal-nav-btn next primary" onclick="nextModalStep()" aria-label="Siguiente paso" disabled>
+          Siguiente
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14 0"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Activar un Paquete Premium -->
+  <div id="modal-activar-premium" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-activar-premium')" role="dialog" aria-modal="true" aria-labelledby="activar-premium-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">📺</span>
+          <div>
+            <h3 id="activar-premium-title">Activar un Paquete Premium</h3>
+            <span class="modal-subtitle">Activación de canales premium y aprovisionamiento</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-activar-premium')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-progress">
+        <div class="progress-steps">
+          <div class="progress-step active">
+            <span class="progress-dot">1</span>
+            <span class="progress-label">Proceso completo</span>
+            <span class="progress-line"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-body-block">
+          <ol>
+            <li>Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT).</li>
+            <li>Presiona <strong>F1</strong> sobre los <strong>servicios</strong>.</li>
+            <li>Busca el servicio a agregar e <strong>identifícalo</strong> en <strong>Conectados</strong>.</li>
+            <li>Consulta la <strong>PTAR</strong> para revisar las ofertas según el tipo de servicio de internet que se preste.</li>
+            <li>Coloca <strong>1</strong> sobre el servicio que se va a aprovisionar.</li>
+            <li>Cambia el <strong>número de canales</strong> que se tienen por la <strong>cantidad solicitada</strong>.</li>
+            <li>Presiona <strong>F2</strong> para continuar + <strong>F2</strong> (aquí se da <strong>F2</strong> porque el número de teléfono no se modifica).</li>
+            <li>Cambia las <strong>"Y"</strong> por <strong>"N"</strong>.</li>
+            <li>En <em>Clase de orden</em>, escribe <strong>VO</strong>.</li>
+            <li>Deja las <strong>notas correspondientes al proceso realizado</strong>.</li>
+            <li>Presiona <strong>F24</strong> (OT cerrada).</li>
+            <li>Coloca <strong>"C"</strong> sobre las tarjetas + <strong>código de canal</strong> + <strong>F2</strong>.</li>
+            <li>Presiona <strong>Enter</strong> para <em>"Aprovisionar los códigos"</em>.</li>
+            <li>Presiona <strong>F2</strong> y <strong>F2</strong>.</li>
+          </ol>
+          <div class="modal-note">
+            <strong>Nota:</strong> Canales disponibles: <code>Onebaseball</code>, <code>Win</code>, <code>Paquete Internacional</code>, <code>Hot Pack</code>, <code>HHO</code>, <code>Universal</code>, <code>Goldon</code>. <code>NDO</code> y <code>NDA</code> significan equipos en arriendo.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-nav">
+        <button class="modal-nav-btn prev" onclick="prevModalStep()" aria-label="Paso anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Anterior
+        </button>
+        <div class="nav-steps-indicator">
+          <span class="nav-dot active"></span>
+        </div>
+        <button class="modal-nav-btn next primary" onclick="nextModalStep()" aria-label="Siguiente paso" disabled>
+          Siguiente
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14 0"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Envío de Control TV Rojo -->
+  <div id="modal-envio-control-rojo" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-envio-control-rojo')" role="dialog" aria-modal="true" aria-labelledby="envio-control-rojo-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">🕹️</span>
+          <div>
+            <h3 id="envio-control-rojo-title">Envío de Control TV Rojo</h3>
+            <span class="modal-subtitle">Envío del control Claro 4 referencia</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-envio-control-rojo')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-progress">
+        <div class="progress-steps">
+          <div class="progress-step active">
+            <span class="progress-dot">1</span>
+            <span class="progress-label">Proceso completo</span>
+            <span class="progress-line"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-body-block">
+          <ol>
+            <li>Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT).</li>
+            <li>Presiona <strong>F9</strong> (Compras) para buscar el código <strong>CCCTP</strong>.</li>
+            <li>Ingresa la <strong>cantidad</strong> y luego presiona <strong>Enter + Enter</strong>.</li>
+            <li>Presiona <strong>F2 + F2</strong>.</li>
+            <li>Cambia la <strong>"Y"</strong> por <strong>"N"</strong>.</li>
+            <li>Cambia la clase de orden por <strong>DS</strong>.</li>
+            <li>Ingresa el <strong>código de vendedor</strong> correspondiente o <strong>9999</strong>.</li>
+            <li>Presiona <strong>F2</strong> para finalizar.</li>
+          </ol>
+          <div class="modal-note">
+            <strong>Notas:</strong>
+            <ul>
+              <li>El <strong>punto cableado</strong> cuesta <strong>$50.000</strong> y el código es <code>UTP-TCS</code>.</li>
+              <li>Tarda de <strong>5 a 10 días hábiles</strong>.</li>
+              <li>Solo se envía a <strong>ciudades principales</strong>.</li>
+              <li>La referencia de control <code>Universal 2</code> tiene los dígitos del <strong>1 al 9 abajo</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-nav">
+        <button class="modal-nav-btn prev" onclick="prevModalStep()" aria-label="Paso anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+          Anterior
+        </button>
+        <div class="nav-steps-indicator">
+          <span class="nav-dot active"></span>
+        </div>
+        <button class="modal-nav-btn next primary" onclick="nextModalStep()" aria-label="Siguiente paso" disabled>
           Siguiente
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 14 0"/><path d="m12 5 7 7-7 7"/></svg>
         </button>
