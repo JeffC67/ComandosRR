@@ -1376,3 +1376,296 @@ button {
     padding: 3px 8px;
   }
 }
+
+/* ---------- 15. JUEGO DE TECLAS DE FUNCIÓN (F1 - F24) ---------- */
+.game-panel {
+  margin-top: var(--space-10);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.game-panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.game-panel-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(14, 165, 233, 0.05));
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.game-panel-header h3 {
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.game-panel-sub {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dim);
+  display: block;
+  margin-top: 2px;
+}
+
+.game-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.game-target-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.game-target-label {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-dim);
+  font-weight: 600;
+}
+
+.game-target {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-text);
+  background: var(--color-surface-3);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-12);
+  box-shadow: var(--shadow-lg);
+  min-width: 200px;
+  text-align: center;
+  transition: border-color var(--transition-med), color var(--transition-med);
+}
+
+.game-target.flash {
+  animation: gameTargetPop 0.35s ease;
+}
+
+@keyframes gameTargetPop {
+  0% { transform: scale(0.92); }
+  55% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.game-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-3);
+  min-width: 280px;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.game-feedback-icon {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text-dim);
+}
+
+.game-feedback-text {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.game-feedback[data-state="correct"] {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: var(--color-success);
+}
+
+.game-feedback[data-state="correct"] .game-feedback-icon,
+.game-feedback[data-state="correct"] .game-feedback-text {
+  color: var(--color-success);
+}
+
+.game-feedback[data-state="wrong"] {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: var(--color-danger);
+}
+
+.game-feedback[data-state="wrong"] .game-feedback-icon,
+.game-feedback[data-state="wrong"] .game-feedback-text {
+  color: var(--color-danger);
+}
+
+.game-feedback.pulse {
+  animation: gamePop 0.3s ease;
+}
+
+@keyframes gamePop {
+  0% { transform: scale(0.95); }
+  55% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.game-stats {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.game-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-5);
+  min-width: 72px;
+}
+
+.game-stat-value {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.game-stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.game-reset-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.game-reset-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.game-correct-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-family: 'Consolas', 'Monaco', monospace;
+  min-height: 46px;
+}
+
+.game-correct-bar[data-state="correct"] {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.game-correct-bar[data-state="wrong"] {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.game-map-title {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+  font-weight: 600;
+}
+
+.game-map-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: var(--space-2);
+}
+
+.game-map-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: var(--font-size-xs);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.game-map-cell .game-map-name {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.game-map-cell .game-map-combo {
+  color: var(--color-text-dim);
+}
+
+.game-map-cell.hit {
+  border-color: var(--color-success);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.game-map-cell.miss {
+  border-color: var(--color-danger);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Responsive del juego */
+@media (max-width: 768px) {
+  .game-body {
+    grid-template-columns: 1fr;
+  }
+
+  .game-target {
+    font-size: 3rem;
+    padding: var(--space-4) var(--space-8);
+    min-width: 0;
+  }
+
+  .game-feedback {
+    min-width: 0;
+  }
+
+  .game-stats {
+    justify-content: center;
+  }
+}

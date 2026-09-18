@@ -389,6 +389,56 @@
         </div>
 
       </div>
+
+      <!-- ========== JUEGO: TECLAS DE FUNCIÓN F1 - F24 ========== -->
+      <div class="game-panel" id="gamePanel">
+        <div class="game-panel-header">
+          <div class="game-panel-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6"/></svg>
+          </div>
+          <div>
+            <h3>Juego Rápido: Teclas de Función</h3>
+            <span class="game-panel-sub">Presiona la tecla indicada. F13 a F24 se logran con Shift + F1 a F12.</span>
+          </div>
+        </div>
+
+        <div class="game-body">
+          <div class="game-target-wrap">
+            <span class="game-target-label">Presiona</span>
+            <span class="game-target" id="gameTarget" role="status" aria-live="polite">F1</span>
+          </div>
+
+          <div class="game-feedback" id="gameFeedback" data-state="idle">
+            <span class="game-feedback-icon" id="gameFeedbackIcon" aria-hidden="true">&#10003;</span>
+            <span class="game-feedback-text" id="gameFeedbackText">Presiona la tecla indicada</span>
+          </div>
+
+          <div class="game-stats">
+            <div class="game-stat">
+              <span class="game-stat-value" id="gameScore">0</span>
+              <span class="game-stat-label">Aciertos</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-value" id="gameMiss">0</span>
+              <span class="game-stat-label">Fallos</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-value" id="gameStreak">0</span>
+              <span class="game-stat-label">Racha</span>
+            </div>
+            <button class="game-reset-btn" id="gameReset" type="button">Reiniciar</button>
+          </div>
+        </div>
+
+        <div class="game-correct-bar" id="gameCorrectBar" data-state="idle">
+          <span id="gameCorrectText">El comando correcto aparecerá aquí si fallas.</span>
+        </div>
+
+        <div class="game-map">
+          <div class="game-map-title">Referencia: F13 a F24 = Shift + F1 a F12</div>
+          <div class="game-map-grid" id="gameMappingGrid"></div>
+        </div>
+      </div>
     </section>
 
   </main>
