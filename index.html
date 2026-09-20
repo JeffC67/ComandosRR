@@ -377,13 +377,25 @@
         </div>
 
         <!-- Card categoría: MÓVIL -->
-        <div class="category-card" onclick="openModal('modal-categoria-movil')" role="button" tabindex="0" aria-label="Abrir procesos de la categoría MÓVIL">
+        <div class="category-card accent" onclick="openModal('modal-categoria-movil')" role="button" tabindex="0" aria-label="Abrir procesos de la categoría MÓVIL">
           <div class="category-icon" aria-hidden="true">📱</div>
           <h3>MÓVIL</h3>
           <p>Procesos guiados para la atención de servicios móviles.</p>
           <span class="category-badge">Próximamente</span>
           <span class="process-open">
             Ver procesos
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </span>
+        </div>
+
+        <!-- Card categoría: MARCACIONES CERRADAS -->
+        <div class="category-card success" onclick="openModal('modal-categoria-marcaciones')" role="button" tabindex="0" aria-label="Abrir marcaciones cerradas">
+          <div class="category-icon" aria-hidden="true">🔒</div>
+          <h3>MARCACIONES CERRADAS</h3>
+          <p>Marcaciones especiales para clientes críticos, ciclos de facturación, ajustes y suspensiones.</p>
+          <span class="category-badge">4 marcas</span>
+          <span class="process-open">
+            Ver marcaciones
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </span>
         </div>
@@ -628,6 +640,69 @@
           <span class="modal-empty-icon" aria-hidden="true">🚧</span>
           <p>No hay procesos disponibles todavía en esta categoría.</p>
         </div>
+        <div class="modal-no-results hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal categoría: MARCACIONES CERRADAS -->
+  <div id="modal-categoria-marcaciones" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-categoria-marcaciones')" role="dialog" aria-modal="true" aria-labelledby="categoria-marcaciones-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">🔒</span>
+          <div>
+            <h3 id="categoria-marcaciones-title">Marcaciones Cerradas</h3>
+            <span class="modal-subtitle">Marcaciones especiales para clientes críticos, facturación, ajustes y suspensiones</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-categoria-marcaciones')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" class="modal-search-input" placeholder="Buscar marcación..." aria-label="Buscar marcación" oninput="filterProcesses(this)">
+        </div>
+
+        <div class="cards-grid">
+
+          <!-- Marcación: SAC NPP -->
+          <div class="command-card marcacion-item" onclick="mostrarProcesoMarcacion('SAC NPP')" role="button" tabindex="0" aria-label="Seleccionar marcación SAC NPP">
+            <span class="cmd-icon" aria-hidden="true">🆔</span>
+            <span class="cmd-label">Marcación para clientes críticos</span>
+            <span class="cmd-key">SAC NPP</span>
+          </div>
+
+          <!-- Marcación: FAC OCL -->
+          <div class="command-card marcacion-item" onclick="mostrarProcesoMarcacion('FAC OCL')" role="button" tabindex="0" aria-label="Seleccionar marcación FAC OCL">
+            <span class="cmd-icon" aria-hidden="true">🧾</span>
+            <span class="cmd-label">Ciclos de facturación</span>
+            <span class="cmd-key">FAC OCL</span>
+          </div>
+
+          <!-- Marcación: AJU CEC -->
+          <div class="command-card marcacion-item" onclick="mostrarProcesoMarcacion('AJU CEC')" role="button" tabindex="0" aria-label="Seleccionar marcación AJU CEC">
+            <span class="cmd-icon" aria-hidden="true">💰</span>
+            <span class="cmd-label">Ajuste Creer en el Cliente</span>
+            <span class="cmd-key">AJU CEC</span>
+          </div>
+
+          <!-- Marcación: CAN CGN -->
+          <div class="command-card marcacion-item" onclick="mostrarProcesoMarcacion('CAN CGN')" role="button" tabindex="0" aria-label="Seleccionar marcación CAN CGN">
+            <span class="cmd-icon" aria-hidden="true">⏸️</span>
+            <span class="cmd-label">Suspensión temporal</span>
+            <span class="cmd-key">CAN CGN</span>
+          </div>
+
+        </div>
+
+        <!-- Ventana amarilla del proceso de marcación cerrada -->
+        <div class="marcacion-process" id="marcacionProcess" aria-live="polite">
+          <div class="marcacion-process-title" id="marcacionProcessTitle">Proceso de marcación cerrada · SAC NPP</div>
+          <ol class="marcacion-process-steps" id="marcacionProcessSteps"></ol>
+        </div>
+
         <div class="modal-no-results hidden"></div>
       </div>
     </div>

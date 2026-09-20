@@ -99,15 +99,19 @@ function closeModalOnOuterClick(event, id) {
 function filterProcesses(input) {
   const modal = input.closest('.modal-overlay');
   const query = input.value.trim().toLowerCase();
-  const cards = modal.querySelectorAll('.process-card');
+  const cards = modal.querySelectorAll('.process-card, .marcacion-item');
   const noResults = modal.querySelector('.modal-no-results');
   const emptyState = modal.querySelector('.modal-empty');
 
   let matches = 0;
   cards.forEach(card => {
-    const title = card.querySelector('h3').textContent.toLowerCase();
-    const desc = card.querySelector('p').textContent.toLowerCase();
-    const isMatch = query === '' || title.includes(query) || desc.includes(query);
+    const text = [card.querySelector('h3'), card.querySelector('p'),
+                  card.querySelector('.cmd-label'), card.querySelector('.cmd-key')]
+      .filter(el => el)
+      .map(el => el.textContent)
+      .join(' ')
+      .toLowerCase();
+    const isMatch = query === '' || text.includes(query);
     card.classList.toggle('hidden', !isMatch);
     if (isMatch) matches++;
   });
@@ -351,3 +355,28 @@ document.addEventListener('keydown', (event) => {
 
   resetGame();
 })();
+
+/* ---------- 5. MARCACIONES CERRADAS ---------- */
+const MARCA_PASOS = [
+  'Presiona <strong>F22</strong> para registrar la <strong>marcación y las notas</strong>.',
+  'Presiona <strong>Enter</strong>.',
+  'Ingresa el <strong>código de cierre</strong> y el campo <strong>Answer</strong>.',
+  'Presiona <strong>F2</strong>.',
+  'Presiona <strong>F5</strong> para finalizar.'
+];
+
+function mostrarProcesoMarcacion(codigo) {
+  const title = document.getElementById('marcacionProcessTitle');
+  const steps = document.getElementById('marcacionProcessSteps');
+  if (!title || !steps) return;
+
+  title.textContent = `Proceso de marcación cerrada · ${codigo}`;
+  steps.innerHTML = MARCA_PASOS.map(paso => `<li>${paso}</li>`).join('');
+
+  document.querySelectorAll('.marcacion-item').forEach(item => {
+    const key = item.querySelector('.cmd-key');
+    item.classList.toggle('active', !!key && key.textContent === codigo);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => mostrarProcesoMarcacion('SAC NPP'));
