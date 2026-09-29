@@ -403,17 +403,127 @@
       </div>
 
       <!-- ========== JUEGO: TECLAS DE FUNCIÓN F1 - F24 ========== -->
-      <div class="game-panel" id="gamePanel">
-        <div class="game-panel-header">
-          <div class="game-panel-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6"/></svg>
+      <button class="game-cta" id="gameCta" type="button" onclick="openModal('modal-juego')" aria-haspopup="dialog">
+        <span class="game-cta-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6"/></svg>
+        </span>
+        <span class="game-cta-text">Vuélvete más ágil con los comandos</span>
+        <span class="game-cta-arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </span>
+      </button>
+
+      <!-- ========== CRUD: NUESTROS PROCESOS ========== -->
+      <section class="process-builder" id="processBuilder" aria-labelledby="processBuilderTitle">
+        <div class="process-builder-header">
+          <div class="process-builder-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
           </div>
           <div>
-            <h3>Juego Rápido: Teclas de Función</h3>
-            <span class="game-panel-sub">Presiona la tecla indicada. F13 a F24 se logran con Shift + F1 a F12.</span>
+            <h2 class="process-builder-title" id="processBuilderTitle">Nuestros procesos</h2>
+            <span class="process-builder-sub">Crea un proceso y define sus pasos uno a uno. El paso en edición se guarda solo al salir del campo.</span>
           </div>
         </div>
 
+        <div class="pb-body">
+
+          <!-- ---------- Formulario ---------- -->
+          <form class="pb-form" id="processForm" autocomplete="off" novalidate>
+            <div class="pb-field">
+              <label class="pb-label" for="processName">Nombre del proceso</label>
+              <input class="pb-input" type="text" id="processName" placeholder="Ej. Creación de PQR desde RR/AS400" maxlength="80">
+            </div>
+
+            <div class="pb-field">
+              <label class="pb-label" for="processDescription">Descripción general</label>
+              <textarea class="pb-textarea" id="processDescription" rows="3" placeholder="Resumen breve del objetivo del proceso, cuándo usarlo y a quién aplica." maxlength="280"></textarea>
+            </div>
+
+            <div class="pb-steps-head">
+              <span class="pb-steps-title">Pasos del proceso</span>
+              <span class="pb-counter" id="pbStepCounter" role="status" aria-live="polite">1 paso</span>
+            </div>
+
+            <!-- Lista dinámica de pasos (se renderiza desde Js/main.js) -->
+            <ol class="pb-steps" id="pbSteps"></ol>
+
+            <div class="pb-form-actions">
+              <button class="pb-add-step" type="button" id="pbAddStep">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Agregar paso
+              </button>
+              <button class="pb-save" type="button" id="pbSave">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                <span id="pbSaveLabel">Guardar proceso</span>
+              </button>
+            </div>
+
+            <button class="pb-cancel" type="button" id="pbCancel" hidden>Cancelar edición</button>
+
+            <p class="pb-feedback" id="pbFeedback" data-state="idle" role="status" aria-live="polite"></p>
+
+            <p class="pb-notice" id="pbApiNotice" role="alert" hidden></p>
+          </form>
+
+          <!-- ---------- Vista previa (solo lectura) ---------- -->
+          <aside class="pb-preview" aria-label="Vista previa del proceso">
+            <div class="pb-preview-head">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              Vista previa
+            </div>
+            <div>
+              <h3 class="pb-preview-name" id="pbPreviewName">Proceso sin título</h3>
+              <p class="pb-preview-desc" id="pbPreviewDesc">Agrega una descripción general para contextualizar el proceso.</p>
+            </div>
+            <ol class="pb-preview-steps" id="pbPreviewSteps"></ol>
+          </aside>
+
+        </div>
+
+        <!-- ---------- Colección de procesos guardados ---------- -->
+        <div class="pb-collection" id="pbCollection">
+          <div class="pb-collection-head">
+            <h3 class="pb-collection-title" id="pbCollectionTitle">Procesos guardados</h3>
+            <span class="pb-counter" id="pbSavedCounter">0 procesos</span>
+          </div>
+          <div class="pb-collection-list" id="pbSavedList"></div>
+        </div>
+      </section>
+    </section>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Portal Capacitación RR / AS400
+      </div>
+      <p>© 2026 Leonardo Beltrán & Jefferson Calderón & Julian Mendez — Todos los derechos reservados.</p>
+      <p>Documento interno de referencia. Uso exclusivo para agentes de servicio al cliente.</p>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALES ==================== -->
+
+  <!-- Modal: juego de teclas de función -->
+  <div id="modal-juego" class="modal-overlay game-modal" onclick="closeModalOnOuterClick(event, 'modal-juego')" role="dialog" aria-modal="true" aria-labelledby="juego-title">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6"/></svg>
+          </span>
+          <div>
+            <h3 id="juego-title">Vuélvete más ágil con los comandos</h3>
+            <span class="modal-subtitle">Presiona la tecla indicada. F13 a F24 se logran con Shift + F1 a F12.</span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-juego')" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
         <div class="game-body">
           <div class="game-target-wrap">
             <span class="game-target-label">Presiona</span>
@@ -451,23 +561,25 @@
           <div class="game-map-grid" id="gameMappingGrid"></div>
         </div>
       </div>
-    </section>
-
-  </main>
-
-  <!-- ==================== FOOTER ==================== -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-brand">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        Portal Capacitación RR / AS400
-      </div>
-      <p>© 2026 Leonardo Beltrán & Jefferson Calderón & Julian Mendez — Todos los derechos reservados.</p>
-      <p>Documento interno de referencia. Uso exclusivo para agentes de servicio al cliente.</p>
     </div>
-  </footer>
+  </div>
 
-  <!-- ==================== MODALES ==================== -->
+  <!-- Modal detalle: proceso guardado (contenido inyectado desde Js/procesos.js) -->
+  <div id="modal-proceso-detalle" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-proceso-detalle')" role="dialog" aria-modal="true" aria-labelledby="procesoDetalleTitle">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <span class="modal-header-icon" aria-hidden="true">📋</span>
+          <div>
+            <h3 id="procesoDetalleTitle">Detalle del proceso</h3>
+            <span class="modal-subtitle" id="procesoDetalleSubtitle"></span>
+          </div>
+        </div>
+        <button class="close-btn" onclick="closeModal('modal-proceso-detalle')" aria-label="Cerrar modal">&times;</button>
+      </div>
+      <div class="modal-body" id="procesoDetalleBody"></div>
+    </div>
+  </div>
 
   <!-- Modal categoría: HOGAR -->
   <div id="modal-categoria-hogar" class="modal-overlay" onclick="closeModalOnOuterClick(event, 'modal-categoria-hogar')" role="dialog" aria-modal="true" aria-labelledby="categoria-hogar-title">
@@ -1225,6 +1337,7 @@
 
   <!-- JavaScript -->
   <script src="Js/main.js"></script>
+<script src="Js/procesos.js"></script>
 
 </body>
 </html>

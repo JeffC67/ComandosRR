@@ -1,9 +1,9 @@
-/* ==========================================================
-   PORTAL DE CAPACITACIÓN RR / AS400
+﻿/* ==========================================================
+   PORTAL DE CAPACITACIÃ“N RR / AS400
    JavaScript Principal
    ========================================================== */
 
-/* ---------- 1. MENÚ DE HAMBURGUESA ---------- */
+/* ---------- 1. MENÃš DE HAMBURGUESA ---------- */
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
 
@@ -13,10 +13,10 @@ if (menuToggle && navLinks) {
     menuToggle.classList.toggle('open');
     const isOpen = navLinks.classList.contains('active');
     menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-    menuToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+    menuToggle.setAttribute('aria-label', isOpen ? 'Cerrar menÃº' : 'Abrir menÃº');
   });
 
-  // Cerrar menú al hacer clic en un enlace
+  // Cerrar menÃº al hacer clic en un enlace
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       navLinks.classList.remove('active');
@@ -26,7 +26,7 @@ if (menuToggle && navLinks) {
   });
 }
 
-/* ---------- 2. INDICADOR DE SECCIÓN ACTIVA ---------- */
+/* ---------- 2. INDICADOR DE SECCIÃ“N ACTIVA ---------- */
 function setActiveNavLink() {
   const sections = document.querySelectorAll('section[id]');
   const navLinksList = document.querySelectorAll('.nav-link');
@@ -63,14 +63,14 @@ function openModal(id) {
   currentModalIndex = 0;
   updateModalSteps(0);
 
-  // Reiniciar la búsqueda del modal al abrirlo
+  // Reiniciar la bÃºsqueda del modal al abrirlo
   const searchInput = modal.querySelector('.modal-search-input');
   if (searchInput) {
     searchInput.value = '';
     filterProcesses(searchInput);
   }
 
-  // Focus en el botón de cerrar para accesibilidad
+  // Focus en el botÃ³n de cerrar para accesibilidad
   setTimeout(() => {
     const closeBtn = modal.querySelector('.close-btn');
     if (closeBtn) closeBtn.focus();
@@ -83,7 +83,7 @@ function closeModal(id) {
 
   modal.classList.remove('active');
 
-  // Solo desbloquear el scroll si no queda ningún modal abierto
+  // Solo desbloquear el scroll si no queda ningÃºn modal abierto
   const anyActive = document.querySelector('.modal-overlay.active');
   if (!anyActive) {
     document.body.style.overflow = '';
@@ -122,12 +122,12 @@ function filterProcesses(input) {
 
   if (noResults) {
     const showNoResults = query !== '' && (cards.length === 0 || matches === 0);
-    noResults.textContent = `No se encontró ningún proceso que coincida con "${input.value.trim()}".`;
+    noResults.textContent = `No se encontrÃ³ ningÃºn proceso que coincida con "${input.value.trim()}".`;
     noResults.classList.toggle('hidden', !showNoResults);
   }
 }
 
-/* Navegación por pasos dentro del modal */
+/* NavegaciÃ³n por pasos dentro del modal */
 function updateModalSteps() {
   const steps = document.querySelectorAll(`#${currentModalId} .progress-step`);
   const bodies = document.querySelectorAll(`#${currentModalId} .modal-body-block`);
@@ -151,7 +151,7 @@ function updateModalSteps() {
     }
   });
 
-  // Actualizar los dots de navegación inferior
+  // Actualizar los dots de navegaciÃ³n inferior
   const navDots = document.querySelectorAll(`#${currentModalId} .nav-dot`);
   navDots.forEach((dot, index) => {
     dot.classList.toggle('active', index === currentModalIndex);
@@ -188,11 +188,12 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-/* ---------- 4. JUEGO DE TECLAS DE FUNCIÓN (F1 - F24) ---------- */
+/* ---------- 4. JUEGO DE TECLAS DE FUNCIÃ“N (F1 - F24) ---------- */
 (function initFunctionKeyGame() {
   const MAX_KEY = 24;
-  const panel = document.getElementById('gamePanel');
-  if (!panel) return;
+  const modal = document.getElementById('modal-juego');
+  const mapGrid = document.getElementById('gameMappingGrid');
+  if (!modal || !mapGrid) return;
 
   const targetEl = document.getElementById('gameTarget');
   const feedbackEl = document.getElementById('gameFeedback');
@@ -210,7 +211,6 @@ document.addEventListener('keydown', (event) => {
   let streak = 0;
   let currentTarget = 0;
   let previousTarget = 0;
-  let active = false;
   let lockUntil = 0;
   let nextTimer = null;
 
@@ -265,7 +265,7 @@ document.addEventListener('keydown', (event) => {
     targetEl.classList.add('flash');
 
     setFeedback('idle', 'Presiona la tecla indicada', '\u2713');
-    setCorrectBar('idle', 'El comando correcto aparecerá aquí si fallas.');
+    setCorrectBar('idle', 'El comando correcto aparecerÃ¡ aquÃ­ si fallas.');
   }
 
   function resetGame() {
@@ -298,24 +298,18 @@ document.addEventListener('keydown', (event) => {
     }
   })();
 
-  /* Solo interceptar teclas cuando el juego esté visible */
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      active = entries[0].isIntersecting;
-    }, { threshold: 0.35 });
-    observer.observe(panel);
-  } else {
-    active = true;
+  /* Solo interceptar teclas cuando el juego está abierto como ventana emergente */
+  function isGameOpen() {
+    return modal.classList.contains('active');
   }
 
   document.addEventListener('keydown', (event) => {
     if (event.repeat) return;
-    if (!active) return;
+    if (!isGameOpen()) return;
     if (Date.now() < lockUntil) return;
-    // No interferir con la búsqueda dentro de los modales
+    // No interferir con la búsqueda dentro de los campos de texto
     const target = event.target;
     if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
-    if (document.querySelector('.modal-overlay.active')) return;
 
     const match = /^F(\d{1,2})$/.exec(event.key);
     if (!match) return;
@@ -341,8 +335,8 @@ document.addEventListener('keydown', (event) => {
       updateStats();
       const label = labelOf(currentTarget);
       const pressed = labelOf(n);
-      setFeedback('wrong', `Incorrecto · ${pressed.combo}`, '\u2715');
-      setCorrectBar('wrong', `Comando correcto: ${label.name} = ${label.combo} · Tu respuesta: ${pressed.combo}`);
+      setFeedback('wrong', `Incorrecto Â· ${pressed.combo}`, '\u2715');
+      setCorrectBar('wrong', `Comando correcto: ${label.name} = ${label.combo} Â· Tu respuesta: ${pressed.combo}`);
       if (currentTarget > 12) highlightMap(currentTarget, 'miss');
     }
 
@@ -358,9 +352,9 @@ document.addEventListener('keydown', (event) => {
 
 /* ---------- 5. MARCACIONES CERRADAS ---------- */
 const MARCA_PASOS = [
-  'Presiona <strong>F22</strong> para registrar la <strong>marcación y las notas</strong>.',
+  'Presiona <strong>F22</strong> para registrar la <strong>marcaciÃ³n y las notas</strong>.',
   'Presiona <strong>Enter</strong>.',
-  'Ingresa el <strong>código de cierre</strong> y el campo <strong>Answer</strong>.',
+  'Ingresa el <strong>cÃ³digo de cierre</strong> y el campo <strong>Answer</strong>.',
   'Presiona <strong>F2</strong>.',
   'Presiona <strong>F5</strong> para finalizar.'
 ];
@@ -370,7 +364,7 @@ function mostrarProcesoMarcacion(codigo) {
   const steps = document.getElementById('marcacionProcessSteps');
   if (!title || !steps) return;
 
-  title.textContent = `Proceso de marcación cerrada · ${codigo}`;
+  title.textContent = `Proceso de marcaciÃ³n cerrada Â· ${codigo}`;
   steps.innerHTML = MARCA_PASOS.map(paso => `<li>${paso}</li>`).join('');
 
   document.querySelectorAll('.marcacion-item').forEach(item => {
@@ -380,3 +374,4 @@ function mostrarProcesoMarcacion(codigo) {
 }
 
 document.addEventListener('DOMContentLoaded', () => mostrarProcesoMarcacion('SAC NPP'));
+
