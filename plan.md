@@ -317,6 +317,11 @@ intentos       usuario · quiz · puntaje · fecha            (Fase 3)
 
 ## Fase 2 — Frontend Next.js por secciones
 
+> **Actualización (sep 2026):** se descartó la migración intermedia a Astro (no encajaba con esta
+> fase: sin App Router, sin ISR/webhook, sin rutas ni middleware para la Fase 3) y se limpió el
+> repo. El frontend es **Next.js** como define este plan; el contenido de la Fase 1 vive en
+> `src/data/*.json` (fuente de verdad) y en Directus. Arquitectura y comandos: `README.md`.
+
 **Objetivo:** Plataforma navegable con rutas, alimentada por Directus, con el diseño visual del rediseño (fases 1-8 superiores).
 
 ### Tareas

@@ -1,0 +1,46 @@
+[
+  {
+    "slug": "busqueda",
+    "sectionId": "modulo1",
+    "titulo": "Comandos de Búsqueda Principal",
+    "descripcion": "Encuentra al suscriptor por cualquier dato de referencia",
+    "icono": "search",
+    "layout": "video-izquierda",
+    "titulo_tarjetas": "Atajos de búsqueda rápidos",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "slug": "suscriptor",
+    "sectionId": "modulo2",
+    "titulo": "Gestión desde la Ventana del Suscriptor",
+    "descripcion": "Comandos para administrar la cuenta del cliente",
+    "icono": "users",
+    "layout": "video-derecha",
+    "titulo_tarjetas": "Comandos en ventana del suscriptor",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "slug": "consultas",
+    "sectionId": "modulo3",
+    "titulo": "Otros Comandos y Consultas Especiales",
+    "descripcion": "Módulos avanzados para consultas específicas",
+    "icono": "link",
+    "layout": "tarjetas-ancho",
+    "titulo_tarjetas": null,
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "slug": "procesos",
+    "sectionId": "procesos",
+    "titulo": "Procesos Específicos Paso a Paso",
+    "descripcion": "Guías interactivas para los procedimientos más frecuentes",
+    "icono": "proceso",
+    "layout": "procesos",
+    "titulo_tarjetas": null,
+    "orden": 4,
+    "estado": "publicado"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "name": "comandosrr-scripts",
+  "private": true,
+  "type": "module",
+  "description": "Scripts de migración y utilidades del Portal Capacitación RR/AS400",
+  "scripts": {
+    "migrate": "node migrate.mjs",
+    "migrate:force": "node migrate.mjs --force"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}

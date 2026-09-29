@@ -1,0 +1,629 @@
+# ============================================================
+# Snapshot de esquema Directus — Fase 1
+# Aplicar con:
+#   docker compose exec -T directus node cli.js schema apply /directus-schema/snapshot.yaml --yes
+# Vista previa (sin aplicar):
+#   docker compose exec -T directus node cli.js schema apply /directus-schema/snapshot.yaml --dry-run
+# ============================================================
+version: 1
+directus: 12.1.1
+vendor: postgres
+
+collections:
+  # ---------- Módulos / secciones del portal ----------
+  - collection: modulos
+    meta:
+      collection: modulos
+      icon: layers
+      note: Secciones del portal (Búsqueda, Suscriptor, Consultas, Procesos)
+      display_template: '{{titulo}}'
+      hidden: false
+      singleton: false
+      sort_field: orden
+      archive_field: estado
+      archive_value: archivado
+      unarchive_value: publicado
+      draft_value: borrador
+      versioning: false
+      unmanaged: false
+      collapse: open
+      sort: 1
+    schema:
+      name: modulos
+
+  # ---------- Comandos (tarjetas) ----------
+  - collection: comandos
+    meta:
+      collection: comandos
+      icon: keyboard
+      note: Comandos y teclas de función que se muestran como tarjetas
+      display_template: '{{etiqueta}}'
+      hidden: false
+      singleton: false
+      sort_field: orden
+      archive_field: estado
+      archive_value: archivado
+      unarchive_value: publicado
+      draft_value: borrador
+      versioning: false
+      unmanaged: false
+      collapse: open
+      sort: 2
+    schema:
+      name: comandos
+
+  # ---------- Procesos guiados ----------
+  - collection: procesos
+    meta:
+      collection: procesos
+      icon: route
+      note: Procedimientos paso a paso (antes modales)
+      display_template: '{{titulo}}'
+      hidden: false
+      singleton: false
+      sort_field: orden
+      archive_field: estado
+      archive_value: archivado
+      unarchive_value: publicado
+      draft_value: borrador
+      versioning: false
+      unmanaged: false
+      collapse: open
+      sort: 3
+    schema:
+      name: procesos
+
+  # ---------- Pasos de cada proceso ----------
+  - collection: pasos
+    meta:
+      collection: pasos
+      icon: list-ordered
+      note: Pasos de un proceso, en orden
+      display_template: '{{grupo}} · paso {{orden}}'
+      hidden: false
+      singleton: false
+      sort_field: orden
+      archive_field: null
+      archive_value: null
+      unarchive_value: null
+      draft_value: null
+      versioning: false
+      unmanaged: false
+      collapse: open
+      sort: 4
+    schema:
+      name: pasos
+
+  # ---------- Videos tutoriales ----------
+  - collection: videos
+    meta:
+      collection: videos
+      icon: video_library
+      note: Videos MP4 de los tutoriales
+      display_template: '{{titulo}}'
+      hidden: false
+      singleton: false
+      sort_field: orden
+      archive_field: estado
+      archive_value: archivado
+      unarchive_value: publicado
+      draft_value: borrador
+      versioning: false
+      unmanaged: false
+      collapse: open
+      sort: 5
+    schema:
+      name: videos
+
+fields:
+  # ===== modulos =====
+  - collection: modulos
+    field: id
+    type: integer
+    meta:
+      hidden: true
+      readonly: true
+      interface: input
+      special: [auto-increment]
+    schema:
+      is_primary_key: true
+      has_auto_increment: true
+      is_nullable: false
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: modulos
+    field: slug
+    type: string
+    meta:
+      interface: input
+      required: true
+      note: Identificador de URL (ej. busqueda, suscriptor)
+    schema:
+      max_length: 64
+      is_nullable: false
+      is_unique: true
+
+  - collection: modulos
+    field: titulo
+    type: string
+    meta:
+      interface: input
+      required: true
+    schema:
+      max_length: 255
+      is_nullable: false
+
+  - collection: modulos
+    field: descripcion
+    type: text
+    meta:
+      interface: input-multiline
+    schema: {}
+
+  - collection: modulos
+    field: icono
+    type: string
+    meta:
+      interface: input
+      note: Nombre de icono Lucide o emoji
+    schema:
+      max_length: 64
+
+  - collection: modulos
+    field: orden
+    type: integer
+    meta:
+      interface: input
+      options:
+        step: 1
+    schema:
+      default_value: 0
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: modulos
+    field: estado
+    type: string
+    meta:
+      interface: input-dropdown
+      required: true
+      choices:
+        - text: Borrador
+          value: borrador
+        - text: Publicado
+          value: publicado
+        - text: Archivado
+          value: archivado
+    schema:
+      default_value: publicado
+      max_length: 20
+      is_nullable: false
+
+  # ===== comandos =====
+  - collection: comandos
+    field: id
+    type: integer
+    meta:
+      hidden: true
+      readonly: true
+      interface: input
+      special: [auto-increment]
+    schema:
+      is_primary_key: true
+      has_auto_increment: true
+      is_nullable: false
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: comandos
+    field: etiqueta
+    type: string
+    meta:
+      interface: input
+      required: true
+      note: Texto de la tarjeta (ej. Búsqueda por número de cuenta)
+    schema:
+      max_length: 255
+      is_nullable: false
+
+  - collection: comandos
+    field: tecla
+    type: string
+    meta:
+      interface: input
+      required: true
+      note: Tecla o combinación (ej. F21+F15)
+    schema:
+      max_length: 64
+      is_nullable: false
+
+  - collection: comandos
+    field: tipo
+    type: string
+    meta:
+      interface: input-dropdown
+      required: true
+      choices:
+        - text: Básico
+          value: basico
+        - text: Avanzado (destacado)
+          value: avanzado
+    schema:
+      default_value: basico
+      max_length: 16
+      is_nullable: false
+
+  - collection: comandos
+    field: icono
+    type: string
+    meta:
+      interface: input
+      note: Emoji o nombre de icono
+    schema:
+      max_length: 64
+
+  - collection: comandos
+    field: modulo
+    type: integer
+    meta:
+      interface: select-dropdown-m2o
+      special: [m2o]
+      required: false
+    schema:
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: comandos
+    field: orden
+    type: integer
+    meta:
+      interface: input
+      options:
+        step: 1
+    schema:
+      default_value: 0
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: comandos
+    field: estado
+    type: string
+    meta:
+      interface: input-dropdown
+      required: true
+      choices:
+        - text: Borrador
+          value: borrador
+        - text: Publicado
+          value: publicado
+        - text: Archivado
+          value: archivado
+    schema:
+      default_value: publicado
+      max_length: 20
+      is_nullable: false
+
+  # ===== procesos =====
+  - collection: procesos
+    field: id
+    type: integer
+    meta:
+      hidden: true
+      readonly: true
+      interface: input
+      special: [auto-increment]
+    schema:
+      is_primary_key: true
+      has_auto_increment: true
+      is_nullable: false
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: procesos
+    field: slug
+    type: string
+    meta:
+      interface: input
+      required: true
+      note: URL del proceso (ej. creacion-pqr)
+    schema:
+      max_length: 64
+      is_nullable: false
+      is_unique: true
+
+  - collection: procesos
+    field: titulo
+    type: string
+    meta:
+      interface: input
+      required: true
+    schema:
+      max_length: 255
+      is_nullable: false
+
+  - collection: procesos
+    field: descripcion
+    type: text
+    meta:
+      interface: input-multiline
+    schema: {}
+
+  - collection: procesos
+    field: duracion_min
+    type: integer
+    meta:
+      interface: input
+      note: Duración estimada en minutos
+      options:
+        step: 1
+        min: 1
+    schema:
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: procesos
+    field: icono
+    type: string
+    meta:
+      interface: input
+    schema:
+      max_length: 64
+
+  - collection: procesos
+    field: orden
+    type: integer
+    meta:
+      interface: input
+      options:
+        step: 1
+    schema:
+      default_value: 0
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: procesos
+    field: estado
+    type: string
+    meta:
+      interface: input-dropdown
+      required: true
+      choices:
+        - text: Borrador
+          value: borrador
+        - text: Publicado
+          value: publicado
+        - text: Archivado
+          value: archivado
+    schema:
+      default_value: publicado
+      max_length: 20
+      is_nullable: false
+
+  # ===== pasos =====
+  - collection: pasos
+    field: id
+    type: integer
+    meta:
+      hidden: true
+      readonly: true
+      interface: input
+      special: [auto-increment]
+    schema:
+      is_primary_key: true
+      has_auto_increment: true
+      is_nullable: false
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: pasos
+    field: proceso
+    type: integer
+    meta:
+      interface: select-dropdown-m2o
+      special: [m2o]
+      required: true
+    schema:
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: pasos
+    field: grupo
+    type: string
+    meta:
+      interface: input
+      note: 'Subtítulo del bloque (ej. Parte 1: Gestión en RR/AS400)'
+    schema:
+      max_length: 255
+
+  - collection: pasos
+    field: orden
+    type: integer
+    meta:
+      interface: input
+      options:
+        step: 1
+    schema:
+      default_value: 0
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: pasos
+    field: contenido
+    type: text
+    meta:
+      interface: input-rich-text-html
+      required: true
+      note: Instrucción del paso (puede contener <strong>)
+    schema:
+      is_nullable: false
+
+  # ===== videos =====
+  - collection: videos
+    field: id
+    type: integer
+    meta:
+      hidden: true
+      readonly: true
+      interface: input
+      special: [auto-increment]
+    schema:
+      is_primary_key: true
+      has_auto_increment: true
+      is_nullable: false
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: videos
+    field: titulo
+    type: string
+    meta:
+      interface: input
+      required: true
+    schema:
+      max_length: 255
+      is_nullable: false
+
+  - collection: videos
+    field: archivo
+    type: uuid
+    meta:
+      interface: file-image
+      special: [file]
+      note: Archivo MP4 subido a Directus
+    schema:
+      max_length: 36
+
+  - collection: videos
+    field: poster
+    type: string
+    meta:
+      interface: input
+      note: Imagen de portada (opcional)
+    schema:
+      max_length: 511
+
+  - collection: videos
+    field: modulo
+    type: integer
+    meta:
+      interface: select-dropdown-m2o
+      special: [m2o]
+      required: false
+    schema:
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: videos
+    field: orden
+    type: integer
+    meta:
+      interface: input
+      options:
+        step: 1
+    schema:
+      default_value: 0
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: videos
+    field: estado
+    type: string
+    meta:
+      interface: input-dropdown
+      required: true
+      choices:
+        - text: Borrador
+          value: borrador
+        - text: Publicado
+          value: publicado
+        - text: Archivado
+          value: archivado
+    schema:
+      default_value: publicado
+      max_length: 20
+      is_nullable: false
+
+systemFields:
+  - collection: directus_activity
+    field: timestamp
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_clients
+    field: date_created
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_codes
+    field: expires_at
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_codes
+    field: used_at
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_consents
+    field: client
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: code_hash
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: expires_at
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: previous_session
+    schema:
+      is_indexed: true
+  - collection: directus_oauth_tokens
+    field: session
+    schema:
+      is_indexed: true
+  - collection: directus_revisions
+    field: activity
+    schema:
+      is_indexed: true
+  - collection: directus_revisions
+    field: parent
+    schema:
+      is_indexed: true
+  - collection: directus_sessions
+    field: oauth_client
+    schema:
+      is_indexed: true
+
+relations:
+  # comandos.modulo → modulos
+  - collection: comandos
+    field: modulo
+    related_collection: modulos
+    schema:
+      on_delete: CASCADE
+      on_update: CASCADE
+    meta:
+      sort_field: orden
+      one_deselect_action: nullify
+
+  # pasos.proceso → procesos
+  - collection: pasos
+    field: proceso
+    related_collection: procesos
+    schema:
+      on_delete: CASCADE
+      on_update: CASCADE
+    meta:
+      sort_field: orden
+      one_deselect_action: nullify
+
+  # videos.modulo → modulos
+  - collection: videos
+    field: modulo
+    related_collection: modulos
+    schema:
+      on_delete: CASCADE
+      on_update: CASCADE
+    meta:
+      sort_field: orden
+      one_deselect_action: nullify

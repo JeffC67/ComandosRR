@@ -59,6 +59,7 @@ services:
       STORAGE_LOCAL_ROOT: /datadir
     volumes:
       - directus_data:/datadir
+      - ./directus:/directus-schema:ro   # snapshots de esquema (Fase 1)
     depends_on:
       postgres:
         condition: service_healthy
