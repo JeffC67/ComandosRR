@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Crea, edita y guarda procesos paso a paso del portal de capacitación RR/AS400.">
+  <meta name="author" content="Portal Capacitación RR/AS400">
+  <title>Procesos paso a paso · Portal RR / AS400</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230ea5e9'%3E%3Crect x='2' y='3' width='20' height='14' rx='2'/%3E%3Crect x='2' y='20' width='20' height='1'/%3E%3Crect x='5' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='10' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='15' y='6' width='3' height='3' fill='%23fff'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../Css/Styles.css">
+</head>
+<body data-root="../" data-nav="paso-a-paso">
+
+  <nav id="siteNav" aria-label="Navegación principal"></nav>
+
+  <main class="main-container">
+
+    <nav aria-label="Migas de pan">
+      <ol class="breadcrumb">
+        <li><a href="../index.html">Inicio</a></li>
+        <li class="breadcrumb-sep" aria-hidden="true">/</li>
+        <li class="breadcrumb-current" aria-current="page">Procesos paso a paso</li>
+      </ol>
+    </nav>
+
+    <header class="page-head" data-type="success">
+      <div class="page-head-text">
+        <span class="page-head-icon" aria-hidden="true">&#128221;</span>
+        <div>
+          <h1>Procesos paso a paso</h1>
+          <span class="page-subtitle">Documenta un procedimiento y cons&eacute;rvalo en el portal</span>
+        </div>
+      </div>
+      <div class="page-head-meta">
+        <span class="meta-chip">&#128190; Guardado en la base de datos</span>
+      </div>
+    </header>
+
+    <div class="page-note">
+      <strong>Nota:</strong> Esta secci&oacute;n requiere que el proyecto se publique en un servidor local o remoto con PHP y MySQL. Si la abres directamente como archivo (<code>file://</code>), el formulario se mostrar&aacute; pero no podr&aacute; guardar.
+    </div>
+
+    <section class="process-builder" id="processBuilder" data-mode="create">
+      <div class="process-builder-header">
+        <span class="process-builder-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </span>
+        <div>
+          <h2 class="process-builder-title">Crea un proceso paso a paso</h2>
+          <span class="process-builder-sub">Describe el procedimiento como lo har&iacute;as en el sistema: un paso por rengl&oacute;n.</span>
+        </div>
+      </div>
+
+      <div class="pb-body">
+        <form id="processForm" novalidate>
+          <div class="pb-field">
+            <label class="pb-label" for="processName">Nombre del proceso</label>
+            <input class="pb-input" id="processName" type="text" placeholder="Ej. Replanteamiento de acometida" autocomplete="off">
+          </div>
+
+          <div class="pb-field">
+            <label class="pb-label" for="processDescription">Descripci&oacute;n general</label>
+            <textarea class="pb-textarea" id="processDescription" rows="3" placeholder="Contexto breve del proceso, cu&aacute;ndo se usa y a qui&eacute;n aplica."></textarea>
+          </div>
+
+          <div class="pb-notice" id="pbApiNotice" hidden></div>
+
+          <div class="pb-field">
+            <div class="pb-steps-head">
+              <span class="pb-steps-title">Pasos del proceso</span>
+              <span class="pb-counter" id="pbStepCounter">1 paso</span>
+            </div>
+            <ol class="pb-steps" id="pbSteps"></ol>
+          </div>
+
+          <div class="pb-form-actions">
+            <button class="pb-add-step" id="pbAddStep" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Agregar paso
+            </button>
+            <button class="pb-save" id="pbSave" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              <span id="pbSaveLabel">Guardar proceso</span>
+            </button>
+            <button class="pb-cancel" id="pbCancel" type="button" hidden>Cancelar edici&oacute;n</button>
+          </div>
+
+          <p class="pb-feedback" id="pbFeedback" data-state="idle" role="status" aria-live="polite"></p>
+        </form>
+
+        <aside class="pb-preview" aria-label="Vista previa del proceso">
+          <div class="pb-preview-head">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Vista previa
+          </div>
+          <h3 class="pb-preview-name" id="pbPreviewName">Proceso sin t&iacute;tulo</h3>
+          <p class="pb-preview-desc" id="pbPreviewDesc">Agrega una descripci&oacute;n general para contextualizar el proceso.</p>
+          <ol class="pb-preview-steps" id="pbPreviewSteps"></ol>
+        </aside>
+      </div>
+
+      <div class="pb-collection" id="pbCollection">
+        <div class="pb-collection-head">
+          <span class="pb-collection-title">Procesos guardados</span>
+          <span class="pb-counter" id="pbSavedCounter">0 procesos</span>
+        </div>
+        <div class="pb-collection-list" id="pbSavedList"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="siteFooter"></footer>
+
+  <script src="../Js/main.js"></script>
+  <script src="../Js/procesos.js"></script>
+</body>
+</html>

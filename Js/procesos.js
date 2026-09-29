@@ -27,8 +27,8 @@
 
   if (!form || !stepsList || !addStepBtn || !savedList) return;
 
-  const API_URL = 'api/procesos.php';
-  const MODAL_ID = 'modal-proceso-detalle';
+  const ROOT = document.body.dataset.root || './';
+  const API_URL = ROOT + 'api/procesos.php';
   const IS_FILE = window.location.protocol === 'file:';
 
   const ICON_EDIT = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
@@ -44,6 +44,9 @@
   let processes = [];             // Procesos cargados desde la base
   let editingProcessId = null;    // Proceso abierto en modo edición
   let busy = false;
+
+  let openCard = null;            // Tarjeta con el detalle desplegado
+  let openDetailNode = null;      // Nodo del detalle desplegado
 
   /* ---------- Cliente de la API ---------- */
 
@@ -302,6 +305,7 @@
 
   function renderCollection() {
     savedList.textContent = '';
+    closeDetail();
 
     if (savedCounterEl) {
       savedCounterEl.textContent = processes.length === 1 ? '1 proceso' : `${processes.length} procesos`;
@@ -326,9 +330,11 @@
       card.className = 'pb-saved-card';
       card.dataset.id = String(process.id);
       card.dataset.action = 'view';
+      card.dataset.open = 'false';
       card.setAttribute('role', 'button');
       card.setAttribute('tabindex', '0');
-      card.setAttribute('aria-label', `Ver detalle del proceso ${process.nombre}`);
+      card.setAttribute('aria-expanded', 'false');
+      card.setAttribute('aria-label', `Ver los pasos del proceso ${process.nombre}`);
       if (process.id === editingProcessId) card.dataset.editing = 'true';
 
       const head = document.createElement('div');
@@ -364,31 +370,30 @@
       desc.className = 'pb-saved-desc';
       desc.textContent = process.descripcion || 'Sin descripción general.';
 
-      const list = document.createElement('ol');
-      list.className = 'pb-saved-steps';
-      process.pasos.forEach((text, index) => {
-        const li = document.createElement('li');
-        li.className = 'pb-saved-step';
-        const num = document.createElement('span');
-        num.className = 'pb-saved-step-num';
-        num.setAttribute('aria-hidden', 'true');
-        num.textContent = index + 1;
-        const span = document.createElement('span');
-        span.textContent = text;
-        li.appendChild(num);
-        li.appendChild(span);
-        list.appendChild(li);
-      });
-
+      const total = process.pasos.length;
       const meta = document.createElement('p');
       meta.className = 'pb-saved-meta';
-      const total = process.pasos.length;
       meta.textContent = `${total} ${total === 1 ? 'paso' : 'pasos'} · creado el ${formatDate(process.created_at)}`;
+
+      const toggle = document.createElement('span');
+      toggle.className = 'pb-saved-toggle';
+      toggle.textContent = 'Ver pasos';
+
+      const toggleIcon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      toggleIcon.setAttribute('viewBox', '0 0 24 24');
+      toggleIcon.setAttribute('fill', 'none');
+      toggleIcon.setAttribute('stroke', 'currentColor');
+      toggleIcon.setAttribute('stroke-width', '2');
+      toggleIcon.setAttribute('stroke-linecap', 'round');
+      toggleIcon.setAttribute('stroke-linejoin', 'round');
+      toggleIcon.setAttribute('aria-hidden', 'true');
+      toggleIcon.innerHTML = '<path d="m6 9 6 6 6-6"/>';
+      toggle.appendChild(toggleIcon);
 
       card.appendChild(head);
       card.appendChild(desc);
-      card.appendChild(list);
       card.appendChild(meta);
+      card.appendChild(toggle);
       savedList.appendChild(card);
     });
   }
@@ -408,31 +413,54 @@
     }
   }
 
-  /* ---------- Detalle del proceso (modal) ---------- */
+  /* ---------- Detalle del proceso (desplegado en la misma página) ---------- */
 
-  function openDetail(process) {
-    const title = document.getElementById('procesoDetalleTitle');
-    const subtitle = document.getElementById('procesoDetalleSubtitle');
-    const body = document.getElementById('procesoDetalleBody');
-    if (!title || !subtitle || !body) return;
+  function setCardOpen(card, isOpen) {
+    card.dataset.open = isOpen ? 'true' : 'false';
+    card.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    const toggle = card.querySelector('.pb-saved-toggle');
+    if (toggle) {
+      toggle.childNodes[0].textContent = isOpen ? 'Ocultar pasos' : 'Ver pasos';
+      toggle.classList.toggle('is-open', isOpen);
+    }
+  }
 
-    title.textContent = process.nombre;
-    const total = process.pasos.length;
-    subtitle.textContent = `${total} ${total === 1 ? 'paso' : 'pasos'} · creado el ${formatDate(process.created_at)}`;
+  function closeDetail() {
+    if (openCard) setCardOpen(openCard, false);
+    if (openDetailNode) openDetailNode.remove();
+    openDetailNode = null;
+    openCard = null;
+  }
 
-    body.textContent = '';
+  function toggleDetail(card, process) {
+    if (openCard === card) {
+      closeDetail();
+      return;
+    }
+
+    closeDetail();
+
+    openCard = card;
+    setCardOpen(card, true);
+    openDetailNode = buildDetail(process);
+    card.appendChild(openDetailNode);
+  }
+
+  function buildDetail(process) {
+    const panel = document.createElement('div');
+    panel.className = 'pb-saved-detail';
 
     if (process.descripcion) {
       const desc = document.createElement('p');
       desc.className = 'pb-detail-desc';
       desc.textContent = process.descripcion;
-      body.appendChild(desc);
+      panel.appendChild(desc);
     }
 
     const label = document.createElement('span');
     label.className = 'sub-section-title';
     label.textContent = 'Pasos del proceso';
-    body.appendChild(label);
+    panel.appendChild(label);
 
     const list = document.createElement('ol');
     process.pasos.forEach((text) => {
@@ -440,11 +468,9 @@
       li.textContent = text;
       list.appendChild(li);
     });
-    body.appendChild(list);
+    panel.appendChild(list);
 
-    if (typeof window.openModal === 'function') {
-      window.openModal(MODAL_ID);
-    }
+    return panel;
   }
 
   /* ---------- Guardar / actualizar ---------- */
@@ -643,7 +669,7 @@
       else deleteProcess(process);
       return;
     }
-    openDetail(process);
+    toggleDetail(card, process);
   });
 
   /* Abrir el detalle con Enter desde el teclado */
@@ -653,7 +679,7 @@
     if (!card) return;
     event.preventDefault();
     const process = processes.find(p => p.id === Number(card.dataset.id));
-    if (process) openDetail(process);
+    if (process) toggleDetail(card, process);
   });
 
   /* Evita el envío por Enter fuera de los textareas de pasos */
