@@ -1,0 +1,22 @@
+# Entornos y secretos
+.env
+.env.local
+*.pem
+*.key
+
+# Dependencias
+node_modules/
+.next/
+out/
+
+# Backups (nunca al repo)
+backups/
+*.sql
+*.tar.gz
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/

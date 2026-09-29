@@ -1,0 +1,27 @@
+# ============================================================
+# Caddy — proxy reverso del portal (red interna)
+# {$PORTAL_DOMAIN} se inyecta desde .env (variable de entorno)
+#
+# FASE 0: la raíz sirve el placeholder; todo lo demás va a Directus
+# (panel /admin, API /auth|/server|/items|..., assets /assets|/extensions).
+# En la FASE 2 se invierte: la raíz pasa al frontend Next.js y Directus
+# se publica en un subdominio (admin.rr.local / api.rr.local).
+# ============================================================
+
+{$PORTAL_DOMAIN} {
+	encode gzip
+
+	# --- Placeholder del portal (se reemplaza por Next.js en la Fase 2) ---
+	handle / {
+		root * /usr/share/caddy
+		file_server
+	}
+
+	# --- Directus: panel, API y assets ---
+	handle {
+		reverse_proxy directus:8055
+	}
+
+	# Certificado interno auto-firmado (en producción: CA de la empresa)
+	tls internal
+}
