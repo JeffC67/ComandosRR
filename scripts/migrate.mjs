@@ -84,16 +84,20 @@ const clean = (s) => s.replace(/\s+/g, ' ').trim();
 const readJson = (file) => JSON.parse(readFileSync(resolve(DATA_DIR, file), 'utf8'));
 
 export function parse() {
-  const data = { modulos: [], comandos: [], procesos: [], videos: [] };
+  const data = { modulos: [], comandos: [], categorias: [], procesos: [], videos: [] };
 
-  // Módulos (secciones del portal). Los campos extra de presentación
-  // (icono, layout, titulo_tarjetas) no viajan a Directus.
+  // Módulos (secciones del portal). Todo lo que guía la presentación
+  // (icono, layout, titulo_tarjetas) también vive en Directus, para que
+  // el panel /admin pueda reordenar y renombrar secciones sin tocar código.
   for (const m of readJson('modulos.json')) {
     if (m.estado !== 'publicado') continue;
     data.modulos.push({
       slug: m.slug,
       titulo: clean(m.titulo),
       descripcion: m.descripcion ? clean(m.descripcion) : null,
+      icono: m.icono || null,
+      layout: m.layout || null,
+      titulo_tarjetas: m.titulo_tarjetas ? clean(m.titulo_tarjetas) : null,
       orden: m.orden,
       estado: m.estado,
       _section: m.sectionId,
@@ -126,7 +130,24 @@ export function parse() {
     });
   }
 
-  // Procesos + pasos (bloques de los modales)
+  // Categorías de procesos (HOGAR / MÓVIL / Marcaciones Cerradas)
+  for (const c of readJson('categorias.json')) {
+    if (c.estado !== 'publicado') continue;
+    data.categorias.push({
+      slug: c.slug,
+      nombre: clean(c.nombre),
+      descripcion: c.descripcion ? clean(c.descripcion) : null,
+      icono: c.icono ? clean(c.icono) : null,
+      titulo_corto: c.titulo_corto ? clean(c.titulo_corto) : null,
+      texto_tarjeta: c.texto_tarjeta ? clean(c.texto_tarjeta) : null,
+      tono: c.tono || 'primary',
+      etiqueta_enlace: c.etiqueta_enlace ? clean(c.etiqueta_enlace) : null,
+      orden: c.orden,
+      estado: c.estado,
+    });
+  }
+
+  // Procesos + pasos
   for (const p of readJson('procesos.json')) {
     if (p.estado !== 'publicado') continue;
 
@@ -136,20 +157,22 @@ export function parse() {
       descripcion: clean(p.descripcion),
       duracion_min: p.duracion_min ?? null,
       icono: p.icono ? clean(p.icono) : null,
+      codigo: p.codigo ? clean(p.codigo) : null,
+      nota: p.nota ? String(p.nota).replace(/\s+/g, ' ').trim() : null,
       orden: p.orden,
       estado: p.estado,
+      _categoria: p.categoria,
       _pasos: [],
     };
 
     let orden = 1;
-    for (const bloque of p.modal?.bloques ?? []) {
-      for (const item of bloque.items) {
-        proceso._pasos.push({
-          grupo: bloque.titulo ? clean(bloque.titulo) : null,
-          orden: orden++,
-          contenido: item.contenido.trim(),
-        });
-      }
+    for (const paso of p.pasos ?? []) {
+      proceso._pasos.push({
+        grupo: paso.grupo ? clean(paso.grupo) : null,
+        orden: paso.orden ?? orden,
+        contenido: String(paso.contenido).trim(),
+      });
+      orden++;
     }
 
     data.procesos.push(proceso);
@@ -159,39 +182,105 @@ export function parse() {
 }
 
 /* ---------- Carga en Directus ---------- */
+/* Recién migrados, el caché de Directus puede tardar un instante en
+   reflejar las relaciones. Reintentamos antes de reportar 0. */
 export async function count(collection) {
-  const r = await api(`/items/${collection}?limit=1&meta=total_count`);
-  return r.meta?.total_count ?? r.data.length;
+  let last;
+  for (let intento = 0; intento < 5; intento++) {
+    const r = await api(`/items/${collection}?limit=1&meta=total_count`);
+    last = r.meta?.total_count ?? r.data.length;
+    if (last > 0) return last;
+    await new Promise((res) => setTimeout(res, 600));
+  }
+  return last;
 }
 
-async function clearAll() {
-  // Borrar primero los archivos de video (huérfanos si no)
-  const vids = (await api('/items/videos?fields=id,archivo&limit=-1')).data;
-  for (const v of vids) if (v.archivo) await api(`/files/${v.archivo}`, { method: 'DELETE' });
+const COLECCIONES = ['pasos', 'comandos', 'videos', 'procesos', 'categorias', 'modulos'];
 
-  for (const c of ['pasos', 'comandos', 'videos', 'procesos', 'modulos']) {
-    const ids = (await api(`/items/${c}?fields=id&limit=-1`)).data.map((r) => r.id);
-    for (const id of ids) await api(`/items/${c}/${id}`, { method: 'DELETE' });
-    if (ids.length) console.log(`  borrados ${ids.length} de ${c}`);
+/* Borra una colección hasta que quede realmente vacía.
+
+   Dos trampas de Directus que hacen que un `DELETE` en bucle "vacío" la
+   tabla sin vaciarla:
+
+   1. Las colecciones pueden declarar `archive_field: 'estado'`. En ese
+      caso un DELETE sin más solo pone la fila en `archivado`: desaparece
+      del listado pero sigue ocupando el `slug` (índice único) y la
+      siguiente migración falla con RECORD_NOT_UNIQUE. Por eso
+      `?permanent=true`.
+   2. La caché de datos de Directus devuelve ids obsoletos justo después
+      de escribir. Si nos fiamos del listado para contar, borramos filas
+      que ya no existen y damos por buena una tabla que sigue llena. Por
+      eso se relee hasta ver 0 y se avisa si no se logra. */
+async function vaciar(c) {
+  let total = 0;
+
+  for (let pasada = 0; pasada < 12; pasada++) {
+    const { data, meta } = await api(`/items/${c}?fields=id&limit=-1&meta=total_count`);
+    const restantes = meta?.total_count ?? data.length;
+    if (restantes === 0) break;
+
+    for (const r of data) await api(`/items/${c}/${r.id}?permanent=true`, { method: 'DELETE' });
+    total += data.length;
+
+    /* El caché de datos de Directus va por detrás de la tabla: sin una
+       pausa el listado devuelve lo de antes del borrado, el bucle no
+       avanzaría y la migración abortaría con filas que ya no existen. */
+    await new Promise((res) => setTimeout(res, 800));
   }
+
+  const { meta } = await api(`/items/${c}?limit=1&meta=total_count`);
+  const quedan = meta?.total_count ?? 0;
+  if (quedan > 0) {
+    throw new Error(
+      `No se pudo vaciar "${c}": quedan ${quedan} filas. ` +
+        `Revisa que la cuenta de admin tenga permiso de escritura y que no haya ` +
+        `procesos publicados que la bloqueen.`,
+    );
+  }
+
+  if (total) console.log(`  borrados ${total} de ${c}`);
+}
+
+/* Vacía el contenido del portal. Borra TODOS los archivos de
+   directus_files, no solo los referenciados por `videos`: si una fila
+   apunta a un archivo que ya no existe, el DELETE falla y el huérfano
+   sobrevive, y en la siguiente migración los items quedan apuntando a
+   archivos inexistentes (los /assets devuelven 403). */
+async function clearAll() {
+  for (const c of COLECCIONES) await vaciar(c);
+
+  const files = (await api('/files?fields=id&limit=-1')).data;
+  for (const f of files) await api(`/files/${f.id}`, { method: 'DELETE' });
+  if (files.length) console.log(`  borrados ${files.length} archivos huérfanos`);
 }
 
 async function main() {
   console.log(`→ Directus: ${BASE}`);
   await login();
 
-  const existing = await count('comandos');
-  if (existing > 0) {
+  /* Se mira TODAS las colecciones, no solo `comandos`: una migración
+     interrumpida puede dejar una vacía y las demás llenas, y si el
+     guard solo mirara una, se saltaría el borrado y la siguiente
+     vuelta fallaría con RECORD_NOT_UNIQUE al reinsertar los slugs. */
+  const ocupadas = [];
+  for (const c of COLECCIONES) {
+    const n = await count(c);
+    if (n > 0) ocupadas.push(`${c}: ${n}`);
+  }
+
+  if (ocupadas.length > 0) {
+    const detalle = ocupadas.join(', ');
     if (!FORCE) {
-      console.log(`⚠ Ya hay ${existing} comandos. Usa --force para re-migrar.`);
+      console.log(`⚠ Ya hay contenido en Directus (${detalle}). Usa --force para re-migrar.`);
       return;
     }
-    console.log('→ --force: borrando contenido existente…');
+    console.log(`→ --force: borrando contenido existente… (${detalle})`);
     await clearAll();
   }
 
   const data = parse();  console.log(
     `→ Parseado: ${data.modulos.length} módulos, ${data.comandos.length} comandos, ` +
+      `${data.categorias.length} categorías, ` +
       `${data.procesos.length} procesos (${data.procesos.reduce((n, p) => n + p._pasos.length, 0)} pasos), ` +
       `${data.videos.length} videos`,
   );
@@ -203,7 +292,13 @@ async function main() {
     moduloIds[m.slug] = (await api('/items/modulos', { method: 'POST', body: JSON.stringify(body) })).data.id;
   }
 
-  // 2. Comandos
+  // 2. Categorías de procesos
+  const categoriaIds = {};
+  for (const c of data.categorias) {
+    categoriaIds[c.slug] = (await api('/items/categorias', { method: 'POST', body: JSON.stringify(c) })).data.id;
+  }
+
+  // 3. Comandos
   for (const c of data.comandos) {
     const { _modulo, ...body } = c;
     await api('/items/comandos', {
@@ -212,10 +307,13 @@ async function main() {
     });
   }
 
-  // 3. Procesos + pasos
+  // 4. Procesos + pasos
   for (const p of data.procesos) {
-    const { _pasos, ...body } = p;
-    const { data: proc } = await api('/items/procesos', { method: 'POST', body: JSON.stringify(body) });
+    const { _pasos, _categoria, ...body } = p;
+    const { data: proc } = await api('/items/procesos', {
+      method: 'POST',
+      body: JSON.stringify({ ...body, categoria: categoriaIds[_categoria] ?? null }),
+    });
     for (const paso of _pasos) {
       await api('/items/pasos', {
         method: 'POST',
@@ -224,7 +322,7 @@ async function main() {
     }
   }
 
-  // 4. Videos (subida de archivo + registro)
+  // 5. Videos (subida de archivo + registro)
   for (const v of data.videos) {
     const { _modulo, archivo, ...body } = v;
     const filePath = resolve(MEDIA_DIR, archivo);
@@ -241,7 +339,7 @@ async function main() {
 
   // Resumen final
   const resumen = {};
-  for (const c of ['modulos', 'comandos', 'procesos', 'pasos', 'videos']) resumen[c] = await count(c);
+  for (const c of ['modulos', 'comandos', 'categorias', 'procesos', 'pasos', 'videos']) resumen[c] = await count(c);
   console.log('\n✅ Migración completada:', resumen);
 }
 

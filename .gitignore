@@ -9,6 +9,7 @@ node_modules/
 .next/
 out/
 .vercel/
+tsconfig.tsbuildinfo
 
 # Backups (nunca al repo)
 backups/

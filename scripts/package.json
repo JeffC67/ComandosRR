@@ -4,8 +4,15 @@
   "type": "module",
   "description": "Scripts de migración y utilidades del Portal Capacitación RR/AS400",
   "scripts": {
+    "setup:schema": "node setup-schema.mjs",
+    "setup:access": "node setup-access.mjs",
     "migrate": "node migrate.mjs",
-    "migrate:force": "node migrate.mjs --force"
+    "migrate:force": "node migrate.mjs --force",
+    "sync": "node sync-from-directus.mjs",
+    "sync:check": "node sync-from-directus.mjs --check",
+    "seed:quiz": "node seed-quiz.mjs",
+    "setup:phase3": "node setup-phase3.mjs",
+    "verify": "node verify.mjs"
   },
   "dependencies": {
     "cheerio": "^1.0.0"

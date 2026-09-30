@@ -22,7 +22,7 @@ async function main() {
 
   /* 1. Conteos */
   const cuentas = {};
-  for (const c of ['modulos', 'comandos', 'procesos', 'pasos', 'videos']) {
+  for (const c of ['modulos', 'comandos', 'categorias', 'procesos', 'pasos', 'videos']) {
     const r = await api(`/items/${c}?limit=-1&meta=total_count`);
     cuentas[c] = { total: r.meta.total_count, items: r.data };
   }
@@ -31,6 +31,7 @@ async function main() {
   const conteos = [
     ['modulos', esperado.modulos.length, cuentas.modulos.total],
     ['comandos', esperado.comandos.length, cuentas.comandos.total],
+    ['categorias', esperado.categorias.length, cuentas.categorias.total],
     ['procesos', esperado.procesos.length, cuentas.procesos.total],
     ['pasos', esperadoPasos, cuentas.pasos.total],
     ['videos', esperado.videos.length, cuentas.videos.total],
@@ -83,7 +84,24 @@ async function main() {
   });
   check('Comandos: orden y módulo asignado', ordenOk);
 
-  /* 4. Procesos + pasos */
+  /* 4. Categorías de procesos */
+  const apiCats = new Map(cuentas.categorias.items.map((c) => [c.slug, c]));
+  for (const c of esperado.categorias) {
+    const real = apiCats.get(c.slug);
+    check(
+      `Categoría ${c.slug}`,
+      !!real && real.nombre === c.nombre && real.orden === c.orden,
+      real ? `"${real.nombre}" orden ${real.orden}` : 'NO EXISTE',
+    );
+  }
+  check(
+    'Sin categorías extra',
+    apiCats.size === esperado.categorias.length,
+    `${apiCats.size} en API`,
+  );
+
+  /* 5. Procesos + pasos (incluye categoría, código y nota) */
+  const catById = new Map(cuentas.categorias.items.map((c) => [c.id, c.slug]));
   const apiProc = new Map(cuentas.procesos.items.map((p) => [p.slug, p]));
   for (const p of esperado.procesos) {
     const real = apiProc.get(p.slug);
@@ -91,6 +109,18 @@ async function main() {
       `Proceso ${p.slug}`,
       !!real && real.titulo === p.titulo && real.duracion_min === p.duracion_min,
       real ? `"${real.titulo}" · ${real.duracion_min} min` : 'NO EXISTE',
+    );
+
+    check(
+      `Categoría de ${p.slug}`,
+      !!real && catById.get(real.categoria) === p._categoria,
+      real ? catById.get(real.categoria) ?? 'SIN CATEGORÍA' : 'NO EXISTE',
+    );
+
+    check(
+      `Datos de ${p.slug} (código + nota)`,
+      !!real && (real.codigo ?? null) === (p.codigo ?? null) && (real.nota ?? null) === (p.nota ?? null),
+      real ? `código ${real.codigo ?? '—'} · nota ${real.nota ? 'sí' : 'no'}` : 'NO EXISTE',
     );
 
     const pasosReales = cuentas.pasos.items
@@ -110,13 +140,23 @@ async function main() {
     check(`Contenido de pasos de ${p.slug}`, contenidoOk, 'orden + grupo + HTML');
   }
 
-  /* 5. Videos */
+  // Todos los procesos tienen orden único dentro de su categoría
+  const ordenesPorCat = new Map();
+  for (const p of apiProc.values()) {
+    const c = catById.get(p.categoria) ?? '∅';
+    if (!ordenesPorCat.has(c)) ordenesPorCat.set(c, []);
+    ordenesPorCat.get(c).push(p.orden);
+  }
+  const ordenesOk = [...ordenesPorCat.values()].every((os) => new Set(os).size === os.length);
+  check('Órdenes de proceso sin repetir por categoría', ordenesOk, [...ordenesPorCat.keys()].join(', '));
+
+  /* 6. Videos */
   for (const v of esperado.videos) {
     const real = cuentas.videos.items.find((x) => x.titulo === v.titulo);
     check(`Video "${v.titulo}"`, !!real && !!real.archivo, real?.archivo ? 'archivo subido' : 'sin archivo');
   }
 
-  /* 6. Rango de bytes del video (barra de progreso del reproductor) */
+  /* 7. Rango de bytes del video (barra de progreso del reproductor) */
   const vid = cuentas.videos.items.find((v) => v.archivo);
   if (vid) {
     const res = await fetch(`${BASE}/assets/${vid.archivo}`, {
@@ -131,13 +171,13 @@ async function main() {
     check('Video soporta Range (206)', false, 'no hay videos con archivo');
   }
 
-  /* 7. Sin borradores por accidente */
-  const borradores = ['modulos', 'comandos', 'procesos', 'videos'].flatMap((c) =>
+  /* 8. Sin borradores por accidente */
+  const borradores = ['modulos', 'comandos', 'categorias', 'procesos', 'videos'].flatMap((c) =>
     cuentas[c].items.filter((i) => i.estado !== 'publicado').map((i) => `${c}#${i.id}`),
   );
   check('Todo el contenido está publicado', borradores.length === 0, borradores.join(', '));
 
-  /* 8. Aislamiento de anónimos + filtro de borradores */
+  /* 9. Aislamiento de anónimos + filtro de borradores */
   const anon = await fetch(`${BASE}/items/comandos?limit=1`);
   check('Anónimo sin acceso directo al contenido', anon.status === 403, `HTTP ${anon.status}`);
 

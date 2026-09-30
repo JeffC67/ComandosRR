@@ -1,75 +1,202 @@
 /* ============================================================
-   Proceso Detail Page — Portal Capacitación RR / AS400
-   Página de detalle con pasos navegables (reemplaza modales)
+   Proceso / Categoría — Portal Capacitación RR / AS400
+   /procesos/[slug]
+
+   Una sola ruta dinámica para los dos casos: si el slug corresponde a
+   una categoría se listan sus procesos; si corresponde a un proceso se
+   muestra el detalle paso a paso. Evita tener /procesos/[slug] y
+   /procesos/[categoria] compitiendo por el mismo segmento.
+
+   En la rama main esto eran modales; aquí son páginas, pero el
+   lenguaje visual (migas, pills de categoría, .step-panel) es el mismo.
    ============================================================ */
 
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { ProcesoBuscador } from '@/components/processes/ProcesoBuscador';
 import { StepList } from '@/components/processes/StepList';
-import { getProcesoBySlug, getPasosByProceso, getProcesos } from '@/lib/directus';
+import {
+  getCategoriaBySlug,
+  getCategorias,
+  getPasosByProceso,
+  getPasosPorProcesoSlug,
+  getProcesoBySlug,
+  getProcesosByCategoria,
+} from '@/lib/directus';
+import type { Categoria } from '@/types';
 
-interface ProcesoPageProps {
+interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export const revalidate = 60;
-export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ params }: ProcesoPageProps) {
+export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
-  const proceso = await getProcesoBySlug(slug);
-  if (!proceso) return { title: 'Proceso no encontrado' };
-  return { title: `${proceso.titulo} — Portal Capacitación RR / AS400` };
+
+  const cat = await getCategoriaBySlug(slug);
+  if (cat) return { title: `${cat.nombre} — Procesos`, description: cat.descripcion ?? undefined };
+
+  const proc = await getProcesoBySlug(slug);
+  if (proc) return { title: `${proc.titulo} — Portal Capacitación RR / AS400` };
+
+  return { title: 'No encontrado' };
 }
 
-export default async function ProcesoDetailPage({ params }: ProcesoPageProps) {
+export default async function ProcesoPage({ params }: PageProps) {
   const { slug } = await params;
-  const [proceso, pasos] = await Promise.all([
-    getProcesoBySlug(slug),
-    getProcesos().then(procesos => {
-      const p = procesos.find(x => x.slug === slug);
-      return p ? getPasosByProceso(p.id) : [];
-    }),
-  ]);
 
+  const cat = await getCategoriaBySlug(slug);
+  if (cat) return <VistaCategoria cat={cat} />;
+
+  const proceso = await getProcesoBySlug(slug);
   if (!proceso) notFound();
 
+  return <VistaProceso slug={slug} />;
+}
+
+/* ---------------- Categoría: listado ---------------- */
+
+async function VistaCategoria({ cat }: { cat: Categoria }) {
+  const [categorias, procesos, pasosPorProceso] = await Promise.all([
+    getCategorias(),
+    getProcesosByCategoria(cat.slug),
+    getPasosPorProcesoSlug(),
+  ]);
+
   return (
-    <section className="module-section full-width-section" style={{ scrollMarginTop: '90px' }}>
-      {/* Header */}
-      <div className="mb-8" style={{ marginBottom: 'var(--space-8)' }}>
-        <nav className="mb-4" aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2 text-sm text-text-dim">
-            <li><a href="/procesos" className="hover:text-primary transition-colors">Procesos</a></li>
-            <li aria-hidden="true">/</li>
-            <li className="text-text" aria-current="page">{proceso.titulo}</li>
-          </ol>
-        </nav>
-        <h1 className="text-text font-bold tracking-tight mb-2" style={{
-          fontSize: 'var(--font-size-2xl)',
-          fontWeight: 700,
-          letterSpacing: '-0.02em',
-        }}>
-          {proceso.titulo}
-        </h1>
-        <p className="text-text-muted" style={{ fontSize: 'var(--font-size-lg)' }}>
-          {proceso.descripcion}
-        </p>
-        <div className="flex flex-wrap gap-4 mt-4 text-text-dim text-sm" style={{ marginTop: 'var(--space-4)' }}>
-          {proceso.duracion_min && (
-            <span className="flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              {proceso.duracion_min} min
-            </span>
-          )}
-          <span className="flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-            {pasos.length} pasos
-          </span>
+    <section className="module-section">
+      <Migas titulo={cat.nombre} />
+
+      <header className="module-header">
+        <div className="module-header-icon" aria-hidden="true">
+          {cat.icono}
         </div>
+        <h1>
+          {cat.nombre}
+          {cat.descripcion && <span className="module-header-sub">{cat.descripcion}</span>}
+        </h1>
+      </header>
+
+      <Pills categorias={categorias} actual={cat.slug} total={procesos.length} />
+
+      <ProcesoBuscador
+        procesos={procesos}
+        pasosPorProceso={pasosPorProceso}
+        etiqueta={`Buscar en ${cat.nombre}`}
+        placeholder={`Buscar en ${cat.nombre.toLowerCase()}...`}
+      />
+    </section>
+  );
+}
+
+/* ---------------- Proceso: detalle ---------------- */
+
+async function VistaProceso({ slug }: { slug: string }) {
+  const proceso = await getProcesoBySlug(slug);
+  if (!proceso) notFound();
+
+  const [pasos, categorias] = await Promise.all([
+    getPasosByProceso(proceso.id),
+    getCategorias(),
+  ]);
+
+  const cat = categorias.find((c) => c.slug === proceso.categoria);
+
+  return (
+    <section className="module-section">
+      <Migas titulo={proceso.titulo} />
+
+      <header className="detail-header">
+        <div className="detail-header-icon" aria-hidden="true">
+          {proceso.icono}
+        </div>
+        <div>
+          <h1 className="detail-title">{proceso.titulo}</h1>
+          {proceso.descripcion && (
+            <p className="detail-subtitle">{proceso.descripcion}</p>
+          )}
+        </div>
+      </header>
+
+      <div className="detail-badges">
+        {cat && (
+          <Link href={`/procesos/${cat.slug}`} className="badge badge-primary">
+            <span aria-hidden="true">{cat.icono}</span>
+            {cat.nombre}
+          </Link>
+        )}
+        <span className="badge">
+          <span aria-hidden="true">🔄</span> {pasos.length} pasos
+        </span>
+        {proceso.duracion_min && (
+          <span className="badge">
+            <span aria-hidden="true">⏱</span> {proceso.duracion_min} min
+          </span>
+        )}
+        {proceso.codigo && <span className="cmd-key">{proceso.codigo}</span>}
       </div>
 
-      {/* Step List */}
+      {proceso.nota && (
+        <div className="detail-note">
+          <span>
+            <strong>Nota: </strong>
+            <span dangerouslySetInnerHTML={{ __html: proceso.nota }} />
+          </span>
+        </div>
+      )}
+
       <StepList pasos={pasos} procesoTitulo={proceso.titulo} />
     </section>
+  );
+}
+
+/* ---------------- Piezas compartidas ---------------- */
+
+function Migas({ titulo }: { titulo: string }) {
+  return (
+    <nav className="breadcrumb" aria-label="Ruta de navegación">
+      <Link href="/procesos">Procesos</Link>
+      <span className="breadcrumb-sep" aria-hidden="true">
+        /
+      </span>
+      <span aria-current="page">{titulo}</span>
+    </nav>
+  );
+}
+
+function Pills({
+  categorias,
+  actual,
+  total,
+}: {
+  categorias: Categoria[];
+  actual?: string;
+  total?: number;
+}) {
+  return (
+    <nav className="category-pills mb-6" aria-label="Categorías de procesos">
+      <Link
+        href="/procesos"
+        className="category-pill"
+        aria-pressed={!actual}
+        aria-current={!actual ? 'page' : undefined}
+      >
+        Todos{typeof total === 'number' && !actual ? <span className="category-pill-count">{total}</span> : null}
+      </Link>
+      {categorias.map((c) => (
+        <Link
+          key={c.id}
+          href={`/procesos/${c.slug}`}
+          className="category-pill"
+          aria-pressed={c.slug === actual}
+          aria-current={c.slug === actual ? 'page' : undefined}
+        >
+          <span aria-hidden="true">{c.icono}</span>
+          {c.nombre}
+          <span className="category-pill-count">{c.totalProcesos ?? 0}</span>
+        </Link>
+      ))}
+    </nav>
   );
 }

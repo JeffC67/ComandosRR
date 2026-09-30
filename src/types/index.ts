@@ -9,7 +9,11 @@ export interface Modulo {
   descripcion: string | null;
   orden: number;
   estado: 'borrador' | 'publicado';
-  icono: string;
+  icono: string | null;
+  /** Cómo se compone la sección en la portada */
+  layout: 'video-izquierda' | 'video-derecha' | 'tarjetas-ancho' | 'procesos' | null;
+  /** Encabezado sobre la rejilla de comandos (null = sin título) */
+  titulo_tarjetas: string | null;
 }
 
 export interface Comando {
@@ -23,6 +27,26 @@ export interface Comando {
   modulo: string; // slug del módulo
 }
 
+export interface Categoria {
+  id: string;
+  slug: string;
+  nombre: string;
+  /** Encabezado corto de la tarjeta en la portada */
+  titulo_corto: string | null;
+  descripcion: string | null;
+  /** Texto largo que se muestra bajo el título en la tarjeta */
+  texto_tarjeta: string | null;
+  icono: string | null;
+  orden: number;
+  estado: 'borrador' | 'publicado';
+  /** Nº de procesos publicados de la categoría (agregado en la consulta) */
+  totalProcesos?: number;
+  /** Tono de la tarjeta: primary | accent | success */
+  tono?: 'primary' | 'accent' | 'success';
+  /** Texto del enlace, p. ej. "Ver procesos" */
+  etiqueta_enlace?: string | null;
+}
+
 export interface Proceso {
   id: string;
   slug: string;
@@ -30,8 +54,16 @@ export interface Proceso {
   descripcion: string;
   duracion_min: number | null;
   icono: string | null;
+  codigo: string | null;
+  nota: string | null;
   orden: number;
   estado: 'borrador' | 'publicado';
+  categoria: string | null; // slug de la categoría
+}
+
+/* Proceso + sus pasos y categoría, tal como lo consume /procesos/[slug] */
+export interface ProcesoDetalle extends Proceso {
+  pasos: Paso[];
 }
 
 export interface Paso {

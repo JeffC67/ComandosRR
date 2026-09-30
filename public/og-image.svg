@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Fondo -->
+  <rect width="1200" height="630" fill="#0f172a"/>
+  
+  <!-- Gradiente decorativo -->
+  <defs>
+    <radialGradient id="bgGradient" cx="50%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#1e3a5f" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  
+  <!-- Patrón de puntos sutiles -->
+  <pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse">
+    <circle cx="20" cy="20" r="1" fill="#0ea5e9" opacity="0.1"/>
+  </pattern>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  
+  <!-- Logo principal -->
+  <g transform="translate(600, 180)">
+    <rect x="-60" y="-60" width="120" height="120" rx="20" fill="url(#logoGradient)"/>
+    <defs>
+      <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#0ea5e9"/>
+        <stop offset="100%" stop-color="#0284c7"/>
+      </linearGradient>
+    </defs>
+    <rect x="-40" y="-30" width="80" height="55" rx="8" fill="none" stroke="white" stroke-width="4"/>
+    <line x1="-40" y1="20" x2="40" y2="20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    <line x1="0" y1="0" x2="0" y2="20" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Título -->
+  <text x="600" y="350" font-family="Inter, system-ui, sans-serif" font-size="48" font-weight="800" fill="white" text-anchor="middle" letter-spacing="-1">
+    Portal Capacitación RR / AS400
+  </text>
+  
+  <!-- Subtítulo -->
+  <text x="600" y="410" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="400" fill="#94a3b8" text-anchor="middle">
+    Tu guía de referencia rápida para comandos y procesos
+  </text>
+  
+  <!-- Stats -->
+  <g transform="translate(600, 480)">
+    <g transform="translate(-200, 0)">
+      <circle cx="0" cy="0" r="35" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+      <text x="0" y="10" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#0ea5e9" text-anchor="middle">28+</text>
+      <text x="0" y="40" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="500" fill="#64748b" text-anchor="middle">COMANDOS</text>
+    </g>
+    <g transform="translate(0, 0)">
+      <circle cx="0" cy="0" r="35" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+      <text x="0" y="10" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#0ea5e9" text-anchor="middle">3</text>
+      <text x="0" y="40" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="500" fill="#64748b" text-anchor="middle">PROCESOS</text>
+    </g>
+    <g transform="translate(200, 0)">
+      <circle cx="0" cy="0" r="35" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+      <text x="0" y="10" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="700" fill="#0ea5e9" text-anchor="middle">2</text>
+      <text x="0" y="40" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="500" fill="#64748b" text-anchor="middle">TUTORIALES</text>
+    </g>
+  </g>
+  
+  <!-- Footer branding -->
+  <text x="600" y="590" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="500" fill="#475569" text-anchor="middle">
+    Portal Capacitación RR / AS400  •  Documento interno de referencia
+  </text>
+</svg>

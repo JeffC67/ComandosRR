@@ -1,0 +1,38 @@
+[
+  {
+    "slug": "hogar",
+    "nombre": "Procesos HOGAR",
+    "titulo_corto": "HOGAR",
+    "descripcion": "Guías interactivas para servicios del hogar",
+    "texto_tarjeta": "Procesos guiados para la atención de servicios del hogar.",
+    "icono": "🏠",
+    "tono": "primary",
+    "etiqueta_enlace": "Ver procesos",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "slug": "movil",
+    "nombre": "Procesos MÓVIL",
+    "titulo_corto": "MÓVIL",
+    "descripcion": "Guías interactivas para servicios móviles",
+    "texto_tarjeta": "Procesos guiados para la atención de servicios móviles.",
+    "icono": "📱",
+    "tono": "accent",
+    "etiqueta_enlace": "Ver procesos",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "slug": "marcaciones",
+    "nombre": "Marcaciones Cerradas",
+    "titulo_corto": "MARCACIONES CERRADAS",
+    "descripcion": "Marcaciones especiales para clientes críticos, facturación, ajustes y suspensiones",
+    "texto_tarjeta": "Marcaciones especiales para clientes críticos, ciclos de facturación, ajustes y suspensiones.",
+    "icono": "🔒",
+    "tono": "success",
+    "etiqueta_enlace": "Ver procesos",
+    "orden": 3,
+    "estado": "publicado"
+  }
+]

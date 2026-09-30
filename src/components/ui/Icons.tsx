@@ -70,6 +70,9 @@ import {
   MoreVertical,
   ChevronsUpDown,
   ChevronsLeftRight,
+  Gamepad,
+  Pause,
+  Lock,
 } from 'lucide-react';
 import type { ForwardRefExoticComponent, RefAttributes, SVGProps } from 'react';
 
@@ -141,6 +144,11 @@ const iconComponents: Record<string, LucideIcon> = {
   'more-vertical': MoreVertical,
   'chevrons-up-down': ChevronsUpDown,
   'chevrons-left-right': ChevronsLeftRight,
+  // Procesos / juego de teclas
+  refresh: RefreshCw,
+  gamepad: Gamepad,
+  pause: Pause,
+  lock: Lock,
 };
 
 interface IconProps extends SVGProps<SVGSVGElement> {

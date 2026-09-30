@@ -54,7 +54,23 @@ services:
       ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:?Configura DIRECTUS_ADMIN_EMAIL en .env}
       ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:?Configura DIRECTUS_ADMIN_PASSWORD en .env}
       PUBLIC_URL: https://${PORTAL_DOMAIN}
-      CACHE_ENABLED: "true"
+      # Sin caché de datos en Directus. Con CACHE_ENABLED=true (y sin
+      # CACHE_STORE compartido) las lecturas Following una escritura
+      # devuelve datos viejos hasta que reinicias el contenedor: se
+      # ve al editar un comando en /admin y no verse el cambio, y hacía
+      # que `migrate --force` no detectara que las tablas ya estaban
+      # vacías. El portal ya cachea con ISR de Next (revalidate=60), que
+      # sí se invalida de forma predecible.
+      CACHE_ENABLED: "false"
+      CACHE_AUTO_PURGE: "true"
+      # Directus 12 eliminó los tokens estáticos: el frontend no puede
+      # guardar una clave fija, así que inicia sesión con una cuenta de
+      # servicio (ver src/lib/directus.ts) y el SDK refresca la sesión.
+      # ACCESS_TOKEN_TTL/REFRESH_TOKEN_TTL son los nombres nuevos; con
+      # 1d la sesión se renueva sola para siempre.
+      ACCESS_TOKEN_TTL: ${DIRECTUS_ACCESS_TOKEN_TTL:-1d}
+      REFRESH_TOKEN_TTL: ${DIRECTUS_REFRESH_TOKEN_TTL:-30d}
+      SESSION_COOKIE_TTL: ${DIRECTUS_SESSION_COOKIE_TTL:-1d}
       STORAGE_DRIVER: local
       STORAGE_LOCAL_ROOT: /datadir
     volumes:

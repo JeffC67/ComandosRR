@@ -29,6 +29,16 @@ export const iconMap: Record<string, string> = {
   // Procesos
   '💰': 'dollar-sign',
   '🔧': 'wrench',
+  '🔌': 'zap',
+  '🔄': 'refresh',
+  '✅': 'check',
+  '📺': 'monitor',
+  '🕹️': 'gamepad',
+  // Marcaciones cerradas
+  '🆔': 'hash',
+  '🧾': 'file-text',
+  '⏸️': 'pause',
+  '🔒': 'lock',
   // Videos
   '🎬': 'video',
   // Hero stats

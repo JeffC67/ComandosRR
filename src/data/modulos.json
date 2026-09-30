@@ -37,7 +37,7 @@
     "sectionId": "procesos",
     "titulo": "Procesos Específicos Paso a Paso",
     "descripcion": "Guías interactivas para los procedimientos más frecuentes",
-    "icono": "proceso",
+    "icono": "clipboard-list",
     "layout": "procesos",
     "titulo_tarjetas": null,
     "orden": 4,

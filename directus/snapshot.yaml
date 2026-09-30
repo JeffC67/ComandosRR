@@ -1,9 +1,15 @@
 # ============================================================
-# Snapshot de esquema Directus — Fase 1
-# Aplicar con:
-#   docker compose exec -T directus node cli.js schema apply /directus-schema/snapshot.yaml --yes
-# Vista previa (sin aplicar):
-#   docker compose exec -T directus node cli.js schema apply /directus-schema/snapshot.yaml --dry-run
+# Snapshot de esquema Directus
+#
+# ⚠ NO usar `directus snapshot apply` para evolucionar el esquema.
+# En Directus 12.1.1 destruye las colecciones que reaparecen en el
+# snapshot (las borra de directus_collections y con ellas la tabla y
+# los datos) y falla al crear relaciones si el orden no coincide.
+#
+# Usar en su lugar el script idempotente, que solo crea lo que falta:
+#   npm run setup:schema
+#
+# Este snapshot queda como referencia del esquema objetivo.
 # ============================================================
 version: 1
 directus: 12.1.1
@@ -52,6 +58,27 @@ collections:
     schema:
       name: comandos
 
+  # ---------- Categorías de procesos (HOGAR / MÓVIL / Marcaciones) ----------
+  - collection: categorias
+    meta:
+      collection: categorias
+      icon: folder
+      note: Agrupación de procesos (HOGAR, MÓVIL, Marcaciones Cerradas)
+      display_template: '{{nombre}}'
+      hidden: false
+      singleton: false
+      sort_field: orden
+      archive_field: estado
+      archive_value: archivado
+      unarchive_value: publicado
+      draft_value: borrador
+      versioning: false
+      unmanaged: false
+      collapse: open
+      sort: 3
+    schema:
+      name: categorias
+
   # ---------- Procesos guiados ----------
   - collection: procesos
     meta:
@@ -69,7 +96,7 @@ collections:
       versioning: false
       unmanaged: false
       collapse: open
-      sort: 3
+      sort: 4
     schema:
       name: procesos
 
@@ -304,6 +331,90 @@ fields:
       max_length: 20
       is_nullable: false
 
+  # ===== categorias =====
+  - collection: categorias
+    field: id
+    type: integer
+    meta:
+      hidden: true
+      readonly: true
+      interface: input
+      special: [auto-increment]
+    schema:
+      is_primary_key: true
+      has_auto_increment: true
+      is_nullable: false
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: categorias
+    field: slug
+    type: string
+    meta:
+      interface: input
+      required: true
+      note: Identificador de URL (ej. hogar, movil, marcaciones)
+    schema:
+      max_length: 64
+      is_nullable: false
+      is_unique: true
+
+  - collection: categorias
+    field: nombre
+    type: string
+    meta:
+      interface: input
+      required: true
+    schema:
+      max_length: 255
+      is_nullable: false
+
+  - collection: categorias
+    field: descripcion
+    type: text
+    meta:
+      interface: input-multiline
+    schema: {}
+
+  - collection: categorias
+    field: icono
+    type: string
+    meta:
+      interface: input
+      note: Emoji o nombre de icono
+    schema:
+      max_length: 64
+
+  - collection: categorias
+    field: orden
+    type: integer
+    meta:
+      interface: input
+      options:
+        step: 1
+    schema:
+      default_value: 0
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: categorias
+    field: estado
+    type: string
+    meta:
+      interface: input-dropdown
+      required: true
+      choices:
+        - text: Borrador
+          value: borrador
+        - text: Publicado
+          value: publicado
+        - text: Archivado
+          value: archivado
+    schema:
+      default_value: publicado
+      max_length: 20
+      is_nullable: false
+
   # ===== procesos =====
   - collection: procesos
     field: id
@@ -369,6 +480,35 @@ fields:
       interface: input
     schema:
       max_length: 64
+
+  - collection: procesos
+    field: categoria
+    type: integer
+    meta:
+      interface: select-dropdown-m2o
+      special: [m2o]
+      required: false
+      note: Categoría a la que pertenece (HOGAR, MÓVIL, Marcaciones Cerradas)
+    schema:
+      numeric_precision: 32
+      numeric_scale: 0
+
+  - collection: procesos
+    field: codigo
+    type: string
+    meta:
+      interface: input
+      note: Código de marcación (ej. SAC NPP); solo en categoría Marcaciones
+    schema:
+      max_length: 32
+
+  - collection: procesos
+    field: nota
+    type: text
+    meta:
+      interface: input-rich-text-html
+      note: Nota o advertencia del proceso (puede contener <strong>, <code>)
+    schema: {}
 
   - collection: procesos
     field: orden
@@ -601,6 +741,17 @@ relations:
     related_collection: modulos
     schema:
       on_delete: CASCADE
+      on_update: CASCADE
+    meta:
+      sort_field: orden
+      one_deselect_action: nullify
+
+  # procesos.categoria → categorias
+  - collection: procesos
+    field: categoria
+    related_collection: categorias
+    schema:
+      on_delete: SET NULL
       on_update: CASCADE
     meta:
       sort_field: orden
