@@ -9,33 +9,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Enlace } from '@/types';
-
-export interface EnlaceFormInicial {
-  categoria: string;
-  grupo: string;
-  nombre: string;
-  url: string;
-  descripcion: string;
-  orden: string;
-  estado: string;
-}
-
-export function inicialVacio(): EnlaceFormInicial {
-  return { categoria: '', grupo: '', nombre: '', url: '', descripcion: '', orden: '0', estado: 'publicado' };
-}
-
-export function inicialDe(e: Enlace): EnlaceFormInicial {
-  return {
-    categoria: e.categoria,
-    grupo: e.grupo,
-    nombre: e.nombre,
-    url: e.url ?? '',
-    descripcion: e.descripcion ?? '',
-    orden: String(e.orden ?? 0),
-    estado: e.estado,
-  };
-}
+import type { EnlaceFormInicial } from '@/lib/enlaces-form';
 
 export function FormularioEnlace({
   inicial,

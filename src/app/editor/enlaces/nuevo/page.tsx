@@ -5,7 +5,8 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getSession } from '@/lib/auth';
-import { FormularioEnlace, inicialVacio } from '@/components/editor/FormularioEnlace';
+import { FormularioEnlace } from '@/components/editor/FormularioEnlace';
+import { inicialVacio } from '@/lib/enlaces-form';
 
 export const dynamic = 'force-dynamic';
 
