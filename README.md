@@ -18,21 +18,6 @@ Plataforma de capacitación para agentes de call center que utilizan el sistema 
 
 ---
 
-## 🏗 Arquitectura
-
-```
-Red interna de la empresa
-  DNS: portal.rr.local ──► Caddy (proxy reverso + TLS interno)
-                                │
-              ┌─────────────────┼─────────────────┐
-              ▼                 ▼                 ▼
-        Next.js :3000      Directus :8055      Videos (volumen)
-        (Frontend)         (CMS/API)           Docker
-              │                 │
-              └─────── API REST ┘
-                            ▼
-                     PostgreSQL (volumen)
-```
 
 **Stack:**
 - **Frontend:** Next.js 15 (App Router, React 18, TypeScript)
