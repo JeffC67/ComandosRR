@@ -56,6 +56,26 @@ async function main() {
     console.log(`→ Rol Editor ya existe: ${editor.id}`);
   }
 
+  /* Rol agente (solo etiqueta: la app valida el nombre en el login y lee
+     los datos con la cuenta de servicio; no lleva policies ni permisos).
+     Se crea aquí para no depender de un alta manual en /admin. */
+  let agente = roles.find((r) => r.name === 'agente');
+  if (!agente) {
+    agente = (
+      await api('/roles', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: 'agente',
+          icon: 'person',
+          description: 'Agente de call center - acceso a su progreso y quiz',
+        }),
+      })
+    ).data;
+    console.log(`→ Rol agente creado: ${agente.id}`);
+  } else {
+    console.log(`→ Rol agente ya existe: ${agente.id}`);
+  }
+
   const policies2 = (await api('/policies?fields=id,name&limit=-1')).data;
   let editorPolicy = policies2.find((p) => p.name === 'Editor de contenido');
   if (!editorPolicy) {
