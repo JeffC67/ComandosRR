@@ -7,9 +7,9 @@
    Solo estado=publicado. Sin URL = se muestra sin navegar.
    ============================================================ */
 
-import Link from 'next/link';
 import { getEnlacesPublicados } from '@/lib/directus';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { BotonGestionarEnlaces } from '@/components/editor/BotonGestionarEnlaces';
 
 export const revalidate = 60;
 
@@ -41,9 +41,7 @@ export default async function AplicacionesPage() {
           </span>
         </h1>
         <div className="module-header-actions">
-          <Link href="/editor/enlaces" className="btn btn-primary">
-            ✎ Gestionar enlaces
-          </Link>
+          <BotonGestionarEnlaces />
         </div>
       </header>
 
