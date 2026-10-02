@@ -10,6 +10,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getSession } from '@/lib/auth';
 import { getTodosLosEnlaces } from '@/lib/directus';
+import type { Enlace } from '@/types';
 import { BotonEliminarEnlace } from '@/components/editor/BotonEliminarEnlace';
 
 export const dynamic = 'force-dynamic';
@@ -19,7 +20,19 @@ export default async function EnlacesPage({ searchParams }: { searchParams: Prom
   if (!session) redirect('/login?redirect=/editor/enlaces');
   if (session.role !== 'editor' && session.role !== 'admin') redirect('/');
 
-  const enlaces = await getTodosLosEnlaces();
+  /* La lectura del catálogo no puede tumbar la página con un Digest:
+     si Directus falla, se registra el motivo en los logs del servidor y
+     se muestra un error accionable solo para editor/admin. */
+  let enlaces: Enlace[] = [];
+  let errorCatalogo: string | null = null;
+  try {
+    const filas: unknown = await getTodosLosEnlaces();
+    if (!Array.isArray(filas)) throw new Error('Directus devolvió un catálogo con formato inválido.');
+    enlaces = filas as Enlace[];
+  } catch (e) {
+    console.error('GET /editor/enlaces: getTodosLosEnlaces falló', e);
+    errorCatalogo = e instanceof Error ? e.message : 'No se pudo leer el catálogo.';
+  }
   const { guardado } = await searchParams;
 
   return (
@@ -50,30 +63,36 @@ export default async function EnlacesPage({ searchParams }: { searchParams: Prom
       </header>
 
       {guardado && <p className="form-ok">Enlace guardado.</p>}
-
-      {enlaces.length === 0 ? (
-        <p className="empty-state">Todavía no hay enlaces en el catálogo.</p>
-      ) : (
-        <ul className="review-list">
-          {enlaces.map((e) => (
-            <li key={e.id} className="review-item">
-              <div>
-                <strong>{e.nombre}</strong>
-                <span className="review-meta">
-                  {e.categoria} · {e.grupo} · {e.estado}
-                  {e.url ? '' : ' · sin URL'}
-                </span>
-              </div>
-              <div className="review-actions">
-                <Link href={`/editor/enlaces/${e.id}/editar`} className="btn btn-secondary">
-                  ✏️ Editar
-                </Link>
-                <BotonEliminarEnlace id={e.id} nombre={e.nombre} />
-              </div>
-            </li>
-          ))}
-        </ul>
+      {errorCatalogo && (
+        <p className="form-error" role="alert">
+          No se pudo cargar el catálogo desde Directus: {errorCatalogo}
+        </p>
       )}
+
+      {!errorCatalogo &&
+        (enlaces.length === 0 ? (
+          <p className="empty-state">Todavía no hay enlaces en el catálogo.</p>
+        ) : (
+          <ul className="review-list">
+            {enlaces.map((e) => (
+              <li key={e.id} className="review-item">
+                <div>
+                  <strong>{e.nombre}</strong>
+                  <span className="review-meta">
+                    {e.categoria} · {e.grupo} · {e.estado}
+                    {e.url ? '' : ' · sin URL'}
+                  </span>
+                </div>
+                <div className="review-actions">
+                  <Link href={`/editor/enlaces/${e.id}/editar`} className="btn btn-secondary">
+                    ✏️ Editar
+                  </Link>
+                  <BotonEliminarEnlace id={e.id} nombre={e.nombre} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        ))}
     </section>
   );
 }

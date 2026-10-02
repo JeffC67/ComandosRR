@@ -1,0 +1,743 @@
+{
+  "roles": [
+    {
+      "id": "25815118-868c-4696-bd0d-90a887abb21b",
+      "name": "agente",
+      "icon": "person",
+      "description": "Agente de call center - acceso a su progreso y quiz"
+    },
+    {
+      "id": "4496f0e6-32b5-49f7-95a4-7ceb27f1f450",
+      "name": "Portal",
+      "icon": "visibility",
+      "description": null
+    },
+    {
+      "id": "8f7aabe3-4e99-432d-b835-19948dd4b2d0",
+      "name": "Editor",
+      "icon": "badge",
+      "description": null
+    }
+  ],
+  "policies": [
+    {
+      "id": "32e9db4b-0054-4570-8dfa-fab3cf4dee8b",
+      "name": "Editor de contenido",
+      "icon": "badge",
+      "description": null,
+      "ip_access": null,
+      "enforce_tfa": false,
+      "admin_access": false,
+      "app_access": true,
+      "permissions": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        53,
+        54,
+        55,
+        56
+      ],
+      "users": [
+        "66f42814-e349-46eb-a3d9-9e2a5b685ded"
+      ],
+      "roles": [
+        "66f42814-e349-46eb-a3d9-9e2a5b685ded"
+      ]
+    },
+    {
+      "id": "6181797d-6c57-4ca5-a904-0e8c20e58e3c",
+      "name": "Portal — solo lectura",
+      "icon": "visibility",
+      "description": null,
+      "ip_access": null,
+      "enforce_tfa": false,
+      "admin_access": false,
+      "app_access": false,
+      "permissions": [
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67
+      ],
+      "users": [
+        "97b19f11-f814-4a0a-a091-3159a391a5bf"
+      ],
+      "roles": [
+        "97b19f11-f814-4a0a-a091-3159a391a5bf"
+      ]
+    },
+    {
+      "id": "abf8a154-5b1c-4a46-ac9c-7300570f4f17",
+      "name": "$t:public_label",
+      "icon": "public",
+      "description": "$t:public_description",
+      "ip_access": null,
+      "enforce_tfa": false,
+      "admin_access": false,
+      "app_access": false,
+      "permissions": [],
+      "users": [
+        "da24b164-95e5-485d-a7da-1f51ec5c34e9"
+      ],
+      "roles": [
+        "da24b164-95e5-485d-a7da-1f51ec5c34e9"
+      ]
+    }
+  ],
+  "public_policy": "Public",
+  "permissions": [
+    {
+      "policy": "Editor de contenido",
+      "collection": "modulos",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "modulos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "modulos",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "modulos",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "comandos",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "comandos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "comandos",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "comandos",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "categorias",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "categorias",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "categorias",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "categorias",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "procesos",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "procesos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "procesos",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "procesos",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "pasos",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "pasos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "pasos",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "pasos",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "videos",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "videos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "videos",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "videos",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "directus_files",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "directus_files",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "directus_files",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "directus_files",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "modulos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "comandos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "categorias",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "procesos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "pasos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "videos",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "directus_files",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "enlaces",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "enlaces",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "enlaces",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Editor de contenido",
+      "collection": "enlaces",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "enlaces",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "enlaces",
+      "action": "read",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "enlaces",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "enlaces",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "procesos",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "procesos",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "procesos",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "pasos",
+      "action": "create",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "pasos",
+      "action": "update",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    },
+    {
+      "policy": "Portal — solo lectura",
+      "collection": "pasos",
+      "action": "delete",
+      "permissions": {},
+      "validation": null,
+      "presets": null,
+      "fields": [
+        "*"
+      ]
+    }
+  ],
+  "access": [
+    {
+      "role": null,
+      "user": null,
+      "policy": "$t:public_label"
+    },
+    {
+      "role": null,
+      "user": "623fab3d-8680-4c98-a667-0c034b796120",
+      "policy": "Administrator"
+    },
+    {
+      "role": null,
+      "user": "78538df6-776f-4061-855e-6c6a6ffb32e4",
+      "policy": "Administrator"
+    },
+    {
+      "role": "Administrator",
+      "user": null,
+      "policy": "Administrator"
+    },
+    {
+      "role": "Editor",
+      "user": null,
+      "policy": "Editor de contenido"
+    },
+    {
+      "role": "Portal",
+      "user": null,
+      "policy": "Portal — solo lectura"
+    }
+  ],
+  "users": [
+    {
+      "id": "2555e607-6aa4-4046-92fe-196a18de475f",
+      "email": "editor@capacitacion-rr.co",
+      "first_name": null,
+      "last_name": null,
+      "role": "Editor",
+      "status": "active"
+    },
+    {
+      "id": "5ead27a8-250f-4656-899f-291ad1a15c3e",
+      "email": "agente.prueba@capacitacion-rr.co",
+      "first_name": "Agente",
+      "last_name": "Prueba",
+      "role": "agente",
+      "status": "active"
+    },
+    {
+      "id": "623fab3d-8680-4c98-a667-0c034b796120",
+      "email": "lexnardx06@gmail.com",
+      "first_name": "Leonardo",
+      "last_name": null,
+      "role": "Administrator",
+      "status": "active"
+    },
+    {
+      "id": "78538df6-776f-4061-855e-6c6a6ffb32e4",
+      "email": "jeffc1125.dv@gmail.com",
+      "first_name": "Admin",
+      "last_name": "User",
+      "role": "Administrator",
+      "status": "active"
+    },
+    {
+      "id": "ef74ac67-7baa-439d-a6c2-7ecbd8f7315e",
+      "email": "portal@capacitacion-rr.co",
+      "first_name": null,
+      "last_name": null,
+      "role": "Portal",
+      "status": "active"
+    }
+  ]
+}

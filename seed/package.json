@@ -1,0 +1,12 @@
+{
+  "name": "comandosrr-seed",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Seed perfecta del portal: esquema + datos + acceso extraídos de Directus, restaurables en cualquier otro Directus",
+  "type": "module",
+  "scripts": {
+    "extract": "node extract.mjs",
+    "restore": "node restore.mjs",
+    "restore:force": "node restore.mjs --force"
+  }
+}

@@ -1,0 +1,552 @@
+[
+  {
+    "id": 1,
+    "categoria": "HOGAR",
+    "grupo": "AGENDAR OT Y LLS",
+    "nombre": "MODULO DE AGENDAMIENTO",
+    "url": "https://moduloagenda.cable.net.co/",
+    "descripcion": "AGENDAR VISITAS (OT Y LLS)",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 2,
+    "categoria": "HOGAR",
+    "grupo": "AJUSTE HOGAR",
+    "nombre": "DIME",
+    "url": "https://dime.claro.com.co/Portal/Produccion/Sesion/Inicio/Ingresar?",
+    "descripcion": "AJUSTE HOGAR Y MÓVIL",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 3,
+    "categoria": "HOGAR",
+    "grupo": "CASA DE COBRANZA HOGAR Y MÓVIL",
+    "nombre": "GEVENUE",
+    "url": "https://portalgevenue.claro.com.co/gevenue/",
+    "descripcion": "CASAS DE COBRO",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 4,
+    "categoria": "HOGAR",
+    "grupo": "CREAR HHPP-DIRECCIÓN HOGAR",
+    "nombre": "MER",
+    "url": "https://mglapp.claro.com.co/catastro-warIns/view/MGL/template/login.xhtml",
+    "descripcion": "CREAR HHPP HOGAR",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 5,
+    "categoria": "HOGAR",
+    "grupo": "ELIMINAR APP MI CLARO",
+    "nombre": "MI CLARO USUARIOS",
+    "url": "https://www.claroparatiprimero.co/landing-eliminacion/",
+    "descripcion": "ELIMINAR APP MI CLARO",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 6,
+    "categoria": "HOGAR",
+    "grupo": "ESCALAR CASOS POR MI ASISTENCIA 360 HOGAR Y MOVIL",
+    "nombre": "MI ASISTENCIA 360",
+    "url": "https://miasistencia360-dwp.claro.com.co/dwp/app/#/page/vffgofyw",
+    "descripcion": "ESCALAR CASOS POR FALLAS HOGAR Y MOVIL",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 7,
+    "categoria": "HOGAR",
+    "grupo": "ESCALAR CASOS POR MI ASISTENCIA 360 HOGAR Y MOVIL",
+    "nombre": "FORMATOS",
+    "url": "http://wweb02prod:91/Pages/Default.aspx",
+    "descripcion": "FORMATOS MÓVIL",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 8,
+    "categoria": "HOGAR",
+    "grupo": "FACTURA HOGAR Y CERTIFICADO",
+    "nombre": "PARADIGMA",
+    "url": "https://facturasclaro.paradigma.com.co/ebpTelmex/Login.aspx?",
+    "descripcion": "CONSULTA DE FACTURA",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 9,
+    "categoria": "HOGAR",
+    "grupo": "FACTURA HOGAR Y CERTIFICADO",
+    "nombre": "CERTIFICADO CUENTA AL DÍA",
+    "url": "https://100.123.251.118:8086/",
+    "descripcion": "CUENTA AL DÍA",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 10,
+    "categoria": "HOGAR",
+    "grupo": "HERRAMIENTAS CONSULTA",
+    "nombre": "CONECTADOS",
+    "url": "https://conectados.com.co/inicio",
+    "descripcion": "CONSULTA DE CAPSULAS INFORMACIÓN",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 11,
+    "categoria": "HOGAR",
+    "grupo": "HOGAR CREAR OT",
+    "nombre": "VISOR MOVILIDAD",
+    "url": "https://visormobile.claro.com.co/VisorMobile-war/SessionExpirada;jsessionid=aU6DKnKxPAhSEB2jVinr-hMe9FRfuoSrgqiJPyq9gcJYAcKCbh24!2107910534",
+    "descripcion": "CREAR TRASLADO-MIGRACIÓN Y OT",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 12,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE ENVIO URL OTT HOGAR Y MOVIL",
+    "nombre": "CLARO OTTs",
+    "url": "http://172.24.216.149:8002/Otts/#/login",
+    "descripcion": "ENVIO DE URL DE OTT (NETFLIX-DISNEY-AMAZON)",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 13,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR",
+    "nombre": "T&D",
+    "url": "http://100.126.23.19:3000/tyd/login",
+    "descripcion": "GUIA DE SOPORTE",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 14,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR",
+    "nombre": "DIAGNOSTICADOR RESIDENCIAL",
+    "url": "http://100.123.246.38/diagnosticador/residencial/",
+    "descripcion": "ESTADO DEL SERVICIO HFC Y FTTH",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 15,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR",
+    "nombre": "APROVISIONAMIENTO",
+    "url": "https://moduloagenda.cable.net.co/",
+    "descripcion": "APROVISIONAMIENTO",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "id": 16,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR",
+    "nombre": "TR69",
+    "url": "https://acstr069.claro.net.co/CSR/Default.aspx",
+    "descripcion": "SOPORTE FTTH",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "id": 17,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR RED EXTERNA",
+    "nombre": "XPERTRAK",
+    "url": "https://100.123.88.84/pathtrak",
+    "descripcion": "ESTADO DEL NODO BOGOTA",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 18,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR RED EXTERNA",
+    "nombre": "XPERTRAK BOGOTA",
+    "url": "https://100.123.88.85/pathtrak",
+    "descripcion": "ESTADO DEL NODO NACIONAL",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 19,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR RED EXTERNA",
+    "nombre": "MAXIMO",
+    "url": null,
+    "descripcion": "RED EXTERNA (sin URL configurada)",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "id": 20,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR RED EXTERNA",
+    "nombre": "DIAGNOSTICADOR DE NODOS",
+    "url": "http://100.123.247.15:8080/diagNodos",
+    "descripcion": "NIVELES DEL NODO",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "id": 21,
+    "categoria": "HOGAR",
+    "grupo": "SOPORTE HOGAR RED EXTERNA",
+    "nombre": "KOU",
+    "url": "http://172.31.228.132/kou_residencial/graph_view.php?action=list",
+    "descripcion": "GRAFICAS DE KOU",
+    "orden": 4,
+    "estado": "publicado"
+  },
+  {
+    "id": 22,
+    "categoria": "HOGAR",
+    "grupo": "TECNOLOGIA",
+    "nombre": "ASCARD",
+    "url": "https://ascard.claro.com.co:10110/AdminWeb/pages/login/login.jsf",
+    "descripcion": "CONSULTA DE EQUIPOS FINANCIADOS",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 23,
+    "categoria": "HOGAR",
+    "grupo": "TECNOLOGIA",
+    "nombre": "ABSOLUT",
+    "url": "https://ds.absolute.com/idp-discovery?entityID=https%3A%2F%2Fnamespace.absolute.com%2Fsaml2%2Fsp%2Fcc.absolute.com.shib&return=https%3A%2F%2Fcc.absolute.com%2FShibboleth.sso%2FLogin%3FSAMLDS%3D1%26target%3Dss%253Amc%253Ac84fe14d3ad3e587c82130563c1a34cc062158624cb5b2acc3921f251fc8ff95%20Absolute%20Absolute%20IDP%20Discovery%20Service",
+    "descripcion": "LIBERAR TABLET Y PC",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 24,
+    "categoria": "HOGAR",
+    "grupo": "TECNOLOGIA",
+    "nombre": "LOGITECH",
+    "url": "https://appsnotus.logytechmobile.com/notusils/Trazabilidad/BusquedaServicios.aspx",
+    "descripcion": "VALIDAR ENTREGA DE EQUIPOS A DOMICILIO",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "id": 25,
+    "categoria": "HOGAR",
+    "grupo": "TECNOLOGIA",
+    "nombre": "PHONE PROTECT",
+    "url": "https://phpterminal.claro.com.co:8080/PhoneProtectWeb/login",
+    "descripcion": "LIBERAR CELULARES",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "id": 26,
+    "categoria": "INDRA",
+    "grupo": "Herramientas Indra",
+    "nombre": "GENESYS",
+    "url": "https://login.mxc1.pure.cloud/#/signup/a25tYWxkb25hZG9AaW5kcmFjb21wYW55LmNvbTpSQVdubTBXVHV5aWlSMllsQTZseA",
+    "descripcion": "CONEXIÓN A LINEA Y CHAT",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 27,
+    "categoria": "INDRA",
+    "grupo": "Herramientas Indra",
+    "nombre": "TIPIFICADOR",
+    "url": "https://voxnexo.flexitco.co/signalcore/login",
+    "descripcion": "TIPIFICACIÓN INDRA",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 28,
+    "categoria": "INDRA",
+    "grupo": "Herramientas Indra",
+    "nombre": "INDRA WEB",
+    "url": "https://login.indraweb.net/logon/LogonPoint/tmindex.html",
+    "descripcion": "INDRA",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "id": 29,
+    "categoria": "INDRA",
+    "grupo": "Herramientas Indra",
+    "nombre": "CORREO",
+    "url": "https://login.microsoftonline.com",
+    "descripcion": "CORREO INDRA",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "id": 30,
+    "categoria": "INDRA",
+    "grupo": "Herramientas Indra",
+    "nombre": "INDRA LIFE",
+    "url": "https://indralifeprod-b9d6hphxbveubpap.a03.azurefd.net/Login/Index",
+    "descripcion": "INDRA",
+    "orden": 4,
+    "estado": "publicado"
+  },
+  {
+    "id": 31,
+    "categoria": "INDRA",
+    "grupo": "Herramientas Indra",
+    "nombre": "CONVERGENCIA",
+    "url": "https://convergencia.claro.com.co/sigma/app/index#/login",
+    "descripcion": "DESBLOQUEAR USUARIO CLARO",
+    "orden": 5,
+    "estado": "publicado"
+  },
+  {
+    "id": 32,
+    "categoria": "MÓVIL",
+    "grupo": "AC PLUS",
+    "nombre": "AC PLUS",
+    "url": "https://acplus.claro.com.co/login",
+    "descripcion": "AC GESTIÓN",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 33,
+    "categoria": "MÓVIL",
+    "grupo": "AJUSTE MÓVIL",
+    "nombre": "DIME",
+    "url": "https://dime.claro.com.co/Portal/Produccion/Sesion/Ingresar?",
+    "descripcion": "AJUSTE HOGAR Y MÓVIL",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 34,
+    "categoria": "MÓVIL",
+    "grupo": "CASA DE COBRANZA HOGAR Y MÓVIL",
+    "nombre": "GEVENUE",
+    "url": "https://portalgevenue.claro.com.co/gevenue/",
+    "descripcion": "CASAS DE COBRO",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 35,
+    "categoria": "MÓVIL",
+    "grupo": "ELIMINAR APP MI CLARO",
+    "nombre": "MI CLARO USUARIOS",
+    "url": "https://www.claroparatiprimero.co/landing-eliminacion/",
+    "descripcion": "ELIMINAR APP MI CLARO",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 36,
+    "categoria": "MÓVIL",
+    "grupo": "FACTURA MÓVIL Y CERTIFICADO",
+    "nombre": "PARADIGMA",
+    "url": "https://facturasclaro.paradigma.com.co/ebpTelmex/Login.aspx?",
+    "descripcion": "CONSULTA DE FACTURA",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 37,
+    "categoria": "MÓVIL",
+    "grupo": "FACTURA MÓVIL Y CERTIFICADO",
+    "nombre": "CERTIFICADO CUENTA AL DÍA",
+    "url": "https://100.123.251.118:8086/",
+    "descripcion": "CUENTA AL DÍA",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 38,
+    "categoria": "MÓVIL",
+    "grupo": "HERRAMIENTAS CONSULTA",
+    "nombre": "CONECTADOS",
+    "url": "https://conectados.com.co/inicio",
+    "descripcion": "CONSULTA DE CAPSULAS INFORMACIÓN",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 39,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE ENVIO URL OTT HOGAR Y MOVIL",
+    "nombre": "CLARO OTTs",
+    "url": "http://172.24.216.149:8002/Otts/#/login",
+    "descripcion": "ENVIO DE URL DE OTT (NETFLIX-DISNEY-AMAZON)",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 40,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "PERFIL SIM",
+    "url": "https://minisitiosclaro.claro.com.co/SimCardPerfil/",
+    "descripcion": "PERFIL DE LA SIM CARD",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 41,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "SARA",
+    "url": "https://100.123.27.221/sara/login",
+    "descripcion": "FALLA DE RED",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 42,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "PCFR",
+    "url": "http://100.123.250.103:8083/User/InformacionConsumos.aspx",
+    "descripcion": "CONSUMO DE DATOS",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "id": 43,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "SMO",
+    "url": "http://100.123.251.118:82/consulta_usuarios.aspx",
+    "descripcion": "APROVISIONAR LA LINEA SMO",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "id": 44,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "CONFIRMAR IMEI REGISTRADO/ROBADO",
+    "url": "https://www.imeicolombia.com.co/",
+    "descripcion": "IMEI BLOQUEO Y DUPLICADO",
+    "orden": 4,
+    "estado": "publicado"
+  },
+  {
+    "id": 45,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "CONFIGURACIÓN APN",
+    "url": "https://www.helpforsmartphone.com/ting/es-ES/devices/?make=plum",
+    "descripcion": "CONFIGURAR CONEXIÓN A INTERNET",
+    "orden": 5,
+    "estado": "publicado"
+  },
+  {
+    "id": 46,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "CMC",
+    "url": "http://wweb02prod:82/Claro.Cmc/Login/Login.aspx",
+    "descripcion": "CONCILIAR LA LINEA MÓVIL",
+    "orden": 6,
+    "estado": "publicado"
+  },
+  {
+    "id": 47,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "CONSULTA BROADCAST",
+    "url": "http://100.123.251.118:8082/Componentes/Asp/ConsultaBroadCast.aspx",
+    "descripcion": "MENSAJES BROADCAST",
+    "orden": 7,
+    "estado": "publicado"
+  },
+  {
+    "id": 48,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "PORTAL SMS",
+    "url": "http://172.24.216.148:8002/PortalSMS/#/login",
+    "descripcion": "SUSCRIPCIÓN Y CONTENIDOS SMS",
+    "orden": 8,
+    "estado": "publicado"
+  },
+  {
+    "id": 49,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "MAPA DE COBERTURA",
+    "url": "https://www.claro.com.co/personas/servicios/servicios-moviles/cobertura/",
+    "descripcion": "MAPA DE COBERTURA 2G,3G,4G,5G",
+    "orden": 9,
+    "estado": "publicado"
+  },
+  {
+    "id": 50,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL",
+    "nombre": "PORTABILIDAD",
+    "url": "https://www.portabilidadcolombia.com.co/",
+    "descripcion": "CONFIRMAR PORTABILIDAD",
+    "orden": 10,
+    "estado": "publicado"
+  },
+  {
+    "id": 51,
+    "categoria": "MÓVIL",
+    "grupo": "SOPORTE MÓVIL PREPAGO PAQUETES",
+    "nombre": "C_MAX",
+    "url": "http://172.24.4.168/custcare_cmax/",
+    "descripcion": "RECARGAS Y PAQUETES",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 52,
+    "categoria": "MÓVIL",
+    "grupo": "TECNOLOGIA",
+    "nombre": "ASCARD",
+    "url": "https://ascard.claro.com.co:10110/AdminWeb/pages/login/login.jsf",
+    "descripcion": "CONSULTA DE EQUIPOS FINANCIADOS",
+    "orden": 0,
+    "estado": "publicado"
+  },
+  {
+    "id": 53,
+    "categoria": "MÓVIL",
+    "grupo": "TECNOLOGIA",
+    "nombre": "ABSOLUT",
+    "url": "https://ds.absolute.com/idp-discovery?entityID=https%3A%2F%2Fnamespace.absolute.com%2Fsaml2%2Fsp%2Fcc.absolute.com.shib&return=https%3A%2F%2Fcc.absolute.com%2FShibboleth.sso%2FLogin%3FSAMLDS%3D1%26target%3Dss%253Amc%253Ac84fe14d3ad3e587c82130563c1a34cc062158624cb5b2acc3921f251fc8ff95%20Absolute%20Absolute%20IDP%20Discovery%20Service",
+    "descripcion": "LIBERAR TABLET Y PC",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "id": 54,
+    "categoria": "MÓVIL",
+    "grupo": "TECNOLOGIA",
+    "nombre": "LOGITECH",
+    "url": "https://appsnotus.logytechmobile.com/notusils/Trazabilidad/BusquedaServicios.aspx",
+    "descripcion": "VALIDAR ENTREGA DE EQUIPOS A DOMICILIO",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "id": 55,
+    "categoria": "MÓVIL",
+    "grupo": "TECNOLOGIA",
+    "nombre": "PHONE PROTECT",
+    "url": "https://phpterminal.claro.com.co:8080/PhoneProtectWeb/login",
+    "descripcion": "LIBERAR CELULARES",
+    "orden": 3,
+    "estado": "publicado"
+  }
+]

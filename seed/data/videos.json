@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "titulo": "Tutorial: Búsqueda general",
+    "poster": null,
+    "modulo": 5,
+    "orden": 1,
+    "estado": "publicado",
+    "archivo": "Bunny.mp4"
+  },
+  {
+    "id": 2,
+    "titulo": "Tutorial: Ventana del suscriptor",
+    "poster": null,
+    "modulo": 6,
+    "orden": 1,
+    "estado": "publicado",
+    "archivo": "Pantera.mp4"
+  }
+]
