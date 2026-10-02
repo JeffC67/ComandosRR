@@ -88,9 +88,6 @@ export default async function EditarProcesoPage({ params }: { params: Promise<{ 
           descripcion: proceso.descripcion ?? '',
           categoria: catId != null ? String(catId) : '',
           duracion_min: proceso.duracion_min != null ? String(proceso.duracion_min) : '',
-          icono: proceso.icono ?? '',
-          codigo: proceso.codigo ?? '',
-          nota: proceso.nota ?? '',
           estado: proceso.estado,
           pasos: pasos.map((p) => ({ grupo: p.grupo ?? '', contenido: p.contenido })),
         }}

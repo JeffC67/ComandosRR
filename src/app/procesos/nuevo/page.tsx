@@ -60,9 +60,6 @@ export default async function NuevoProcesoPage({ searchParams }: { searchParams:
           descripcion: '',
           categoria: '',
           duracion_min: '',
-          icono: '',
-          codigo: '',
-          nota: '',
           estado: 'borrador',
           pasos: [{ grupo: '', contenido: '' }],
         }}

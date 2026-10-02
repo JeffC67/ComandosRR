@@ -21,9 +21,6 @@ export interface ProcesoFormInicial {
   descripcion: string;
   categoria: string;
   duracion_min: string;
-  icono: string;
-  codigo: string;
-  nota: string;
   estado?: string;
   pasos: PasoForm[];
 }
@@ -78,9 +75,6 @@ export function FormularioProceso({
         descripcion: form.descripcion.trim() || null,
         categoria: form.categoria ? Number(form.categoria) : null,
         duracion_min: form.duracion_min ? Number(form.duracion_min) : null,
-        icono: form.icono.trim() || null,
-        codigo: form.codigo.trim() || null,
-        nota: form.nota.trim() || null,
         pasos,
       };
       // Solo editor/admin eligen estado; el agente siempre propone borrador
@@ -154,30 +148,6 @@ export function FormularioProceso({
           />
         </label>
       </div>
-
-      <div className="form-row">
-        <label className="form-field">
-          <span>Icono (emoji)</span>
-          <input
-            value={form.icono}
-            onChange={(e) => setForm((f) => ({ ...f, icono: e.target.value }))}
-            maxLength={64}
-          />
-        </label>
-        <label className="form-field">
-          <span>Código</span>
-          <input
-            value={form.codigo}
-            onChange={(e) => setForm((f) => ({ ...f, codigo: e.target.value }))}
-            maxLength={32}
-          />
-        </label>
-      </div>
-
-      <label className="form-field">
-        <span>Nota (HTML permitido)</span>
-        <textarea value={form.nota} onChange={(e) => setForm((f) => ({ ...f, nota: e.target.value }))} rows={2} />
-      </label>
 
       {rol !== 'agente' && (
         <label className="form-field">
