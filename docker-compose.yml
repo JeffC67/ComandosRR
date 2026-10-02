@@ -1,0 +1,119 @@
+# ============================================================
+# Plataforma Capacitación RR / AS400 — Fase 0 (infraestructura)
+# Servicios: Caddy (proxy+TLS) · Directus · PostgreSQL
+# El frontend Next.js se añade en la Fase 2 (servicio `web`).
+#
+# Uso:  cp .env.example .env  &&  docker compose up -d
+# ============================================================
+
+name: comandosrr
+
+services:
+  # ---------- Proxy reverso + TLS ----------
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - '${HTTP_PORT:-80}:80'
+      - '${HTTPS_PORT:-443}:443'
+    environment:
+      PORTAL_DOMAIN: ${PORTAL_DOMAIN:?Configura PORTAL_DOMAIN en .env}
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./infra/placeholder:/usr/share/caddy:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      directus:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'nc -z 127.0.0.1 80 || exit 1']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    networks:
+      - frontend
+      - backend
+
+  # ---------- API + panel de administración ----------
+  directus:
+    image: directus/directus:${DIRECTUS_VERSION:-latest}
+    restart: unless-stopped
+    ports:
+      # Solo localhost: el acceso externo es por Caddy
+      - '127.0.0.1:${DIRECTUS_PORT:-8055}:8055'
+    environment:
+      KEY: ${DIRECTUS_KEY:?Configura DIRECTUS_KEY en .env}
+      SECRET: ${DIRECTUS_SECRET:?Configura DIRECTUS_SECRET en .env}
+      DB_CLIENT: pg
+      DB_HOST: postgres
+      DB_PORT: '5432'
+      DB_DATABASE: ${POSTGRES_DB:?Configura POSTGRES_DB en .env}
+      DB_USER: ${POSTGRES_USER:?Configura POSTGRES_USER en .env}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?Configura POSTGRES_PASSWORD en .env}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL:?Configura DIRECTUS_ADMIN_EMAIL en .env}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD:?Configura DIRECTUS_ADMIN_PASSWORD en .env}
+      PUBLIC_URL: https://${PORTAL_DOMAIN}
+      # Sin caché de datos en Directus. Con CACHE_ENABLED=true (y sin
+      # CACHE_STORE compartido) las lecturas Following una escritura
+      # devuelve datos viejos hasta que reinicias el contenedor: se
+      # ve al editar un comando en /admin y no verse el cambio, y hacía
+      # que `migrate --force` no detectara que las tablas ya estaban
+      # vacías. El portal ya cachea con ISR de Next (revalidate=60), que
+      # sí se invalida de forma predecible.
+      CACHE_ENABLED: 'false'
+      CACHE_AUTO_PURGE: 'true'
+      # Directus 12 eliminó los tokens estáticos: el frontend no puede
+      # guardar una clave fija, así que inicia sesión con una cuenta de
+      # servicio (ver src/lib/directus.ts) y el SDK refresca la sesión.
+      # ACCESS_TOKEN_TTL/REFRESH_TOKEN_TTL son los nombres nuevos; con
+      # 1d la sesión se renueva sola para siempre.
+      ACCESS_TOKEN_TTL: ${DIRECTUS_ACCESS_TOKEN_TTL:-1d}
+      REFRESH_TOKEN_TTL: ${DIRECTUS_REFRESH_TOKEN_TTL:-30d}
+      SESSION_COOKIE_TTL: ${DIRECTUS_SESSION_COOKIE_TTL:-1d}
+      STORAGE_DRIVER: local
+      STORAGE_LOCAL_ROOT: /datadir
+    volumes:
+      - directus_data:/datadir
+      - ./directus:/directus-schema:ro # snapshots de esquema (Fase 1)
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -q -O /dev/null http://127.0.0.1:8055/server/ping || exit 1']
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    networks:
+      - frontend
+      - backend
+
+  # ---------- Base de datos ----------
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Configura POSTGRES_DB en .env}
+      POSTGRES_USER: ${POSTGRES_USER:?Configura POSTGRES_USER en .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configura POSTGRES_PASSWORD en .env}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    networks:
+      - backend
+
+networks:
+  frontend: {}
+  backend:
+    internal: true # la BD no tiene salida ni puertos publicados
+
+volumes:
+  pg_data: {}
+  directus_data: {}
+  caddy_data: {}
+  caddy_config: {}

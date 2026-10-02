@@ -1,0 +1,761 @@
+[
+  {
+    "slug": "creacion-de-pqr",
+    "titulo": "Creación de PQR",
+    "descripcion": "Pasos para registrar marcaciones, notas y finalizar el radicado de una solicitud.",
+    "duracion_min": 2,
+    "pasos_visibles": 3,
+    "icono": "📋",
+    "tipo": "default",
+    "ariaLabel": "Abrir proceso: Creación de PQR",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 1,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Radicado",
+        "contenido": "Presiona <strong>F22</strong> para ingresar y registrar la marcación correspondiente."
+      },
+      {
+        "orden": 2,
+        "grupo": "Radicado",
+        "contenido": "Presiona <strong>Enter</strong> para confirmar."
+      },
+      {
+        "orden": 3,
+        "grupo": "Radicado",
+        "contenido": "Finaliza presionando la combinación <strong>F5 + F5</strong> para completar la radicación."
+      },
+      {
+        "orden": 4,
+        "grupo": "Notas",
+        "contenido": "Ingresa a <strong>F7</strong> para dejar registradas las notas detalladas de la solicitud."
+      },
+      {
+        "orden": 5,
+        "grupo": "Notas",
+        "contenido": "Verifica que la información del cliente esté completa y correcta."
+      },
+      {
+        "orden": 6,
+        "grupo": "Notas",
+        "contenido": "Confirma el radicado finalizado de la solicitud."
+      }
+    ]
+  },
+  {
+    "slug": "ajuste-creer-en-el-cliente",
+    "titulo": "Ajuste Creer en el Cliente",
+    "descripcion": "Procedimiento en RR/AS400 y escalamiento en plataforma DIME para ajustes online.",
+    "duracion_min": 5,
+    "pasos_visibles": 7,
+    "icono": "💰",
+    "tipo": "accent",
+    "ariaLabel": "Abrir proceso: Ajuste Creer en el Cliente",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 2,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Parte 1: Gestión en Sistema RR / AS400",
+        "contenido": "Presiona <strong>F22</strong> para dejar marcaciones."
+      },
+      {
+        "orden": 2,
+        "grupo": "Parte 1: Gestión en Sistema RR / AS400",
+        "contenido": "Ingresa el código según corresponda:"
+      },
+      {
+        "orden": 3,
+        "grupo": "Parte 1: Gestión en Sistema RR / AS400",
+        "contenido": "<strong>AJU-CEC</strong>: Ajuste Creer en el Cliente"
+      },
+      {
+        "orden": 4,
+        "grupo": "Parte 1: Gestión en Sistema RR / AS400",
+        "contenido": "<strong>AJU CLL</strong>: Ajuste en Línea"
+      },
+      {
+        "orden": 5,
+        "grupo": "Parte 1: Gestión en Sistema RR / AS400",
+        "contenido": "Presiona <strong>Enter</strong>."
+      },
+      {
+        "orden": 6,
+        "grupo": "Parte 1: Gestión en Sistema RR / AS400",
+        "contenido": "Diligencia los campos <strong>Answer</strong> y <strong>Close</strong> (si aplica)."
+      },
+      {
+        "orden": 7,
+        "grupo": "Parte 1: Gestión en Sistema RR / AS400",
+        "contenido": "Presiona <strong>F7</strong> + <strong>F6</strong> para crear la carpeta con el nombre <em>\"Creer en el cliente\"</em> o <em>\"Ajuste en línea\"</em>."
+      },
+      {
+        "orden": 8,
+        "grupo": "Parte 2: Escalamiento en Aplicativo DIME",
+        "contenido": "Ingresa al aplicativo <strong>DIME</strong> con tus credenciales."
+      },
+      {
+        "orden": 9,
+        "grupo": "Parte 2: Escalamiento en Aplicativo DIME",
+        "contenido": "Navega a la sección <strong>\"Mis accesos\"</strong> y selecciona <strong>\"Ajuste Online\"</strong>."
+      },
+      {
+        "orden": 10,
+        "grupo": "Parte 2: Escalamiento en Aplicativo DIME",
+        "contenido": "Haz clic en <strong>\"Escalar solicitud\"</strong>."
+      },
+      {
+        "orden": 11,
+        "grupo": "Parte 2: Escalamiento en Aplicativo DIME",
+        "contenido": "Digita el número de cuenta donde fue solicitado el ajuste."
+      },
+      {
+        "orden": 12,
+        "grupo": "Parte 2: Escalamiento en Aplicativo DIME",
+        "contenido": "En el campo <strong>Ticket PQR</strong>, ingresa el número de radicado generado previamente en RR."
+      },
+      {
+        "orden": 13,
+        "grupo": "Parte 2: Escalamiento en Aplicativo DIME",
+        "contenido": "El sistema traerá automáticamente el Nombre, Dirección y Estado. Selecciona el tipo de ajuste (Móvil, Hogar o Prepago)."
+      },
+      {
+        "orden": 14,
+        "grupo": "Parte 2: Escalamiento en Aplicativo DIME",
+        "contenido": "Selecciona la subcategoría correspondiente y haz clic en <strong>Escalar Solicitud</strong>."
+      }
+    ]
+  },
+  {
+    "slug": "replanteamiento-de-acometida",
+    "titulo": "Replanteamiento de Acometida",
+    "descripcion": "Creación de OT, asignación de toma, código de vendedor y ajuste sin costo.",
+    "duracion_min": 8,
+    "pasos_visibles": 8,
+    "icono": "🔧",
+    "tipo": "success",
+    "ariaLabel": "Abrir proceso: Replanteamiento de Acometida",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 3,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Gestión General de OT:",
+        "contenido": "Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT)."
+      },
+      {
+        "orden": 2,
+        "grupo": "Gestión General de OT:",
+        "contenido": "Coloca un <strong>1</strong> en el campo <strong>TOMA</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": "Gestión General de OT:",
+        "contenido": "Presiona <strong>F2 + F2</strong> y cambia las opciones de <strong>Y</strong> a <strong>N</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": "Gestión General de OT:",
+        "contenido": "Deja las notas respectivas especificando claramente si se trata de un <em>replanteamiento de acometida interna</em> o <em>externa</em>."
+      },
+      {
+        "orden": 5,
+        "grupo": "Gestión General de OT:",
+        "contenido": "Ingresa tu <strong>código de vendedor</strong>."
+      },
+      {
+        "orden": 6,
+        "grupo": "Gestión General de OT:",
+        "contenido": "En el campo <em>Clase de orden</em>, escribe <strong>VO</strong>."
+      },
+      {
+        "orden": 7,
+        "grupo": "Gestión General de OT:",
+        "contenido": "Presiona <strong>F2</strong> para continuar con la agenda de la visita."
+      },
+      {
+        "orden": 8,
+        "grupo": "Gestión General de OT:",
+        "contenido": "Ingresa al aplicativo externo correspondiente para programar la visita técnica."
+      },
+      {
+        "orden": 9,
+        "grupo": "En caso de Replanteamiento SIN COSTO:",
+        "contenido": "Para enviar la orden sin costo se debe retirar el valor borrando el \"1\"."
+      },
+      {
+        "orden": 10,
+        "grupo": "En caso de Replanteamiento SIN COSTO:",
+        "contenido": "Ingresa a <strong>F15</strong> y presiona <strong>Enter</strong> para continuar en la última orden."
+      },
+      {
+        "orden": 11,
+        "grupo": "En caso de Replanteamiento SIN COSTO:",
+        "contenido": "Quita el <strong>1</strong> del campo <strong>TOMA</strong> y presiona <strong>Enter</strong>."
+      },
+      {
+        "orden": 12,
+        "grupo": "En caso de Replanteamiento SIN COSTO:",
+        "contenido": "Presiona <strong>F2 + F2</strong>, cambia la <strong>Y</strong> por <strong>N</strong> y presiona <strong>Enter</strong> para finalizar."
+      }
+    ]
+  },
+  {
+    "slug": "desactivar-deco",
+    "titulo": "Desactivar un Deco",
+    "descripcion": "Retiro y desactivación de decodificadores",
+    "duracion_min": 3,
+    "pasos_visibles": 13,
+    "icono": "🔌",
+    "tipo": "default",
+    "ariaLabel": "Abrir proceso: Desactivar un Deco",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 4,
+    "estado": "publicado",
+    "nota": "Solicitar los seriales de los decos en caso de ser necesario. Validar el inventario. <code>NDO</code> y <code>NDA</code> significan equipos en arriendo.",
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT)."
+      },
+      {
+        "orden": 2,
+        "grupo": "Proceso completo",
+        "contenido": "Ajusta el <strong>inventario</strong> del equipo."
+      },
+      {
+        "orden": 3,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong> para avanzar."
+      },
+      {
+        "orden": 4,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia las opciones de <strong>\"Y\"</strong> por <strong>\"N\"</strong>."
+      },
+      {
+        "orden": 5,
+        "grupo": "Proceso completo",
+        "contenido": "En <em>Clase de orden</em>, escribe <strong>VO</strong>."
+      },
+      {
+        "orden": 6,
+        "grupo": "Proceso completo",
+        "contenido": "Deja las <strong>notas correspondientes</strong>."
+      },
+      {
+        "orden": 7,
+        "grupo": "Proceso completo",
+        "contenido": "Ingresa el <strong>código de vendedor</strong> del agente o <strong>9999</strong>."
+      },
+      {
+        "orden": 8,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F24</strong> para avanzar."
+      },
+      {
+        "orden": 9,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia por <strong>\"D\"</strong> en el estado."
+      },
+      {
+        "orden": 10,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia el estado a <strong>AD</strong>."
+      },
+      {
+        "orden": 11,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong> para actualizar."
+      },
+      {
+        "orden": 12,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>Enter + Enter</strong>."
+      },
+      {
+        "orden": 13,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2 y F2</strong>."
+      }
+    ]
+  },
+  {
+    "slug": "cambio-decos",
+    "titulo": "Cambio de Servicio entre Decos",
+    "descripcion": "Intercambio de decos y tarjetas con OT",
+    "duracion_min": 2,
+    "pasos_visibles": 5,
+    "icono": "🔄",
+    "tipo": "accent",
+    "ariaLabel": "Abrir proceso: Cambio de Servicio entre Decos",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 5,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT)."
+      },
+      {
+        "orden": 2,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F24</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": "Proceso completo",
+        "contenido": "Coloca la <strong>\"C\"</strong> para indicar el cambio entre los decos y las tarjetas."
+      },
+      {
+        "orden": 5,
+        "grupo": "Proceso completo",
+        "contenido": "Con <strong>\"D\"</strong> quita el equipo anterior y con <strong>\"C\"</strong> realiza el cambio."
+      }
+    ]
+  },
+  {
+    "slug": "reactivacion-decos",
+    "titulo": "Reactivación de Decos",
+    "descripcion": "Reactivación de servicio y aprovisionamiento",
+    "duracion_min": 4,
+    "pasos_visibles": 15,
+    "icono": "✅",
+    "tipo": "success",
+    "ariaLabel": "Abrir proceso: Reactivación de Decos",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 6,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT)."
+      },
+      {
+        "orden": 2,
+        "grupo": "Proceso completo",
+        "contenido": "Ajusta el inventario con el signo <strong>\"+\"</strong> y el número del equipo."
+      },
+      {
+        "orden": 3,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia la <strong>\"Y\"</strong> por <strong>\"N\"</strong>."
+      },
+      {
+        "orden": 5,
+        "grupo": "Proceso completo",
+        "contenido": "En <em>Clase de orden</em>, escribe <strong>VO</strong>."
+      },
+      {
+        "orden": 6,
+        "grupo": "Proceso completo",
+        "contenido": "Ingresa el <strong>código de vendedor</strong> asignado o <strong>9999</strong>."
+      },
+      {
+        "orden": 7,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 8,
+        "grupo": "Proceso completo",
+        "contenido": "Coloca la <strong>\"C\"</strong> para cambiar el campo."
+      },
+      {
+        "orden": 9,
+        "grupo": "Proceso completo",
+        "contenido": "En el estado coloca <strong>\"AS\"</strong> para activar."
+      },
+      {
+        "orden": 10,
+        "grupo": "Proceso completo",
+        "contenido": "Aprovisiona los <strong>servicios</strong> necesarios en la card."
+      },
+      {
+        "orden": 11,
+        "grupo": "Proceso completo",
+        "contenido": "Aprovisiona los <strong>equipos en arriendo</strong>."
+      },
+      {
+        "orden": 12,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 13,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>Enter</strong>."
+      },
+      {
+        "orden": 14,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 15,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong>."
+      }
+    ]
+  },
+  {
+    "slug": "activar-premium",
+    "titulo": "Activar un Paquete Premium",
+    "descripcion": "Activación de canales premium y aprovisionamiento",
+    "duracion_min": 5,
+    "pasos_visibles": 14,
+    "icono": "📺",
+    "tipo": "accent",
+    "ariaLabel": "Abrir proceso: Activar un Paquete Premium",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 7,
+    "estado": "publicado",
+    "nota": "Canales disponibles: <code>Onebaseball</code>, <code>Win</code>, <code>Paquete Internacional</code>, <code>Hot Pack</code>, <code>HHO</code>, <code>Universal</code>, <code>Goldon</code>. <code>NDO</code> y <code>NDA</code> significan equipos en arriendo.",
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT)."
+      },
+      {
+        "orden": 2,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F1</strong> sobre los <strong>servicios</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": "Proceso completo",
+        "contenido": "Busca el servicio a agregar e <strong>identifícalo</strong> en <strong>Conectados</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": "Proceso completo",
+        "contenido": "Consulta la <strong>PTAR</strong> para revisar las ofertas según el tipo de servicio de internet que se preste."
+      },
+      {
+        "orden": 5,
+        "grupo": "Proceso completo",
+        "contenido": "Coloca <strong>1</strong> sobre el servicio que se va a aprovisionar."
+      },
+      {
+        "orden": 6,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia el <strong>número de canales</strong> que se tienen por la <strong>cantidad solicitada</strong>."
+      },
+      {
+        "orden": 7,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong> para continuar + <strong>F2</strong> (aquí se da <strong>F2</strong> porque el número de teléfono no se modifica)."
+      },
+      {
+        "orden": 8,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia las <strong>\"Y\"</strong> por <strong>\"N\"</strong>."
+      },
+      {
+        "orden": 9,
+        "grupo": "Proceso completo",
+        "contenido": "En <em>Clase de orden</em>, escribe <strong>VO</strong>."
+      },
+      {
+        "orden": 10,
+        "grupo": "Proceso completo",
+        "contenido": "Deja las <strong>notas correspondientes al proceso realizado</strong>."
+      },
+      {
+        "orden": 11,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F24</strong> (OT cerrada)."
+      },
+      {
+        "orden": 12,
+        "grupo": "Proceso completo",
+        "contenido": "Coloca <strong>\"C\"</strong> sobre las tarjetas + <strong>código de canal</strong> + <strong>F2</strong>."
+      },
+      {
+        "orden": 13,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>Enter</strong> para <em>\"Aprovisionar los códigos\"</em>."
+      },
+      {
+        "orden": 14,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong> y <strong>F2</strong>."
+      }
+    ]
+  },
+  {
+    "slug": "envio-control-rojo",
+    "titulo": "Envío de Control TV Rojo",
+    "descripcion": "Envío del control Claro 4 referencia",
+    "duracion_min": 3,
+    "pasos_visibles": 12,
+    "icono": "🕹️",
+    "tipo": "default",
+    "ariaLabel": "Abrir proceso: Envío de Control TV Rojo",
+    "categoria": "hogar",
+    "codigo": null,
+    "orden": 8,
+    "estado": "publicado",
+    "nota": "• El <strong>punto cableado</strong> cuesta <strong>$50.000</strong> y el código es <code>UTP-TCS</code>. • Tarda de <strong>5 a 10 días hábiles</strong>. • Solo se envía a <strong>ciudades principales</strong>. • La referencia de control <code>Universal 2</code> tiene los dígitos del <strong>1 al 9 abajo</strong>.",
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F15 + F6</strong> para crear la Orden de Trabajo (OT)."
+      },
+      {
+        "orden": 2,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F9</strong> (Compras) para buscar el código <strong>CCCTP</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": "Proceso completo",
+        "contenido": "Ingresa la <strong>cantidad</strong> y luego presiona <strong>Enter + Enter</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2 + F2</strong>."
+      },
+      {
+        "orden": 5,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia la <strong>\"Y\"</strong> por <strong>\"N\"</strong>."
+      },
+      {
+        "orden": 6,
+        "grupo": "Proceso completo",
+        "contenido": "Cambia la clase de orden por <strong>DS</strong>."
+      },
+      {
+        "orden": 7,
+        "grupo": "Proceso completo",
+        "contenido": "Ingresa el <strong>código de vendedor</strong> correspondiente o <strong>9999</strong>."
+      },
+      {
+        "orden": 8,
+        "grupo": "Proceso completo",
+        "contenido": "Presiona <strong>F2</strong> para finalizar."
+      },
+      {
+        "orden": 9,
+        "grupo": "Proceso completo",
+        "contenido": "El <strong>punto cableado</strong> cuesta <strong>$50.000</strong> y el código es <code>UTP-TCS</code>."
+      },
+      {
+        "orden": 10,
+        "grupo": "Proceso completo",
+        "contenido": "Tarda de <strong>5 a 10 días hábiles</strong>."
+      },
+      {
+        "orden": 11,
+        "grupo": "Proceso completo",
+        "contenido": "Solo se envía a <strong>ciudades principales</strong>."
+      },
+      {
+        "orden": 12,
+        "grupo": "Proceso completo",
+        "contenido": "La referencia de control <code>Universal 2</code> tiene los dígitos del <strong>1 al 9 abajo</strong>."
+      }
+    ]
+  },
+  {
+    "slug": "sac-npp",
+    "titulo": "Marcación para clientes críticos",
+    "descripcion": "Marcación cerrada SAC NPP: marcación para clientes críticos.",
+    "duracion_min": 2,
+    "pasos_visibles": 5,
+    "icono": "🆔",
+    "tipo": "default",
+    "ariaLabel": "Abrir marcación: SAC NPP",
+    "categoria": "marcaciones",
+    "codigo": "SAC NPP",
+    "orden": 100,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": null,
+        "contenido": "Presiona <strong>F22</strong> para registrar la <strong>marcación y las notas</strong>."
+      },
+      {
+        "orden": 2,
+        "grupo": null,
+        "contenido": "Presiona <strong>Enter</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": null,
+        "contenido": "Ingresa el <strong>código de cierre</strong> y el campo <strong>Answer</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": null,
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 5,
+        "grupo": null,
+        "contenido": "Presiona <strong>F5</strong> para finalizar."
+      }
+    ]
+  },
+  {
+    "slug": "fac-ocl",
+    "titulo": "Ciclos de facturación",
+    "descripcion": "Marcación cerrada FAC OCL: ciclos de facturación.",
+    "duracion_min": 2,
+    "pasos_visibles": 5,
+    "icono": "🧾",
+    "tipo": "default",
+    "ariaLabel": "Abrir marcación: FAC OCL",
+    "categoria": "marcaciones",
+    "codigo": "FAC OCL",
+    "orden": 101,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": null,
+        "contenido": "Presiona <strong>F22</strong> para registrar la <strong>marcación y las notas</strong>."
+      },
+      {
+        "orden": 2,
+        "grupo": null,
+        "contenido": "Presiona <strong>Enter</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": null,
+        "contenido": "Ingresa el <strong>código de cierre</strong> y el campo <strong>Answer</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": null,
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 5,
+        "grupo": null,
+        "contenido": "Presiona <strong>F5</strong> para finalizar."
+      }
+    ]
+  },
+  {
+    "slug": "aju-cec",
+    "titulo": "Ajuste Creer en el Cliente",
+    "descripcion": "Marcación cerrada AJU CEC: ajuste creer en el cliente.",
+    "duracion_min": 2,
+    "pasos_visibles": 5,
+    "icono": "💰",
+    "tipo": "default",
+    "ariaLabel": "Abrir marcación: AJU CEC",
+    "categoria": "marcaciones",
+    "codigo": "AJU CEC",
+    "orden": 102,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": null,
+        "contenido": "Presiona <strong>F22</strong> para registrar la <strong>marcación y las notas</strong>."
+      },
+      {
+        "orden": 2,
+        "grupo": null,
+        "contenido": "Presiona <strong>Enter</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": null,
+        "contenido": "Ingresa el <strong>código de cierre</strong> y el campo <strong>Answer</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": null,
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 5,
+        "grupo": null,
+        "contenido": "Presiona <strong>F5</strong> para finalizar."
+      }
+    ]
+  },
+  {
+    "slug": "can-cgn",
+    "titulo": "Suspensión temporal",
+    "descripcion": "Marcación cerrada CAN CGN: suspensión temporal.",
+    "duracion_min": 2,
+    "pasos_visibles": 5,
+    "icono": "⏸️",
+    "tipo": "default",
+    "ariaLabel": "Abrir marcación: CAN CGN",
+    "categoria": "marcaciones",
+    "codigo": "CAN CGN",
+    "orden": 103,
+    "estado": "publicado",
+    "nota": null,
+    "pasos": [
+      {
+        "orden": 1,
+        "grupo": null,
+        "contenido": "Presiona <strong>F22</strong> para registrar la <strong>marcación y las notas</strong>."
+      },
+      {
+        "orden": 2,
+        "grupo": null,
+        "contenido": "Presiona <strong>Enter</strong>."
+      },
+      {
+        "orden": 3,
+        "grupo": null,
+        "contenido": "Ingresa el <strong>código de cierre</strong> y el campo <strong>Answer</strong>."
+      },
+      {
+        "orden": 4,
+        "grupo": null,
+        "contenido": "Presiona <strong>F2</strong>."
+      },
+      {
+        "orden": 5,
+        "grupo": null,
+        "contenido": "Presiona <strong>F5</strong> para finalizar."
+      }
+    ]
+  }
+]

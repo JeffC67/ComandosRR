@@ -1,0 +1,254 @@
+[
+  {
+    "etiqueta": "Búsqueda por número de cuenta",
+    "tecla": "F7",
+    "tipo": "basico",
+    "icono": "🔎",
+    "modulo": "busqueda",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Nombre del titular o empresa",
+    "tecla": "F8",
+    "tipo": "basico",
+    "icono": "👤",
+    "modulo": "busqueda",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Parte principal de la dirección",
+    "tecla": "F5",
+    "tipo": "basico",
+    "icono": "🏠",
+    "modulo": "busqueda",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Placa más complemento",
+    "tecla": "F10",
+    "tipo": "basico",
+    "icono": "🚗",
+    "modulo": "busqueda",
+    "orden": 4,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Buscar por serial de equipo",
+    "tecla": "F13",
+    "tipo": "basico",
+    "icono": "📦",
+    "modulo": "busqueda",
+    "orden": 5,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Búsqueda por número telefónico",
+    "tecla": "F14",
+    "tipo": "basico",
+    "icono": "📞",
+    "modulo": "busqueda",
+    "orden": 6,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Teléfono (búsqueda alternativa)",
+    "tecla": "F21+F15",
+    "tipo": "avanzado",
+    "icono": "⚡",
+    "modulo": "busqueda",
+    "orden": 7,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Búsqueda por correo electrónico",
+    "tecla": "F21+F17",
+    "tipo": "avanzado",
+    "icono": "⚡",
+    "modulo": "busqueda",
+    "orden": 8,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Búsqueda por número de contrato",
+    "tecla": "F21+F18",
+    "tipo": "avanzado",
+    "icono": "⚡",
+    "modulo": "busqueda",
+    "orden": 9,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Búsqueda por dirección MAC",
+    "tecla": "F21+F20",
+    "tipo": "avanzado",
+    "icono": "⚡",
+    "modulo": "busqueda",
+    "orden": 10,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Ver notas del suscriptor",
+    "tecla": "F7",
+    "tipo": "basico",
+    "icono": "📝",
+    "modulo": "suscriptor",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Ver dirección de correo electrónico",
+    "tecla": "F8",
+    "tipo": "basico",
+    "icono": "✉️",
+    "modulo": "suscriptor",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta de equipos o inventarios",
+    "tecla": "F10",
+    "tipo": "basico",
+    "icono": "📦",
+    "modulo": "suscriptor",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Historial de factura o crédito",
+    "tecla": "F13",
+    "tipo": "basico",
+    "icono": "💳",
+    "modulo": "suscriptor",
+    "orden": 4,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Órdenes de trabajo (OT) / Llamadas de servicio (LLS)",
+    "tecla": "F19",
+    "tipo": "basico",
+    "icono": "🛠️",
+    "modulo": "suscriptor",
+    "orden": 5,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Búsquedas adicionales (F21+F18+2 Av.Pág = Fecha límite de pago)",
+    "tecla": "F21",
+    "tipo": "avanzado",
+    "icono": "⚡",
+    "modulo": "suscriptor",
+    "orden": 6,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Opción 'B' para gestión de campañas",
+    "tecla": "F24",
+    "tipo": "basico",
+    "icono": "📢",
+    "modulo": "suscriptor",
+    "orden": 7,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consultar la campaña",
+    "tecla": "F24+B",
+    "tipo": "avanzado",
+    "icono": "📢",
+    "modulo": "consultas",
+    "orden": 1,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Campañas finalizadas",
+    "tecla": "F24+B+F6",
+    "tipo": "avanzado",
+    "icono": "📢",
+    "modulo": "consultas",
+    "orden": 2,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta de nodo",
+    "tecla": "F16",
+    "tipo": "basico",
+    "icono": "🌐",
+    "modulo": "consultas",
+    "orden": 3,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta de estrato",
+    "tecla": "F16+F14",
+    "tipo": "avanzado",
+    "icono": "🌐",
+    "modulo": "consultas",
+    "orden": 4,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta registro de llamadas / historial de marcación",
+    "tecla": "F22+F13",
+    "tipo": "avanzado",
+    "icono": "☎️",
+    "modulo": "consultas",
+    "orden": 5,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta de PQR (Petición, Queja o Recurso)",
+    "tecla": "F22+F13+F16",
+    "tipo": "avanzado",
+    "icono": "📋",
+    "modulo": "consultas",
+    "orden": 6,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta de Llamadas de Servicio (LLS)",
+    "tecla": "F19+F16",
+    "tipo": "avanzado",
+    "icono": "🛠️",
+    "modulo": "consultas",
+    "orden": 7,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta de Órdenes de Trabajo (OT)",
+    "tecla": "F19+F17",
+    "tipo": "avanzado",
+    "icono": "🛠️",
+    "modulo": "consultas",
+    "orden": 8,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Consulta equipos financiados (Repetidores y Dongles)",
+    "tecla": "F21+F24",
+    "tipo": "avanzado",
+    "icono": "💻",
+    "modulo": "consultas",
+    "orden": 9,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Historial de factura o crédito",
+    "tecla": "F13",
+    "tipo": "basico",
+    "icono": "💳",
+    "modulo": "consultas",
+    "orden": 10,
+    "estado": "publicado"
+  },
+  {
+    "etiqueta": "Crear una Orden de Trabajo (OT)",
+    "tecla": "F15+F6",
+    "tipo": "avanzado",
+    "icono": "➕",
+    "modulo": "consultas",
+    "orden": 11,
+    "estado": "publicado"
+  }
+]

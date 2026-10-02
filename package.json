@@ -1,0 +1,50 @@
+{
+  "name": "comandosrr-portal",
+  "version": "2.0.0",
+  "description": "Portal de Capacitación RR / AS400 — Next.js + Directus (Fase 2 del plan.md)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:clean": "rm -rf .next tsconfig.tsbuildinfo && next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "setup:schema": "npm --prefix scripts run setup:schema",
+    "setup:access": "npm --prefix scripts run setup:access",
+    "setup:phase3": "npm --prefix scripts run setup:phase3",
+    "setup:workflow": "npm --prefix scripts run setup:workflow",
+    "seed:quiz": "npm --prefix scripts run seed:quiz",
+    "migrate": "npm --prefix scripts run migrate",
+    "migrate:force": "npm --prefix scripts run migrate:force",
+    "sync": "npm --prefix scripts run sync",
+    "sync:check": "npm --prefix scripts run sync:check",
+    "verify": "node scripts/verify.mjs",
+    "verify:workflow": "node scripts/verify-workflow.mjs",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "seed:enlaces": "npm --prefix scripts run seed:enlaces",
+    "seed:enlaces:check": "npm --prefix scripts run seed:enlaces:check",
+    "seed:enlaces:force": "npm --prefix scripts run seed:enlaces:force"
+  },
+  "dependencies": {
+    "@directus/sdk": "^18.0.0",
+    "@neon/config": "^1.8.3",
+    "@neon/env": "^1.4.8",
+    "jose": "^6.2.12",
+    "lucide-react": "^0.460.0",
+    "next": "^15.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.0.0",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.6.0"
+  }
+}

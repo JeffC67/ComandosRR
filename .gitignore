@@ -1,4 +1,29 @@
-.vercel
+# Entornos y secretos
+.env
+.env.local
+*.pem
+*.key
 
-# Credenciales de la base de datos
+# Dependencias
+node_modules/
+.next/
+.next-dev/
+out/
+.vercel/
+tsconfig.tsbuildinfo
+
+# Backups (nunca al repo)
+backups/
+*.sql
+*.tar.gz
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+.neon
+
+# Credenciales de la base de datos (backend PHP legacy)
 api/config.php

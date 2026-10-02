@@ -1,0 +1,20 @@
+[
+  {
+    "titulo": "Tutorial: Búsqueda general",
+    "archivo": "Bunny.mp4",
+    "ariaLabel": "Tutorial de búsqueda general",
+    "modulo": "busqueda",
+    "orden": 1,
+    "estado": "publicado",
+    "poster": null
+  },
+  {
+    "titulo": "Tutorial: Ventana del suscriptor",
+    "archivo": "Pantera.mp4",
+    "ariaLabel": "Tutorial de ventana del suscriptor",
+    "modulo": "suscriptor",
+    "orden": 1,
+    "estado": "publicado",
+    "poster": null
+  }
+]
