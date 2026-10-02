@@ -434,8 +434,9 @@ async function ensureCollection(name, existentes) {
   }
   try {
     await api('/collections', {
-      method: 'POST',
-      body: JSON.stringify({ collection: name, ...SCHEMA[name].meta, schema: { name } }),
+      // `meta` DEBE ir anidado: en el nivel raíz Directus lo ignora y la
+      // colección queda sin fila en directus_collections (invisible en /admin).
+      body: JSON.stringify({ collection: name, meta: SCHEMA[name].meta, schema: { name } }),
     });
     console.log(`  colección creada: ${name}`);
   } catch (err) {
@@ -444,6 +445,20 @@ async function ensureCollection(name, existentes) {
   }
   existentes.add(name);
   return true;
+}
+
+/* Repara colecciones creadas con el bug de `meta` en nivel raíz (o cuya
+   metadata se haya perdido): si falta la fila en directus_collections, la
+   repone con PATCH /collections/:name — no toca la tabla ni los datos. */
+async function ensureMeta(name) {
+  if (DRY) return;
+  const col = (await api(`/collections/${name}?fields=collection,meta`)).data;
+  if (col.meta && col.meta.icon != null) return;
+  await api(`/collections/${name}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ meta: SCHEMA[name].meta }),
+  });
+  console.log(`  metadata repuesta: ${name}`);
 }
 
 async function ensureFields(name) {
@@ -503,6 +518,7 @@ async function main() {
   const existentes = new Set((await api('/collections?limit=-1')).data.map((c) => c.collection));
   for (const name of Object.keys(SCHEMA)) {
     await ensureCollection(name, existentes);
+    await ensureMeta(name);
     await ensureFields(name);
   }
 
