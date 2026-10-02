@@ -11,6 +11,7 @@
 import Link from 'next/link';
 import { JuegoTeclas } from '@/components/game/JuegoTeclas';
 import { GameLaunchButton } from '@/components/game/GameLaunchButton';
+import { BotonRevisionEditorial } from '@/components/editor/BotonRevisionEditorial';
 import { ProcesoBuscador } from '@/components/processes/ProcesoBuscador';
 import { getCategorias, getPasosPorProcesoSlug, getProcesos, getProcesosByCategoria } from '@/lib/directus';
 
@@ -61,6 +62,7 @@ export default async function ProcesosPage() {
           <Link href="/procesos/nuevo" className="btn btn-primary">
             ➕ Proponer proceso
           </Link>
+          <BotonRevisionEditorial />
           <GameLaunchButton />
         </div>
       </header>
