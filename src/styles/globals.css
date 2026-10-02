@@ -2175,6 +2175,50 @@
     color: var(--color-text-dim);
   }
 
+  /* ---------- Grupos colapsables del catálogo (/aplicaciones) ----------
+     Acordeón como la versión original (PortalAppsIndra): cabecera de
+     ancho completo con nombre + conteo + chevron que rota al abrir. */
+  .collapsible-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-4);
+    margin-bottom: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    transition: border-color var(--transition-fast);
+  }
+
+  .collapsible-header:hover {
+    border-color: var(--color-primary);
+  }
+
+  .collapsible-header .category-group-title {
+    flex: 1;
+  }
+
+  .enlaces-grupo-cat {
+    color: var(--color-text-dim);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+  }
+
+  .collapsible-chevron {
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    transition: transform var(--transition-fast);
+  }
+
+  .collapsible-header[aria-expanded='true'] .collapsible-chevron {
+    transform: rotate(180deg);
+  }
+
   /* ---------- Buscador ---------- */
   .proceso-buscador {
     display: flex;
@@ -2969,6 +3013,24 @@
     background: rgba(16, 185, 129, 0.1);
     color: #6ee7b7;
     font-size: var(--font-size-sm);
+  }
+
+  /* Aviso auto-descartable (lleva botón × y no tapa el contenido) */
+  .form-ok-cierre {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .form-ok-close {
+    margin-left: auto;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font-size: var(--font-size-lg);
+    line-height: 1;
+    padding: 0 var(--space-1);
+    cursor: pointer;
   }
 
   .btn-danger {

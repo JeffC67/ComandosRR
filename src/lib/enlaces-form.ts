@@ -18,12 +18,11 @@ export interface EnlaceFormInicial {
   nombre: string;
   url: string;
   descripcion: string;
-  orden: string;
   estado: string;
 }
 
 export function inicialVacio(): EnlaceFormInicial {
-  return { categoria: '', grupo: '', nombre: '', url: '', descripcion: '', orden: '0', estado: 'publicado' };
+  return { categoria: '', grupo: '', nombre: '', url: '', descripcion: '', estado: 'publicado' };
 }
 
 export function inicialDe(e: Enlace): EnlaceFormInicial {
@@ -33,7 +32,6 @@ export function inicialDe(e: Enlace): EnlaceFormInicial {
     nombre: e.nombre,
     url: e.url ?? '',
     descripcion: e.descripcion ?? '',
-    orden: String(e.orden ?? 0),
     estado: e.estado,
   };
 }

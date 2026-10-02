@@ -5,6 +5,7 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getSession } from '@/lib/auth';
+import { getListasEnlace } from '@/lib/directus';
 import { FormularioEnlace } from '@/components/editor/FormularioEnlace';
 import { inicialVacio } from '@/lib/enlaces-form';
 
@@ -14,6 +15,18 @@ export default async function NuevoEnlacePage() {
   const session = await getSession();
   if (!session) redirect('/login?redirect=/editor/enlaces/nuevo');
   if (session.role !== 'editor' && session.role !== 'admin') redirect('/');
+
+  /* Desplegables del formulario. Si Directus falla, el formulario sigue
+     sirviendo con entradas de texto (no tumba la página). */
+  let categorias: string[] = [];
+  let gruposPorCategoria: Record<string, string[]> = {};
+  try {
+    const listas = await getListasEnlace();
+    categorias = listas.categorias;
+    gruposPorCategoria = listas.gruposPorCategoria;
+  } catch (e) {
+    console.error('GET /editor/enlaces/nuevo: getListasEnlace falló', e);
+  }
 
   return (
     <section className="module-section">
@@ -39,7 +52,12 @@ export default async function NuevoEnlacePage() {
         </h1>
       </header>
 
-      <FormularioEnlace inicial={inicialVacio()} modo="crear" />
+      <FormularioEnlace
+        inicial={inicialVacio()}
+        modo="crear"
+        categorias={categorias}
+        gruposPorCategoria={gruposPorCategoria}
+      />
     </section>
   );
 }

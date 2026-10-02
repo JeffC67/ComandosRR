@@ -5,7 +5,7 @@
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getSession } from '@/lib/auth';
-import { getEnlace } from '@/lib/directus';
+import { getEnlace, getListasEnlace } from '@/lib/directus';
 import { FormularioEnlace } from '@/components/editor/FormularioEnlace';
 import { inicialDe } from '@/lib/enlaces-form';
 
@@ -19,6 +19,16 @@ export default async function EditarEnlacePage({ params }: { params: Promise<{ i
   const { id } = await params;
   const enlace = await getEnlace(id);
   if (!enlace) notFound();
+
+  let categorias: string[] = [];
+  let gruposPorCategoria: Record<string, string[]> = {};
+  try {
+    const listas = await getListasEnlace();
+    categorias = listas.categorias;
+    gruposPorCategoria = listas.gruposPorCategoria;
+  } catch (e) {
+    console.error('GET /editor/enlaces/[id]/editar: getListasEnlace falló', e);
+  }
 
   return (
     <section className="module-section">
@@ -44,7 +54,13 @@ export default async function EditarEnlacePage({ params }: { params: Promise<{ i
         </h1>
       </header>
 
-      <FormularioEnlace inicial={inicialDe(enlace)} modo="editar" enlaceId={String(enlace.id)} />
+      <FormularioEnlace
+        inicial={inicialDe(enlace)}
+        modo="editar"
+        enlaceId={String(enlace.id)}
+        categorias={categorias}
+        gruposPorCategoria={gruposPorCategoria}
+      />
     </section>
   );
 }

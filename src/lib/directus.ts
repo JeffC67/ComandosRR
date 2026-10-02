@@ -435,6 +435,24 @@ export async function getEnlace(id: string | number): Promise<Enlace | null> {
   return data[0] ?? null;
 }
 
+/* Listas para los desplegables del formulario: categorías existentes y,
+   por cada una, sus grupos existentes (ordenados). */
+export async function getListasEnlace(): Promise<{ categorias: string[]; gruposPorCategoria: Record<string, string[]> }> {
+  const client = await getDirectusClient();
+  const data = (await client.request(
+    readItems('enlaces', { fields: ['categoria', 'grupo'], limit: -1 }),
+  )) as Array<{ categoria: string | null; grupo: string | null }>;
+  const gruposPorCategoria: Record<string, string[]> = {};
+  for (const fila of data) {
+    if (!fila.categoria || !fila.grupo) continue;
+    const lista = (gruposPorCategoria[fila.categoria] ??= []);
+    if (!lista.includes(fila.grupo)) lista.push(fila.grupo);
+  }
+  const categorias = Object.keys(gruposPorCategoria).sort((a, b) => a.localeCompare(b, 'es'));
+  for (const c of categorias) gruposPorCategoria[c].sort((a, b) => a.localeCompare(b, 'es'));
+  return { categorias, gruposPorCategoria };
+}
+
 /* ---------- ASSETS / VIDEOS ----------
    Los mp4 viven en public/media del frontend y los sirve el CDN con
    Range nativo: `videos.archivo` es el NOMBRE del archivo

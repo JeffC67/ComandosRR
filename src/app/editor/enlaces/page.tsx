@@ -11,7 +11,8 @@ import Link from 'next/link';
 import { getSession } from '@/lib/auth';
 import { getTodosLosEnlaces } from '@/lib/directus';
 import type { Enlace } from '@/types';
-import { BotonEliminarEnlace } from '@/components/editor/BotonEliminarEnlace';
+import { ListaEnlaces } from '@/components/editor/ListaEnlaces';
+import { AvisoGuardado } from '@/components/editor/AvisoGuardado';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,37 +63,14 @@ export default async function EnlacesPage({ searchParams }: { searchParams: Prom
         </div>
       </header>
 
-      {guardado && <p className="form-ok">Enlace guardado.</p>}
+      {guardado && <AvisoGuardado />}
       {errorCatalogo && (
         <p className="form-error" role="alert">
           No se pudo cargar el catálogo desde Directus: {errorCatalogo}
         </p>
       )}
 
-      {!errorCatalogo &&
-        (enlaces.length === 0 ? (
-          <p className="empty-state">Todavía no hay enlaces en el catálogo.</p>
-        ) : (
-          <ul className="review-list">
-            {enlaces.map((e) => (
-              <li key={e.id} className="review-item">
-                <div>
-                  <strong>{e.nombre}</strong>
-                  <span className="review-meta">
-                    {e.categoria} · {e.grupo} · {e.estado}
-                    {e.url ? '' : ' · sin URL'}
-                  </span>
-                </div>
-                <div className="review-actions">
-                  <Link href={`/editor/enlaces/${e.id}/editar`} className="btn btn-secondary">
-                    ✏️ Editar
-                  </Link>
-                  <BotonEliminarEnlace id={e.id} nombre={e.nombre} />
-                </div>
-              </li>
-            ))}
-          </ul>
-        ))}
+      {!errorCatalogo && <ListaEnlaces enlaces={enlaces} />}
     </section>
   );
 }
