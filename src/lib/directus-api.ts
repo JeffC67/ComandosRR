@@ -5,10 +5,10 @@
    reutiliza la misma sesión que src/lib/directus.ts.
 
    El rol Portal tiene lectura sobre el contenido publicado y escritura
-   solo en progreso / quiz_intentos, que son datos del agente.
+   solo en quiz_intentos (datos del agente).
    ============================================================ */
 
-import { createDirectus, rest, authentication } from '@directus/sdk';
+import { createDirectus, authentication } from '@directus/sdk';
 import { directusUrl } from '@/lib/directus-url';
 
 const URL_BASE = directusUrl();
@@ -22,9 +22,7 @@ async function getToken(): Promise<string> {
     const password = process.env.DIRECTUS_SERVICE_PASSWORD;
 
     if (!email || !password) {
-      throw new Error(
-        'Falta DIRECTUS_SERVICE_EMAIL o DIRECTUS_SERVICE_PASSWORD en el entorno del servidor.',
-      );
+      throw new Error('Falta DIRECTUS_SERVICE_EMAIL o DIRECTUS_SERVICE_PASSWORD en el entorno del servidor.');
     }
 
     const sesion = createDirectus(URL_BASE).with(authentication('json', { autoRefresh: false }));
@@ -58,9 +56,7 @@ export async function directusGet<T>(path: string): Promise<T> {
   const json = await res.json().catch(() => null);
 
   if (!res.ok) {
-    throw new Error(
-      `Directus ${path} → ${res.status}: ${json?.errors?.[0]?.message ?? 'sin detalle'}`,
-    );
+    throw new Error(`Directus ${path} → ${res.status}: ${json?.errors?.[0]?.message ?? 'sin detalle'}`);
   }
   return json as T;
 }
@@ -78,9 +74,7 @@ export async function directusPost<T>(path: string, body: unknown): Promise<T> {
   const json = await res.json().catch(() => null);
 
   if (!res.ok) {
-    throw new Error(
-      `Directus POST ${path} → ${res.status}: ${json?.errors?.[0]?.message ?? 'sin detalle'}`,
-    );
+    throw new Error(`Directus POST ${path} → ${res.status}: ${json?.errors?.[0]?.message ?? 'sin detalle'}`);
   }
   return json as T;
 }

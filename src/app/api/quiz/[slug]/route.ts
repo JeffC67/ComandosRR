@@ -19,10 +19,7 @@ interface Item {
   pregunta?: string | number | { id: string | number } | null;
 }
 
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ slug: string }> },
-) {
+export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   try {
     const session = await getSession();
     if (!session) {
@@ -50,8 +47,7 @@ export async function GET(
     const ids = preguntas.data.map((p) => p.id);
     const opciones = ids.length
       ? await directusGet<{ data: Item[] }>(
-          `/items/quiz_opciones?filter[pregunta][_in]=${ids.join(',')}` +
-            `&fields=id,pregunta,texto,orden&sort=orden`,
+          `/items/quiz_opciones?filter[pregunta][_in]=${ids.join(',')}` + `&fields=id,pregunta,texto,orden&sort=orden`,
         )
       : { data: [] as Item[] };
 

@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 /* ==========================================================
-   Esquema de la Fase 3 — progreso y evaluaciones
-   Crea: progreso, quiz_preguntas, quiz_opciones, quiz_intentos
+   Esquema de la Fase 3 — evaluaciones
+   Crea: quiz_preguntas, quiz_opciones, quiz_intentos
+   (El módulo de progreso se eliminó de la plataforma.)
    Da permisos a la cuenta de servicio (policy "Portal — solo lectura")
    y al Editor para gestionar el banco de preguntas.
 
    Los nombres y tipos de campo están tomados del código, no al revés:
-   · `progreso`      → api/progreso/completar escribe {agente, proceso};
-                       lib/progreso.ts lee id, proceso.id, proceso.titulo,
-                       completado_en, porcentaje
    · `quiz_intentos` → api/quiz/intentos escribe {agente, proceso, puntaje,
                        respuestas}  (no "intentos" ni "quiz")
    · `quiz_preguntas`→ api/quiz/[slug] filtra por proceso + estado, lee
@@ -41,7 +39,7 @@
 
 import { login, api, BASE } from './migrate.mjs';
 
-const NOMBRES = ['progreso', 'quiz_preguntas', 'quiz_opciones', 'quiz_intentos'];
+const NOMBRES = ['quiz_preguntas', 'quiz_opciones', 'quiz_intentos'];
 
 /* ---------- utilidades ---------- */
 
@@ -54,8 +52,7 @@ async function asegurarPermiso(body, actuales) {
   return 'creado';
 }
 
-const camposDe = async (coleccion) =>
-  (await api(`/fields/${coleccion}?fields=field,type&limit=-1`)).data;
+const camposDe = async (coleccion) => (await api(`/fields/${coleccion}?fields=field,type&limit=-1`)).data;
 
 const nombresDe = async (coleccion) => (await camposDe(coleccion)).map((f) => f.field);
 
@@ -76,9 +73,7 @@ const nombresDe = async (coleccion) => (await camposDe(coleccion)).map((f) => f.
    volverlo a crear, y eso es lo que hace `asegurarRelacion`. Se niega
    a hacerlo si la columna tiene filas, para no perder datos. */
 async function asegurarRelacion(coleccion, campo, destino, crearColumna) {
-  const relacion = (await api('/relations?limit=-1')).data.find(
-    (r) => r.collection === coleccion && r.field === campo,
-  );
+  const relacion = (await api('/relations?limit=-1')).data.find((r) => r.collection === coleccion && r.field === campo);
 
   if (relacion) {
     if (relacion.related_collection !== destino) {
@@ -119,44 +114,6 @@ async function asegurarRelacion(coleccion, campo, destino, crearColumna) {
    `on_delete: CASCADE` para no dejar filas huérfanas si un editor
    borra una pregunta. */
 const TABLAS = {
-  progreso: {
-    meta: {
-      icon: 'check_circle',
-      note: 'Procesos completados por el agente',
-      display_template: '{{completado_en}}',
-      sort_field: 'completado_en',
-      color: '#10b981',
-      sort: 1,
-      archive_field: null,
-    },
-    columnas: [
-      {
-        field: 'agente',
-        type: 'uuid',
-        schema: { data_type: 'uuid', is_nullable: false, foreign_key_table: 'directus_users', foreign_key_column: 'id', constraint_name: 'progreso_agente_foreign', on_delete: 'CASCADE' },
-        meta: { special: ['m2o'], interface: 'select-dropdown-mapped' },
-      },
-      {
-        field: 'proceso',
-        type: 'integer',
-        schema: { data_type: 'integer', is_nullable: false, foreign_key_table: 'procesos', foreign_key_column: 'id', constraint_name: 'progreso_proceso_foreign', on_delete: 'CASCADE' },
-        meta: { special: ['m2o'], interface: 'select-dropdown-mapped' },
-      },
-      {
-        field: 'completado_en',
-        type: 'timestamp',
-        schema: { data_type: 'timestamp with time zone', default_value: 'now()' },
-        meta: { interface: 'datetime' },
-      },
-      {
-        field: 'porcentaje',
-        type: 'integer',
-        schema: { data_type: 'integer', default_value: 100 },
-        meta: { interface: 'input' },
-      },
-    ],
-  },
-
   quiz_preguntas: {
     meta: {
       icon: 'quiz',
@@ -173,7 +130,14 @@ const TABLAS = {
       {
         field: 'proceso',
         type: 'integer',
-        schema: { data_type: 'integer', is_nullable: false, foreign_key_table: 'procesos', foreign_key_column: 'id', constraint_name: 'quiz_preguntas_proceso_foreign', on_delete: 'CASCADE' },
+        schema: {
+          data_type: 'integer',
+          is_nullable: false,
+          foreign_key_table: 'procesos',
+          foreign_key_column: 'id',
+          constraint_name: 'quiz_preguntas_proceso_foreign',
+          on_delete: 'CASCADE',
+        },
         meta: { special: ['m2o'], interface: 'select-dropdown-mapped' },
       },
       { field: 'enunciado', type: 'text', schema: { data_type: 'text' }, meta: { interface: 'input-multiline' } },
@@ -181,14 +145,35 @@ const TABLAS = {
         field: 'tipo',
         type: 'string',
         schema: { data_type: 'character varying', default_value: 'unica' },
-        meta: { interface: 'select-dropdown', options: { choices: [{ text: 'Única', value: 'unica' }, { text: 'Múltiple', value: 'multiple' }] } },
+        meta: {
+          interface: 'select-dropdown',
+          options: {
+            choices: [
+              { text: 'Única', value: 'unica' },
+              { text: 'Múltiple', value: 'multiple' },
+            ],
+          },
+        },
       },
-      { field: 'orden', type: 'integer', schema: { data_type: 'integer', default_value: 1 }, meta: { interface: 'input' } },
+      {
+        field: 'orden',
+        type: 'integer',
+        schema: { data_type: 'integer', default_value: 1 },
+        meta: { interface: 'input' },
+      },
       {
         field: 'estado',
         type: 'string',
         schema: { data_type: 'character varying', default_value: 'publicado' },
-        meta: { interface: 'select-dropdown', options: { choices: [{ text: 'Publicado', value: 'publicado' }, { text: 'Borrador', value: 'borrador' }] } },
+        meta: {
+          interface: 'select-dropdown',
+          options: {
+            choices: [
+              { text: 'Publicado', value: 'publicado' },
+              { text: 'Borrador', value: 'borrador' },
+            ],
+          },
+        },
       },
     ],
   },
@@ -207,12 +192,29 @@ const TABLAS = {
       {
         field: 'pregunta',
         type: 'integer',
-        schema: { data_type: 'integer', is_nullable: false, foreign_key_table: 'quiz_preguntas', foreign_key_column: 'id', constraint_name: 'quiz_opciones_pregunta_foreign', on_delete: 'CASCADE' },
+        schema: {
+          data_type: 'integer',
+          is_nullable: false,
+          foreign_key_table: 'quiz_preguntas',
+          foreign_key_column: 'id',
+          constraint_name: 'quiz_opciones_pregunta_foreign',
+          on_delete: 'CASCADE',
+        },
         meta: { special: ['m2o'], interface: 'select-dropdown-mapped' },
       },
       { field: 'texto', type: 'text', schema: { data_type: 'text' }, meta: { interface: 'input' } },
-      { field: 'es_correcta', type: 'boolean', schema: { data_type: 'boolean', default_value: false }, meta: { interface: 'boolean' } },
-      { field: 'orden', type: 'integer', schema: { data_type: 'integer', default_value: 1 }, meta: { interface: 'input' } },
+      {
+        field: 'es_correcta',
+        type: 'boolean',
+        schema: { data_type: 'boolean', default_value: false },
+        meta: { interface: 'boolean' },
+      },
+      {
+        field: 'orden',
+        type: 'integer',
+        schema: { data_type: 'integer', default_value: 1 },
+        meta: { interface: 'input' },
+      },
     ],
   },
 
@@ -230,18 +232,42 @@ const TABLAS = {
       {
         field: 'agente',
         type: 'uuid',
-        schema: { data_type: 'uuid', is_nullable: false, foreign_key_table: 'directus_users', foreign_key_column: 'id', constraint_name: 'quiz_intentos_agente_foreign', on_delete: 'CASCADE' },
+        schema: {
+          data_type: 'uuid',
+          is_nullable: false,
+          foreign_key_table: 'directus_users',
+          foreign_key_column: 'id',
+          constraint_name: 'quiz_intentos_agente_foreign',
+          on_delete: 'CASCADE',
+        },
         meta: { special: ['m2o'], interface: 'select-dropdown-mapped' },
       },
       {
         field: 'proceso',
         type: 'integer',
-        schema: { data_type: 'integer', is_nullable: false, foreign_key_table: 'procesos', foreign_key_column: 'id', constraint_name: 'quiz_intentos_proceso_foreign', on_delete: 'CASCADE' },
+        schema: {
+          data_type: 'integer',
+          is_nullable: false,
+          foreign_key_table: 'procesos',
+          foreign_key_column: 'id',
+          constraint_name: 'quiz_intentos_proceso_foreign',
+          on_delete: 'CASCADE',
+        },
         meta: { special: ['m2o'], interface: 'select-dropdown-mapped' },
       },
       { field: 'puntaje', type: 'integer', schema: { data_type: 'integer' }, meta: { interface: 'input' } },
-      { field: 'respuestas', type: 'json', schema: { data_type: 'json', is_nullable: true }, meta: { interface: 'input-code', options: { language: 'json' } } },
-      { field: 'fecha', type: 'timestamp', schema: { data_type: 'timestamp with time zone', default_value: 'now()' }, meta: { interface: 'datetime' } },
+      {
+        field: 'respuestas',
+        type: 'json',
+        schema: { data_type: 'json', is_nullable: true },
+        meta: { interface: 'input-code', options: { language: 'json' } },
+      },
+      {
+        field: 'fecha',
+        type: 'timestamp',
+        schema: { data_type: 'timestamp with time zone', default_value: 'now()' },
+        meta: { interface: 'datetime' },
+      },
     ],
   },
 };
@@ -313,9 +339,7 @@ async function main() {
        relación se crea aquí — no en el paso del campo, que la ignora. */
     for (const col of def.columnas) {
       if (!col.schema?.foreign_key_table) continue;
-      const r = await asegurarRelacion(nombre, col.field, col.schema.foreign_key_table, () =>
-        crearColumna(col),
-      );
+      const r = await asegurarRelacion(nombre, col.field, col.schema.foreign_key_table, () => crearColumna(col));
       if (r === 'creada') {
         console.log(`   ✅ relación ${nombre}.${col.field} → ${col.schema.foreign_key_table} (CASCADE)`);
       }
@@ -357,10 +381,10 @@ async function main() {
      ========================================================== */
 
   /* --- 2a. Cuenta de servicio (policy "Portal — solo lectura") ---
-     Es la que usa Next.js: escribe el progreso del agente y lee las
-     preguntas para corregirlas. El contenido de las fases 1 y 2 sigue
-     en solo lectura. El aislamiento por agente lo hace el servidor,
-     que filtra por session.sub en cada consulta. */
+     Es la que usa Next.js: escribe los intentos de quiz del agente y
+     lee las preguntas para corregirlas. El contenido de las fases 1
+     y 2 sigue en solo lectura. El aislamiento por agente lo hace el
+     servidor, que filtra por session.sub en cada consulta. */
   console.log('\n→ permisos de la cuenta de servicio (policy Portal)');
   const policies = (await api('/policies?fields=id,name&limit=-1')).data;
   const servicePolicy = policies.find((p) => p.name === 'Portal — solo lectura');
@@ -370,14 +394,12 @@ async function main() {
 
   const permisosService = (await api(`/permissions?limit=-1&filter[policy][_eq]=${servicePolicy.id}`)).data;
 
-  for (const c of ['progreso', 'quiz_intentos']) {
-    for (const action of ['create', 'read']) {
-      const r = await asegurarPermiso(
-        { policy: servicePolicy.id, collection: c, action, permissions: {}, fields: ['*'] },
-        permisosService,
-      );
-      if (r !== 'ya existe') console.log(`   portal ${action} ${c}: ${r}`);
-    }
+  for (const action of ['create', 'read']) {
+    const r = await asegurarPermiso(
+      { policy: servicePolicy.id, collection: 'quiz_intentos', action, permissions: {}, fields: ['*'] },
+      permisosService,
+    );
+    if (r !== 'ya existe') console.log(`   portal ${action} quiz_intentos: ${r}`);
   }
   for (const c of ['quiz_preguntas', 'quiz_opciones']) {
     const r = await asegurarPermiso(
@@ -406,7 +428,7 @@ async function main() {
   }
 
   console.log('\n✅ Fase 3 lista');
-  console.log('   · progreso y quiz_intentos: los escribe la cuenta de servicio');
+  console.log('   · quiz_intentos: los escribe la cuenta de servicio');
   console.log('   · quiz_preguntas / quiz_opciones: las gestiona el Editor en /admin');
   console.log('   · para meter preguntas de ejemplo: npm run seed:quiz');
 }

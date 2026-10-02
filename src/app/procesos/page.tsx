@@ -12,12 +12,7 @@ import Link from 'next/link';
 import { JuegoTeclas } from '@/components/game/JuegoTeclas';
 import { GameLaunchButton } from '@/components/game/GameLaunchButton';
 import { ProcesoBuscador } from '@/components/processes/ProcesoBuscador';
-import {
-  getCategorias,
-  getPasosPorProcesoSlug,
-  getProcesos,
-  getProcesosByCategoria,
-} from '@/lib/directus';
+import { getCategorias, getPasosPorProcesoSlug, getProcesos, getProcesosByCategoria } from '@/lib/directus';
 
 export const revalidate = 60;
 
@@ -63,6 +58,9 @@ export default async function ProcesosPage() {
           </span>
         </h1>
         <div className="module-header-actions">
+          <Link href="/procesos/nuevo" className="btn btn-primary">
+            ➕ Proponer proceso
+          </Link>
           <GameLaunchButton />
         </div>
       </header>
@@ -72,12 +70,7 @@ export default async function ProcesosPage() {
           Todos <span className="category-pill-count">{todos.length}</span>
         </Link>
         {categorias.map((c) => (
-          <Link
-            key={c.id}
-            href={`/procesos/${c.slug}`}
-            className="category-pill"
-            aria-pressed="false"
-          >
+          <Link key={c.id} href={`/procesos/${c.slug}`} className="category-pill" aria-pressed="false">
             <span aria-hidden="true">{c.icono}</span>
             {c.nombre} <span className="category-pill-count">{c.totalProcesos ?? 0}</span>
           </Link>

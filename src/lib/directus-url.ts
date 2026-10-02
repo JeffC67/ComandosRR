@@ -13,9 +13,5 @@
 export const DEFAULT_DIRECTUS_URL = 'https://portal.rr.local';
 
 export function directusUrl(): string {
-  return (
-    process.env.DIRECTUS_URL ||
-    process.env.NEXT_PUBLIC_DIRECTUS_URL ||
-    DEFAULT_DIRECTUS_URL
-  );
+  return process.env.DIRECTUS_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS_URL;
 }

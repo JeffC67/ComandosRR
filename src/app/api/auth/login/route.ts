@@ -15,7 +15,11 @@ export async function POST(request: NextRequest) {
 
     const { user } = await directusLogin(email, password);
 
-    // Verificar que el usuario tiene rol agente
+    // Solo 3 roles de usuario. La cuenta de servicio Portal es interna
+    // (Next.js ↔ Directus) y nunca entra por el login del portal.
+    if (user.email === process.env.DIRECTUS_SERVICE_EMAIL) {
+      return NextResponse.json({ error: 'Cuenta no válida para este login' }, { status: 403 });
+    }
     if (user.role !== 'agente' && user.role !== 'admin' && user.role !== 'editor') {
       return NextResponse.json({ error: 'No tienes permisos para acceder' }, { status: 403 });
     }
@@ -24,7 +28,10 @@ export async function POST(request: NextRequest) {
     const accessToken = await createAccessToken(user);
     const refreshToken = await createRefreshToken(user);
 
-    const response = NextResponse.json({ user: { id: user.id, email: user.email, role: user.role } });
+    /* Respuesta mínima: el cliente solo necesita saber que entró (el
+       resto —email, rol— lo pide a /api/auth/me). No se devuelven
+       tokens ni ids en el cuerpo: viajan solo en cookies httpOnly. */
+    const response = NextResponse.json({ ok: true });
 
     /* Las cookies se fijan UNA sola vez, sobre la respuesta que se
        devuelve, y con los mismos atributos que el resto del portal
@@ -41,7 +48,7 @@ export async function POST(request: NextRequest) {
     console.error('Login error:', error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Error al iniciar sesión' },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }

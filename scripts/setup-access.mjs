@@ -130,7 +130,12 @@ async function main() {
     servicePolicy = (
       await api('/policies', {
         method: 'POST',
-        body: JSON.stringify({ name: 'Portal — solo lectura', icon: 'visibility', admin_access: false, app_access: false }),
+        body: JSON.stringify({
+          name: 'Portal — solo lectura',
+          icon: 'visibility',
+          admin_access: false,
+          app_access: false,
+        }),
       })
     ).data;
     console.log('→ Policy "Portal — solo lectura" creada');
@@ -138,7 +143,9 @@ async function main() {
 
   let serviceRole = roles.find((r) => r.name === 'Portal');
   if (!serviceRole) {
-    serviceRole = (await api('/roles', { method: 'POST', body: JSON.stringify({ name: 'Portal', icon: 'visibility' }) })).data;
+    serviceRole = (
+      await api('/roles', { method: 'POST', body: JSON.stringify({ name: 'Portal', icon: 'visibility' }) })
+    ).data;
     console.log('→ Rol "Portal" creado');
   }
 
@@ -159,18 +166,18 @@ async function main() {
     if (r !== 'ya existe') console.log(`   portal read ${c}: ${r}`);
   }
 
-  /* La cuenta de servicio también registra el progreso de los agentes
-     (fase 3): escritura en progreso / quiz_intentos y lectura de las
+  /* La cuenta de servicio también registra los intentos de quiz de los
+     agentes (fase 3): escritura en quiz_intentos y lectura de las
      preguntas y sus opciones. El contenido de la fase 1 y 2 sigue
      siendo de solo lectura. */
-  const FASE3 = ['progreso', 'quiz_intentos'];
+  const FASE3 = ['quiz_intentos'];
   const FASE3_LECTURA = ['quiz_preguntas', 'quiz_opciones'];
 
   /* La API responde 403 (no 404) cuando la colección no existe, así que
      la comprobación se hace contra el listado, no contra /collections/<x>. */
   const colecciones = (await api('/collections?limit=-1&fields=collection')).data.map((c) => c.collection);
-  const progresoExiste = colecciones.includes('progreso');
-  if (progresoExiste) {
+  const quizExiste = colecciones.includes('quiz_intentos');
+  if (quizExiste) {
     for (const c of FASE3) {
       for (const action of ['create', 'read']) {
         const r = await ensurePermission(
@@ -188,7 +195,7 @@ async function main() {
       if (r !== 'ya existe') console.log(`   portal read ${c}: ${r}`);
     }
   } else {
-    console.log('   · fase 3 sin instalar: progreso y quiz aún no tienen permisos (ejecuta setup:phase3)');
+    console.log('   · fase 3 sin instalar: quiz aún no tiene permisos (ejecuta setup:phase3)');
   }
 
   const allUsers = (await api('/users?fields=id,email,role&limit=-1')).data;

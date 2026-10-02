@@ -12,7 +12,9 @@
     "sync:check": "node sync-from-directus.mjs --check",
     "seed:quiz": "node seed-quiz.mjs",
     "setup:phase3": "node setup-phase3.mjs",
-    "verify": "node verify.mjs"
+    "setup:workflow": "node setup-workflow.mjs",
+    "verify": "node verify.mjs",
+    "verify:workflow": "node verify-workflow.mjs"
   },
   "dependencies": {
     "cheerio": "^1.0.0"

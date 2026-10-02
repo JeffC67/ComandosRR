@@ -511,6 +511,20 @@ fields:
     schema: {}
 
   - collection: procesos
+    field: creado_por
+    type: uuid
+    meta:
+      interface: select-dropdown-m2o
+      special: [m2o]
+      readonly: true
+      note: Agente que propuso el proceso (cola de validación)
+    schema:
+      is_nullable: true
+      foreign_key_table: directus_users
+      foreign_key_column: id
+      on_delete: SET NULL
+
+  - collection: procesos
     field: orden
     type: integer
     meta:
@@ -766,6 +780,16 @@ relations:
       on_update: CASCADE
     meta:
       sort_field: orden
+      one_deselect_action: nullify
+
+  # procesos.creado_por → directus_users (quién propuso el borrador)
+  - collection: procesos
+    field: creado_por
+    related_collection: directus_users
+    schema:
+      on_delete: SET NULL
+      on_update: CASCADE
+    meta:
       one_deselect_action: nullify
 
   # videos.modulo → modulos

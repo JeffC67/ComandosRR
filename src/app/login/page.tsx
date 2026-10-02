@@ -8,11 +8,19 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Icon } from '@/components/ui/Icons';
+import { avisarCambioSesion } from '@/lib/use-session';
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('redirect') || '/mi-progreso';
+  /* Solo destinos internos. Además, /mi-progreso se eliminó de la
+     plataforma: un redirect viejo (marcador, historial) caía en 404
+     con la navbar y nada más — se manda al inicio. */
+  const pedido = searchParams.get('redirect') || '/';
+  const redirectTo =
+    pedido.startsWith('/') && !pedido.startsWith('//') && !pedido.startsWith('/api/')
+      ? pedido.replace(/^\/mi-progreso(\/.*)?$/, '/')
+      : '/';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,6 +45,9 @@ function LoginForm() {
         throw new Error(data.error || 'Credenciales inválidas');
       }
 
+      /* El Navbar pide la sesión al cliente; sin este aviso seguiría
+         mostrando «Entrar» porque el layout no se desmonta. */
+      avisarCambioSesion();
       router.push(redirectTo);
       router.refresh();
     } catch (err) {
@@ -54,13 +65,15 @@ function LoginForm() {
             <Icon name="home" size={32} />
           </div>
           <h1 className="detail-title text-center">Iniciar Sesión</h1>
-          <p className="detail-subtitle login-header-sub">
-            Accede a tu progreso y evaluaciones
-          </p>
+          <p className="detail-subtitle login-header-sub">Accede a tus evaluaciones y contenido</p>
         </div>
 
         <form onSubmit={handleSubmit} className="stack-md">
-          {error && <div className="form-error" role="alert">{error}</div>}
+          {error && (
+            <div className="form-error" role="alert">
+              {error}
+            </div>
+          )}
 
           <div className="form-field">
             <label htmlFor="email" className="form-label">
@@ -109,9 +122,7 @@ function LoginForm() {
           </button>
         </form>
 
-        <p className="form-hint">
-          ¿No tienes cuenta? Contacta a tu administrador.
-        </p>
+        <p className="form-hint">¿No tienes cuenta? Contacta a tu administrador.</p>
       </div>
     </section>
   );

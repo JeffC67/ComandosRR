@@ -86,6 +86,19 @@ export interface Video {
   modulo: string; // slug del módulo
 }
 
+/* Enlace rápido de la sección Aplicaciones (catálogo PortalAppsIndra:
+   INDRA/HOGAR/MÓVIL). Sin URL = se muestra sin navegar (como MAXIMO). */
+export interface Enlace {
+  id: string;
+  categoria: string;
+  grupo: string;
+  nombre: string;
+  url: string | null;
+  descripcion: string | null;
+  orden: number;
+  estado: 'borrador' | 'publicado' | 'archivado';
+}
+
 export interface DirectusFile {
   id: string;
   filename_download: string;

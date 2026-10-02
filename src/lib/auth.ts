@@ -31,9 +31,11 @@ const REFRESH_EXPIRY = '7d';
    Caddy de HTTPS delante es true (el valor por defecto), y
    COOKIE_SECURE=false para despliegues sin TLS. */
 const cookieSecure = () =>
-  process.env.COOKIE_SECURE === 'false' ? false : process.env.COOKIE_SECURE === 'true'
-    ? true
-    : process.env.NODE_ENV === 'production';
+  process.env.COOKIE_SECURE === 'false'
+    ? false
+    : process.env.COOKIE_SECURE === 'true'
+      ? true
+      : process.env.NODE_ENV === 'production';
 
 /* Exportado para que las rutas de login/logout fijen las cookies sobre
    su propio NextResponse con exactamente los mismos atributos. */
@@ -111,11 +113,14 @@ const DIRECTUS_URL = directusUrl();
 
 /* Los roles de Directus (Administrator, Editor, Portal, agente…) a los
    tres que entiende el portal. `role.name` solo se puede leer si la
-   política del usuario lo permite; si no, todo cae en `agente`. */
+   política del usuario lo permite; si no, todo cae en `agente`.
+   Portal es cuenta de servicio: se marca aparte para rechazarla en el
+   login (nunca entra por la UI). */
 const mapRol = (rol?: string | null): string => {
   const n = (rol || '').toLowerCase();
   if (n.startsWith('admin')) return 'admin';
   if (n.startsWith('editor')) return 'editor';
+  if (n.startsWith('portal')) return 'portal';
   return 'agente';
 };
 
@@ -136,13 +141,11 @@ export async function directusLogin(email: string, password: string): Promise<Lo
 
   /* Directus 12 ya NO devuelve `user` en /auth/login (solo `expires`,
      `refresh_token` y `access_token`) y `/users/me` sin `fields` devuelve
-     únicamente `id`. Sin `id` el JWT se emite sin `sub`, y entonces el
-     progreso y el quiz no pueden filtrarse por agente: era el motivo de
-     que /mi-progreso estuviera siempre vacío. */
-  const meRes = await fetch(
-    `${DIRECTUS_URL}/users/me?fields=id,email,first_name,last_name,role.name`,
-    { headers: { Authorization: `Bearer ${accessToken}` } },
-  );
+     únicamente `id`. Sin `id` el JWT se emite sin `sub` y las rutas que
+     filtran por agente (quiz) no podrían identificar al usuario. */
+  const meRes = await fetch(`${DIRECTUS_URL}/users/me?fields=id,email,first_name,last_name,role.name`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
   const me = (meRes.ok ? ((await meRes.json()).data ?? {}) : {}) as Record<string, unknown> & {
     role?: { name?: string } | string | null;
   };

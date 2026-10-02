@@ -15,15 +15,7 @@ export function VideoCard({ video, videoUrl }: VideoCardProps) {
     <div className="video-section">
       <div className="video-card">
         <div className="video-frame">
-          <video
-            controls
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-label={`Tutorial: ${video.titulo}`}
-          >
+          <video controls autoPlay muted loop playsInline preload="metadata" aria-label={`Tutorial: ${video.titulo}`}>
             <source src={videoUrl} type="video/mp4" />
             Tu navegador no soporta el reproductor de video.
           </video>

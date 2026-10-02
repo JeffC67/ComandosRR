@@ -10,6 +10,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Icon } from '@/components/ui/Icons';
+import Link from 'next/link';
 import type { QuizPregunta, QuizOpcion } from '@/types/auth';
 
 interface PreguntaConOpciones extends QuizPregunta {
@@ -58,21 +59,16 @@ export default function QuizPage() {
     };
   }, [slug]);
 
-  const alternar = useCallback(
-    (preguntaId: string, opcionId: string, tipo: 'unica' | 'multiple') => {
-      setRespuestas((prev) => {
-        if (tipo === 'unica') return { ...prev, [preguntaId]: [opcionId] };
-        const actuales = prev[preguntaId] ?? [];
-        return {
-          ...prev,
-          [preguntaId]: actuales.includes(opcionId)
-            ? actuales.filter((id) => id !== opcionId)
-            : [...actuales, opcionId],
-        };
-      });
-    },
-    [],
-  );
+  const alternar = useCallback((preguntaId: string, opcionId: string, tipo: 'unica' | 'multiple') => {
+    setRespuestas((prev) => {
+      if (tipo === 'unica') return { ...prev, [preguntaId]: [opcionId] };
+      const actuales = prev[preguntaId] ?? [];
+      return {
+        ...prev,
+        [preguntaId]: actuales.includes(opcionId) ? actuales.filter((id) => id !== opcionId) : [...actuales, opcionId],
+      };
+    });
+  }, []);
 
   async function enviar() {
     if (!proceso || enviando) return;
@@ -106,9 +102,7 @@ export default function QuizPage() {
       <section className="module-section">
         <div className="form-card text-center">
           <Icon name="loader" size={32} className="spin" />
-          <p className="form-hint mt-4">
-            Cargando evaluación…
-          </p>
+          <p className="form-hint mt-4">Cargando evaluación…</p>
         </div>
       </section>
     );
@@ -162,15 +156,11 @@ export default function QuizPage() {
           </span>
           <span className="empty-state-title">{aprobado ? '¡Aprobado!' : 'Todavía no'}</span>
           <p className="empty-state-text">
-            Obtuviste <strong>{resultado.puntaje}%</strong> · {resultado.correctas} de {resultado.total}{' '}
-            respuestas correctas.
+            Obtuviste <strong>{resultado.puntaje}%</strong> · {resultado.correctas} de {resultado.total} respuestas
+            correctas.
           </p>
           <div className="quiz-acciones">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => window.location.reload()}
-            >
+            <button type="button" className="btn btn-primary" onClick={() => window.location.reload()}>
               <Icon name="refresh-cw" size={16} />
               Reintentar
             </button>
@@ -189,11 +179,11 @@ export default function QuizPage() {
   return (
     <section className="module-section">
       <nav className="breadcrumb" aria-label="Ruta de navegación">
-        <a href="/procesos">Procesos</a>
+        <Link href="/procesos">Procesos</Link>
         <span className="breadcrumb-sep" aria-hidden="true">
           /
         </span>
-        <a href={`/procesos/${slug}`}>{proceso.titulo}</a>
+        <Link href={`/procesos/${slug}`}>{proceso.titulo}</Link>
         <span className="breadcrumb-sep" aria-hidden="true">
           /
         </span>
@@ -206,9 +196,7 @@ export default function QuizPage() {
         </div>
         <h1>
           {proceso.titulo}
-          <span className="module-header-sub">
-            Evaluación de conocimientos · {preguntas.length} preguntas
-          </span>
+          <span className="module-header-sub">Evaluación de conocimientos · {preguntas.length} preguntas</span>
         </h1>
       </header>
 
@@ -216,7 +204,13 @@ export default function QuizPage() {
         <span className="quiz-progress-text">
           Pregunta {currentIndex + 1} de {preguntas.length}
         </span>
-        <div className="quiz-progress-track" role="progressbar" aria-valuenow={avance} aria-valuemin={0} aria-valuemax={100}>
+        <div
+          className="quiz-progress-track"
+          role="progressbar"
+          aria-valuenow={avance}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
           <div className="quiz-progress-fill" style={{ width: `${avance}%` }} />
         </div>
       </div>
@@ -243,7 +237,11 @@ export default function QuizPage() {
         </div>
       </div>
 
-      {error && <div className="form-error" role="alert">{error}</div>}
+      {error && (
+        <div className="form-error" role="alert">
+          {error}
+        </div>
+      )}
 
       <div className="quiz-nav">
         <button
@@ -267,12 +265,7 @@ export default function QuizPage() {
             <Icon name="arrow-right" size={16} />
           </button>
         ) : (
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={enviar}
-            disabled={!todasRespondidas || enviando}
-          >
+          <button type="button" className="btn btn-primary" onClick={enviar} disabled={!todasRespondidas || enviando}>
             {enviando ? (
               <>
                 <Icon name="loader" size={16} className="spin" />

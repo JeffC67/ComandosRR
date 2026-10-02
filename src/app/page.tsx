@@ -10,22 +10,12 @@ import { ModuleSection } from '@/components/modules/ModuleSection';
 import { CategoryCard } from '@/components/processes/CategoryCard';
 import { GameCta } from '@/components/game/GameCta';
 import { SectionDivider } from '@/components/ui/SectionDivider';
-import {
-  getModulos,
-  getComandosByModulo,
-  getVideosByModulo,
-  getCategorias,
-  getHeroStats,
-} from '@/lib/directus';
+import { getModulos, getComandosByModulo, getVideosByModulo, getCategorias, getHeroStats } from '@/lib/directus';
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [modulos, categorias, stats] = await Promise.all([
-    getModulos(),
-    getCategorias(),
-    getHeroStats(),
-  ]);
+  const [modulos, categorias, stats] = await Promise.all([getModulos(), getCategorias(), getHeroStats()]);
 
   /* Comandos y videos de cada módulo, en paralelo */
   const secciones = await Promise.all(
@@ -73,9 +63,7 @@ export default async function HomePage() {
               </div>
               <h2 id="procesos-title">
                 {modProcesos.titulo}
-                {modProcesos.descripcion && (
-                  <span className="module-header-sub">{modProcesos.descripcion}</span>
-                )}
+                {modProcesos.descripcion && <span className="module-header-sub">{modProcesos.descripcion}</span>}
               </h2>
             </div>
 

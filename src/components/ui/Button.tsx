@@ -8,7 +8,7 @@
    `className="btn btn-primary"` en su lugar.
    ============================================================ */
 
-import type { ButtonHTMLAttributes, ForwardRefExoticComponent, RefAttributes } from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/ui/Icons';
@@ -49,17 +49,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => (
     <button
       ref={ref}
-      className={cn(
-        'btn',
-        VARIANTES[variant],
-        TAMANOS[size],
-        fullWidth && 'btn-block',
-        className
-      )}
+      className={cn('btn', VARIANTES[variant], TAMANOS[size], fullWidth && 'btn-block', className)}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...props}
@@ -77,7 +71,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         </>
       )}
     </button>
-  )
+  ),
 );
 
 Button.displayName = 'Button';

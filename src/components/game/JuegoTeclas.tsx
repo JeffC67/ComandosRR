@@ -4,10 +4,17 @@
    F1–F12 directas; F13–F24 se pulsan con Shift+F1..F12.
 
    Marcado idéntico al de la rama main (section 15 de Styles.css):
-     .modal-overlay.game-modal > .modal-content
+     .modal-overlay.game-modal.active > .modal-content
        > .modal-header + .modal-body
          > .game-body > .game-target-wrap + .game-feedback + .game-stats
          > .game-correct-bar + .game-map
+
+   IMPORTANTE: la clase "active" no es decorativa. En globals.css,
+   .modal-overlay nace con opacity: 0 y pointer-events: none, y solo
+   .modal-overlay.active lo vuelve visible e interactivo. Sin ella el
+   modal se monta invisible y el juego parece no funcionar.
+   En la rama main esto no hacia falta porque el juego era una pagina
+   con .game-panel siempre visible, no un modal.
 
    Se abre desde el botón .game-cta de la portada o desde /procesos.
    ============================================================ */
@@ -22,9 +29,7 @@ const NEXT_MS = 650;
 
 /* F1–F12 tal cual; F13–F24 equivalen a Shift+F1..F12 */
 function labelOf(n: number) {
-  return n <= 12
-    ? { name: `F${n}`, combo: `F${n}` }
-    : { name: `F${n}`, combo: `Shift+F${n - 12}` };
+  return n <= 12 ? { name: `F${n}`, combo: `F${n}` } : { name: `F${n}`, combo: `Shift+F${n - 12}` };
 }
 
 type FeedbackState = 'idle' | 'correct' | 'wrong';
@@ -175,7 +180,7 @@ export function JuegoTeclas() {
     <>
       {abierto && (
         <div
-          className="modal-overlay game-modal"
+          className="modal-overlay game-modal active"
           role="dialog"
           aria-modal="true"
           aria-labelledby="juego-title"

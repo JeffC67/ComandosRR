@@ -10,7 +10,7 @@
 
 import { createDirectus, rest, readItems, authentication } from '@directus/sdk';
 import { directusUrl } from '@/lib/directus-url';
-import type { Modulo, Comando, Categoria, Proceso, Paso, Video } from '@/types';
+import type { Modulo, Comando, Categoria, Proceso, Paso, Video, Enlace } from '@/types';
 
 function crearCliente(url: string) {
   return createDirectus(url).with(rest());
@@ -372,6 +372,67 @@ export async function getAllVideos(): Promise<Video[]> {
     }),
   );
   return data as Video[];
+}
+
+/* ---------- ENLACES (sección Aplicaciones) ----------
+   Catálogo de enlaces rápidos (PortalAppsIndra: INDRA/HOGAR/MÓVIL).
+   El portal solo muestra estado=publicado, ordenados por
+   categoría → grupo → orden. Sin URL = se muestra sin navegar. */
+export interface GrupoEnlaces {
+  categoria: string;
+  grupo: string;
+  enlaces: Enlace[];
+}
+
+export async function getEnlacesPublicados(): Promise<GrupoEnlaces[]> {
+  const client = await getDirectusClient();
+  const data = (await client.request(
+    readItems('enlaces', {
+      filter: publishedFilter,
+      sort: ['categoria', 'grupo', 'orden'],
+      fields: ['id', 'categoria', 'grupo', 'nombre', 'url', 'descripcion', 'orden', 'estado'],
+      limit: -1,
+    }),
+  )) as Enlace[];
+
+  const grupos: GrupoEnlaces[] = [];
+  for (const e of data) {
+    const ultimo = grupos[grupos.length - 1];
+    if (ultimo && ultimo.categoria === e.categoria && ultimo.grupo === e.grupo) {
+      ultimo.enlaces.push(e);
+    } else {
+      grupos.push({ categoria: e.categoria, grupo: e.grupo, enlaces: [e] });
+    }
+  }
+  return grupos;
+}
+
+/* Listado completo para el editor (sin filtro de estado: también
+   borradores y archivados). */
+export async function getTodosLosEnlaces(): Promise<Enlace[]> {
+  const client = await getDirectusClient();
+  const data = (await client.request(
+    readItems('enlaces', {
+      sort: ['categoria', 'grupo', 'orden'],
+      fields: ['id', 'categoria', 'grupo', 'nombre', 'url', 'descripcion', 'orden', 'estado'],
+      limit: -1,
+    }),
+  )) as Enlace[];
+  return data;
+}
+
+/* Un enlace por id (formulario de edición). Sin filtro de estado: el
+   editor también corrige borradores. */
+export async function getEnlace(id: string | number): Promise<Enlace | null> {
+  const client = await getDirectusClient();
+  const data = (await client.request(
+    readItems('enlaces', {
+      filter: { id: { _eq: Number(id) } },
+      fields: ['id', 'categoria', 'grupo', 'nombre', 'url', 'descripcion', 'orden', 'estado'],
+      limit: 1,
+    }),
+  )) as Enlace[];
+  return data[0] ?? null;
 }
 
 /* ---------- ASSETS / VIDEOS ----------

@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ProcesoBuscador } from '@/components/processes/ProcesoBuscador';
 import { StepList } from '@/components/processes/StepList';
+import { AccionesProceso } from '@/components/processes/AccionesProceso';
 import {
   getCategoriaBySlug,
   getCategorias,
@@ -30,6 +31,12 @@ interface PageProps {
 }
 
 export const revalidate = 60;
+/* Next 15 no cachea por su cuenta los segmentos `[slug]` sin
+   `generateStaticParams`: los renderiza bajo demanda y les pone
+   `no-store` (comprobado con una ruta sonda). Con `force-static` la
+   primera petición genera la página y las siguientes la sirven de la
+   caché con `s-maxage=60`, como el resto del portal. */
+export const dynamic = 'force-static';
 
 export async function generateMetadata({ params }: PageProps) {
   const { slug } = await params;
@@ -96,10 +103,10 @@ async function VistaProceso({ slug }: { slug: string }) {
   const proceso = await getProcesoBySlug(slug);
   if (!proceso) notFound();
 
-  const [pasos, categorias] = await Promise.all([
-    getPasosByProceso(proceso.id),
-    getCategorias(),
-  ]);
+  /* Sin `getSession()`: leer `cookies()` en el render haría dinámica
+     esta página y anularía su `revalidate = 60`. El rol (admin/
+     editor) lo resuelve ahora el cliente dentro de AccionesProceso. */
+  const [pasos, categorias] = await Promise.all([getPasosByProceso(proceso.id), getCategorias()]);
 
   const cat = categorias.find((c) => c.slug === proceso.categoria);
 
@@ -113,9 +120,7 @@ async function VistaProceso({ slug }: { slug: string }) {
         </div>
         <div>
           <h1 className="detail-title">{proceso.titulo}</h1>
-          {proceso.descripcion && (
-            <p className="detail-subtitle">{proceso.descripcion}</p>
-          )}
+          {proceso.descripcion && <p className="detail-subtitle">{proceso.descripcion}</p>}
         </div>
       </header>
 
@@ -146,6 +151,8 @@ async function VistaProceso({ slug }: { slug: string }) {
         </div>
       )}
 
+      <AccionesProceso id={proceso.id} slug={proceso.slug} />
+
       <StepList pasos={pasos} procesoTitulo={proceso.titulo} />
     </section>
   );
@@ -165,15 +172,7 @@ function Migas({ titulo }: { titulo: string }) {
   );
 }
 
-function Pills({
-  categorias,
-  actual,
-  total,
-}: {
-  categorias: Categoria[];
-  actual?: string;
-  total?: number;
-}) {
+function Pills({ categorias, actual, total }: { categorias: Categoria[]; actual?: string; total?: number }) {
   return (
     <nav className="category-pills mb-6" aria-label="Categorías de procesos">
       <Link

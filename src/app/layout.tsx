@@ -5,9 +5,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
-import { getSession } from '@/lib/auth';
+import { SiteChrome } from '@/components/layout/SiteChrome';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -24,7 +22,8 @@ export const metadata: Metadata = {
     default: 'Portal de Capacitación RR y AS400',
     template: '%s | Portal Capacitación RR / AS400',
   },
-  description: 'Tu guía de referencia rápida con los comandos y procesos esenciales para atender a tus clientes con eficiencia y seguridad.',
+  description:
+    'Tu guía de referencia rápida con los comandos y procesos esenciales para atender a tus clientes con eficiencia y seguridad.',
   keywords: ['RR', 'AS400', 'capacitación', 'call center', 'comandos', 'procesos guiados', 'telecomunicaciones'],
   authors: [{ name: 'Portal Capacitación RR / AS400' }],
   creator: 'Portal Capacitación RR / AS400',
@@ -64,7 +63,7 @@ export const metadata: Metadata = {
   },
   verification: {
     other: {
-      'robots': 'noindex, nofollow',
+      robots: 'noindex, nofollow',
     },
   },
   category: 'education',
@@ -78,26 +77,29 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const session = await getSession();
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  /* OJO: no leer `cookies()`/`headers()` aquí. La sesión se resuelve
+     en el cliente (Navbar → GET /api/auth/me); leerla en el render
+     del servidor dinamizaba TODA la app y anulaba el ISR
+     (`revalidate = 60`) de todas las páginas. */
 
   return (
     <html lang="es" className={inter.variable}>
       <head>
-        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230ea5e9'%3E%3Crect x='2' y='3' width='20' height='14' rx='2'/%3E%3Crect x='2' y='20' width='20' height='1'/%3E%3Crect x='5' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='10' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='15' y='6' width='3' height='3' fill='%23fff'/%3E%3C/svg%3E" />
-        <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230ea5e9'%3E%3Crect x='2' y='3' width='20' height='14' rx='2'/%3E%3Crect x='2' y='20' width='20' height='1'/%3E%3Crect x='5' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='10' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='15' y='6' width='3' height='3' fill='%23fff'/%3E%3C/svg%3E" />
+        <link
+          rel="icon"
+          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230ea5e9'%3E%3Crect x='2' y='3' width='20' height='14' rx='2'/%3E%3Crect x='2' y='20' width='20' height='1'/%3E%3Crect x='5' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='10' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='15' y='6' width='3' height='3' fill='%23fff'/%3E%3C/svg%3E"
+        />
+        <link
+          rel="apple-touch-icon"
+          href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230ea5e9'%3E%3Crect x='2' y='3' width='20' height='14' rx='2'/%3E%3Crect x='2' y='20' width='20' height='1'/%3E%3Crect x='5' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='10' y='6' width='3' height='3' fill='%23fff'/%3E%3Crect x='15' y='6' width='3' height='3' fill='%23fff'/%3E%3C/svg%3E"
+        />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0f172a" />
         <meta name="color-scheme" content="dark" />
       </head>
       <body>
-        <Navbar session={session ? { email: session.email, role: session.role } : null} />
-        <main className="main-container">{children}</main>
-        <Footer />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

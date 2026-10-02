@@ -75,7 +75,8 @@ async function login() {
   if (process.env.DIRECTUS_TOKEN) intentos.push(['token estático', null, process.env.DIRECTUS_TOKEN]);
   if (localEnv.DIRECTUS_SERVICE_EMAIL)
     intentos.push(['cuenta de servicio', localEnv.DIRECTUS_SERVICE_EMAIL, localEnv.DIRECTUS_SERVICE_PASSWORD]);
-  if (dotEnv.DIRECTUS_ADMIN_EMAIL) intentos.push(['admin', dotEnv.DIRECTUS_ADMIN_EMAIL, dotEnv.DIRECTUS_ADMIN_PASSWORD]);
+  if (dotEnv.DIRECTUS_ADMIN_EMAIL)
+    intentos.push(['admin', dotEnv.DIRECTUS_ADMIN_EMAIL, dotEnv.DIRECTUS_ADMIN_PASSWORD]);
 
   let ultimo = 'no hay credenciales disponibles';
   for (const [nombre, email, credencial] of intentos) {
@@ -146,7 +147,8 @@ const readJson = (file) => {
   }
 };
 
-const porOrden = (a, b) => (a.orden ?? 0) - (b.orden ?? 0) || String(a.slug || a.titulo || '').localeCompare(String(b.slug || b.titulo || ''));
+const porOrden = (a, b) =>
+  (a.orden ?? 0) - (b.orden ?? 0) || String(a.slug || a.titulo || '').localeCompare(String(b.slug || b.titulo || ''));
 
 /* ---------- Main ---------- */
 async function main() {
@@ -170,7 +172,8 @@ async function main() {
     fileMap(),
   ]);
 
-  const prevDe = (lista, registro, campo) => (Array.isArray(lista) ? lista.find((r) => r[campo] === registro[campo]) : null);
+  const prevDe = (lista, registro, campo) =>
+    Array.isArray(lista) ? lista.find((r) => r[campo] === registro[campo]) : null;
 
   const modulos = modulosRaw
     .map((m) =>
@@ -251,7 +254,9 @@ async function main() {
     const slug = p.proceso?.slug;
     if (!slug) continue;
     if (!pasosPorProceso.has(slug)) pasosPorProceso.set(slug, []);
-    pasosPorProceso.get(slug).push({ orden: p.orden, grupo: p.grupo ? clean(p.grupo) : null, contenido: String(p.contenido ?? '').trim() });
+    pasosPorProceso
+      .get(slug)
+      .push({ orden: p.orden, grupo: p.grupo ? clean(p.grupo) : null, contenido: String(p.contenido ?? '').trim() });
   }
   for (const lista of pasosPorProceso.values()) lista.sort((a, b) => a.orden - b.orden);
 
@@ -299,7 +304,9 @@ async function main() {
   }
 
   const totalPasos = procesos.reduce((n, p) => n + p.pasos.length, 0);
-  console.log(`\n  pasos: ${totalPasos} · módulos: ${modulos.length} · comandos: ${comandos.length} · categorías: ${categorias.length} · videos: ${videos.length} · procesos: ${procesos.length}`);
+  console.log(
+    `\n  pasos: ${totalPasos} · módulos: ${modulos.length} · comandos: ${comandos.length} · categorías: ${categorias.length} · videos: ${videos.length} · procesos: ${procesos.length}`,
+  );
   if (extras.size) console.log(`  ⚠ Campos conservados del JSON (no existen en Directus): ${[...extras].join(', ')}`);
   if (vaciados.size)
     console.log(
@@ -315,7 +322,9 @@ async function main() {
     }
     console.log('\n✅ --check: src/data/*.json coincide con Directus');
   } else {
-    console.log(cambios ? `\n✅ ${cambios} fichero(s) regenerado(s) desde Directus` : '\n✅ src/data/*.json ya estaba al día');
+    console.log(
+      cambios ? `\n✅ ${cambios} fichero(s) regenerado(s) desde Directus` : '\n✅ src/data/*.json ya estaba al día',
+    );
   }
 }
 

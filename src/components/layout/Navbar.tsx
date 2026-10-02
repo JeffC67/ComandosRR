@@ -5,16 +5,17 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@/components/ui/Icons';
+import { useSession } from '@/lib/use-session';
 import { UserMenu } from './UserMenu';
 
 interface NavItem {
   href: string;
   label: string;
-  icon: 'home' | 'search' | 'users' | 'help-circle' | 'clipboard-list';
+  icon: 'home' | 'search' | 'users' | 'help-circle' | 'clipboard-list' | 'link' | 'plus' | 'shield';
 }
 
 const navItems: NavItem[] = [
@@ -23,26 +24,51 @@ const navItems: NavItem[] = [
   { href: '/suscriptor', label: 'Suscriptor', icon: 'users' },
   { href: '/consultas', label: 'Consultas', icon: 'help-circle' },
   { href: '/procesos', label: 'Procesos', icon: 'clipboard-list' },
+  { href: '/aplicaciones', label: 'Aplicaciones', icon: 'link' },
 ];
 
-interface NavbarProps {
-  session: { email: string; role: string } | null;
-}
-
-export function Navbar({ session }: NavbarProps) {
+/* Sin props: la sesión se pide al cliente (GET /api/auth/me). Si se
+   leyera `cookies()` en el layout, Next dinamizaría toda la app y el
+   ISR no funcionaría (ver src/lib/use-session.ts). */
+export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { session } = useSession();
   const pathname = usePathname() || '/';
+  const navRef = useRef<HTMLElement>(null);
 
   // Cerrar el menú al navegar
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  /* En móvil el menú es un desplegable: se cierra con Escape o al
+     tocar fuera de la barra. */
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const onPointer = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) setIsOpen(false);
+    };
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    document.addEventListener('mousedown', onPointer);
+    document.addEventListener('keydown', onEsc);
+    return () => {
+      document.removeEventListener('mousedown', onPointer);
+      document.removeEventListener('keydown', onEsc);
+    };
+  }, [isOpen]);
+
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+
+  /* La barra superior lleva solo las 5 secciones: las acciones por rol
+     (Proponer, Revisión) viven en el menú de usuario y en las páginas,
+     para que la barra quepa sin romperse en pantallas medianas. */
 
   return (
-    <nav className="navbar" aria-label="Navegación principal">
+    <nav className="navbar" aria-label="Navegación principal" ref={navRef}>
       <Link href="/" className="navbar-brand">
         <div className="navbar-logo" aria-hidden="true">
           <svg

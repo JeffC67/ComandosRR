@@ -76,23 +76,12 @@ export function StepList({ pasos, procesoTitulo }: StepListProps) {
         </div>
       )}
 
-      <div
-        className="modal-body"
-        ref={cuerpoRef}
-        tabIndex={-1}
-        key={indice}
-        aria-live="polite"
-      >
+      <div className="modal-body" ref={cuerpoRef} tabIndex={-1} key={indice} aria-live="polite">
         <div className="modal-body-block">
-          {conNavegacion && actualGrupo.grupo && (
-            <span className="sub-section-title">{actualGrupo.grupo}</span>
-          )}
+          {conNavegacion && actualGrupo.grupo && <span className="sub-section-title">{actualGrupo.grupo}</span>}
           <ol>
             {actualGrupo.pasos.map((paso) => (
-              <li
-                key={paso.id}
-                dangerouslySetInnerHTML={{ __html: paso.contenido }}
-              />
+              <li key={paso.id} dangerouslySetInnerHTML={{ __html: paso.contenido }} />
             ))}
           </ol>
         </div>
@@ -125,10 +114,7 @@ export function StepList({ pasos, procesoTitulo }: StepListProps) {
 
           <div className="nav-steps-indicator">
             {grupos.map((g, i) => (
-              <span
-                key={`${g.grupo}-dot-${i}`}
-                className={`nav-dot${i === indice ? ' active' : ''}`}
-              />
+              <span key={`${g.grupo}-dot-${i}`} className={`nav-dot${i === indice ? ' active' : ''}`} />
             ))}
           </div>
 

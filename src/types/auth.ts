@@ -1,13 +1,7 @@
 /* ============================================================
-   Tipos extendidos — Fase 3: Auth, Progreso, Quiz
+   Tipos extendidos — Fase 3: Auth, Quiz
+   (El módulo de progreso se eliminó: no hace parte de la plataforma.)
    ============================================================ */
-
-export interface Progreso {
-  id: string;
-  agente: string; // directus_users.id
-  proceso: string; // procesos.id
-  completado_en: string;
-}
 
 export interface QuizPregunta {
   id: string;
@@ -60,12 +54,4 @@ export interface LoginResponse {
   access_token: string;
   refresh_token: string;
   expires: number;
-}
-
-/* Stats de progreso para /mi-progreso */
-export interface ProgresoStats {
-  totalProcesos: number;
-  completados: number;
-  enProgreso: number;
-  promedioQuiz: number;
 }

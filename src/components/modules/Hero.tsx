@@ -34,8 +34,8 @@ export function Hero({ stats }: HeroProps) {
 
           <h2>Dominio de RR y AS400</h2>
           <p className="hero-subtitle">
-            Tu guía de referencia rápida con los comandos y procesos esenciales para atender a tus
-            clientes con eficiencia y seguridad.
+            Tu guía de referencia rápida con los comandos y procesos esenciales para atender a tus clientes con
+            eficiencia y seguridad.
           </p>
 
           <div className="hero-stats">

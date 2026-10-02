@@ -6,22 +6,19 @@
 
 1. Ir a **Settings → Roles → Administrator**
 2. En la pestaña **Permissions**, buscar las nuevas colecciones:
-   - `progreso`
    - `quiz_preguntas`
    - `quiz_opciones`
    - `intentos`
 3. Para cada colección, habilitar: **Create, Read, Update, Delete** (acceso completo)
 4. Guardar cambios
 
+> Nota: el módulo de progreso se eliminó de la plataforma; ya no existe
+> la colección `progreso` ni la ruta `/mi-progreso`.
+
 ### 2. Configurar rol "agente" (acceso restringido)
 
 1. Ir a **Settings → Roles → agente**
-2. Colección `progreso`:
-   - Create: ✅ (con validación `agente = $CURRENT_USER`)
-   - Read: ✅ (con filtro `agente = $CURRENT_USER`)
-   - Update: ✅ (con filtro `agente = $CURRENT_USER`)
-   - Delete: ✅ (con filtro `agente = $CURRENT_USER`)
-3. Colección `quiz_preguntas`:
+2. Colección `quiz_preguntas`:
    - Read: ✅ (con filtro `estado = publicado`)
 4. Colección `quiz_opciones`:
    - Read: ✅ (con filtro `pregunta.estado = publicado`)
@@ -53,7 +50,7 @@ cuenta y el SDK renueva la sesión sola (`ACCESS_TOKEN_TTL=1d` en
    DIRECTUS_SERVICE_EMAIL=portal@capacitacion-rr.co
    DIRECTUS_SERVICE_PASSWORD=<la que imprimió setup:access>
    ```
-3. Esa cuenta **sí** escribe en `progreso` y `quiz_intentos` (datos del
+3. Esa cuenta **sí** escribe en `quiz_intentos` (datos del
    agente), pero el contenido de las fases 1 y 2 sigue siendo de solo
    lectura. Para resetear la contraseña, vuelve a ejecutar
    `npm run setup:access`.

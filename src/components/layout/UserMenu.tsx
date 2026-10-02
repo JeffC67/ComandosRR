@@ -9,6 +9,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Icon } from '@/components/ui/Icons';
+import { avisarCambioSesion } from '@/lib/use-session';
 
 interface UserMenuProps {
   session: { email: string; role: string } | null;
@@ -16,6 +17,7 @@ interface UserMenuProps {
 
 export function UserMenu({ session }: UserMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [saliendo, setSaliendo] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   /* Cierra al hacer clic fuera y al pulsar Escape */
@@ -37,7 +39,23 @@ export function UserMenu({ session }: UserMenuProps) {
     };
   }, [isOpen]);
 
+  /* POST + redirección dura: el <a href> directo hacía un GET a una
+     ruta solo-POST (página en blanco) y la sesión nunca se borraba. */
+  const cerrarSesion = async () => {
+    if (saliendo) return;
+    setSaliendo(true);
+    try {
+      await fetch('/api/auth/logout', { method: 'POST', cache: 'no-store' });
+    } catch {
+      /* sin red: igual se redirige; el middleware pedirá login */
+    }
+    avisarCambioSesion();
+    window.location.href = '/login';
+  };
+
   if (!session) return null;
+
+  const puedeRevisar = session.role === 'editor' || session.role === 'admin';
 
   return (
     <div className="user-menu" ref={ref}>
@@ -64,20 +82,28 @@ export function UserMenu({ session }: UserMenuProps) {
             <span className="badge badge-primary">{session.role}</span>
           </div>
 
-          <Link
-            href="/mi-progreso"
-            className="user-menu-item"
-            role="menuitem"
-            onClick={() => setIsOpen(false)}
-          >
-            <Icon name="clipboard-list" size={18} />
-            Mi progreso
+          <Link href="/procesos/nuevo" className="user-menu-item" role="menuitem" onClick={() => setIsOpen(false)}>
+            <Icon name="plus" size={18} />
+            Proponer proceso
           </Link>
 
-          <a href="/api/auth/logout" className="user-menu-item user-menu-item--exit" role="menuitem">
+          {puedeRevisar && (
+            <Link href="/editor/revision" className="user-menu-item" role="menuitem" onClick={() => setIsOpen(false)}>
+              <Icon name="shield" size={18} />
+              Revisión editorial
+            </Link>
+          )}
+
+          <button
+            type="button"
+            onClick={cerrarSesion}
+            disabled={saliendo}
+            className="user-menu-item user-menu-item--exit"
+            role="menuitem"
+          >
             <Icon name="log-out" size={18} />
-            Cerrar sesión
-          </a>
+            {saliendo ? 'Cerrando…' : 'Cerrar sesión'}
+          </button>
         </div>
       )}
     </div>

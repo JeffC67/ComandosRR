@@ -74,10 +74,7 @@ export async function POST(request: NextRequest) {
 
       if (p.tipo === 'unica') {
         if (dadas.size === 1 && esperadas.has([...dadas][0])) aciertos++;
-      } else if (
-        dadas.size === esperadas.size &&
-        [...esperadas].every((id) => dadas.has(id))
-      ) {
+      } else if (dadas.size === esperadas.size && [...esperadas].every((id) => dadas.has(id))) {
         /* Opción múltiple: acierta solo si marca todas y no marca ninguna de más */
         aciertos++;
       }

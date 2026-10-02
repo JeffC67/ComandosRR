@@ -64,12 +64,7 @@ export function ProcesoBuscador({
           aria-label={etiqueta}
         />
         {q && (
-          <button
-            type="button"
-            className="buscador-clear"
-            onClick={() => setQ('')}
-            aria-label="Limpiar búsqueda"
-          >
+          <button type="button" className="buscador-clear" onClick={() => setQ('')} aria-label="Limpiar búsqueda">
             &times;
           </button>
         )}
@@ -90,11 +85,7 @@ export function ProcesoBuscador({
         <>
           <div className="processes-grid">
             {filtrados.map((proceso) => (
-              <ProcessCard
-                key={proceso.id}
-                proceso={proceso}
-                totalPasos={pasosPorProceso[proceso.slug]}
-              />
+              <ProcessCard key={proceso.id} proceso={proceso} totalPasos={pasosPorProceso[proceso.slug]} />
             ))}
           </div>
           <p className="buscador-conteo" aria-live="polite">
