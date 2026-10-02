@@ -7,6 +7,11 @@
    ========================================================== */
 
 import { parse, login, api, BASE } from './migrate.mjs';
+import { existsSync, statSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const MEDIA_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'media');
 
 const resultados = [];
 const check = (nombre, ok, detalle = '') => {
@@ -50,11 +55,7 @@ async function main() {
       real ? `"${real.titulo}" orden ${real.orden}` : 'NO EXISTE',
     );
   }
-  check(
-    'Sin módulos extra',
-    apiMods.size === esperado.modulos.length,
-    `${apiMods.size} en API`,
-  );
+  check('Sin módulos extra', apiMods.size === esperado.modulos.length, `${apiMods.size} en API`);
 
   /* 3. Comandos: etiqueta + tecla + tipo, por módulo
      (la clave incluye el módulo: hay comandos repetidos entre módulos,
@@ -94,11 +95,7 @@ async function main() {
       real ? `"${real.nombre}" orden ${real.orden}` : 'NO EXISTE',
     );
   }
-  check(
-    'Sin categorías extra',
-    apiCats.size === esperado.categorias.length,
-    `${apiCats.size} en API`,
-  );
+  check('Sin categorías extra', apiCats.size === esperado.categorias.length, `${apiCats.size} en API`);
 
   /* 5. Procesos + pasos (incluye categoría, código y nota) */
   const catById = new Map(cuentas.categorias.items.map((c) => [c.id, c.slug]));
@@ -114,7 +111,7 @@ async function main() {
     check(
       `Categoría de ${p.slug}`,
       !!real && catById.get(real.categoria) === p._categoria,
-      real ? catById.get(real.categoria) ?? 'SIN CATEGORÍA' : 'NO EXISTE',
+      real ? (catById.get(real.categoria) ?? 'SIN CATEGORÍA') : 'NO EXISTE',
     );
 
     check(
@@ -123,9 +120,7 @@ async function main() {
       real ? `código ${real.codigo ?? '—'} · nota ${real.nota ? 'sí' : 'no'}` : 'NO EXISTE',
     );
 
-    const pasosReales = cuentas.pasos.items
-      .filter((s) => s.proceso === real?.id)
-      .sort((a, b) => a.orden - b.orden);
+    const pasosReales = cuentas.pasos.items.filter((s) => s.proceso === real?.id).sort((a, b) => a.orden - b.orden);
 
     check(
       `Pasos de ${p.slug}`,
@@ -150,26 +145,31 @@ async function main() {
   const ordenesOk = [...ordenesPorCat.values()].every((os) => new Set(os).size === os.length);
   check('Órdenes de proceso sin repetir por categoría', ordenesOk, [...ordenesPorCat.keys()].join(', '));
 
-  /* 6. Videos */
+  /* 6. Videos: `archivo` es el nombre del mp4 en public/media del frontend */
   for (const v of esperado.videos) {
     const real = cuentas.videos.items.find((x) => x.titulo === v.titulo);
-    check(`Video "${v.titulo}"`, !!real && !!real.archivo, real?.archivo ? 'archivo subido' : 'sin archivo');
+    const ruta = real?.archivo ? resolve(MEDIA_DIR, real.archivo) : null;
+    const ok = !!real && real.archivo === v.archivo && !!ruta && existsSync(ruta);
+    check(`Video "${v.titulo}"`, ok, real?.archivo ? `sirve /media/${real.archivo}` : 'sin archivo');
   }
 
-  /* 7. Rango de bytes del video (barra de progreso del reproductor) */
-  const vid = cuentas.videos.items.find((v) => v.archivo);
-  if (vid) {
-    const res = await fetch(`${BASE}/assets/${vid.archivo}`, {
-      headers: { Range: 'bytes=0-1023' },
-    });
-    check(
-      'Video soporta Range (206)',
-      res.status === 206,
-      `HTTP ${res.status} · ${res.headers.get('content-range') || 'sin content-range'}`,
-    );
-  } else {
-    check('Video soporta Range (206)', false, 'no hay videos con archivo');
+  /* 7. Los mp4 existen en public/media (el Range 206 de la barra de
+     progreso lo da el CDN de Vercel de forma nativa). */
+  const mp4s = [...new Set(esperado.videos.map((v) => v.archivo))];
+  let bytesMp4 = 0;
+  let mp4Ok = mp4s.length > 0;
+  for (const a of mp4s) {
+    try {
+      bytesMp4 += statSync(resolve(MEDIA_DIR, a)).size;
+    } catch {
+      mp4Ok = false;
+    }
   }
+  check(
+    'Videos presentes en public/media',
+    mp4Ok,
+    `${mp4s.length} archivos · ${(bytesMp4 / 1048576).toFixed(1)} MB`,
+  );
 
   /* 8. Sin borradores por accidente */
   const borradores = ['modulos', 'comandos', 'categorias', 'procesos', 'videos'].flatMap((c) =>
@@ -181,8 +181,12 @@ async function main() {
   const anon = await fetch(`${BASE}/items/comandos?limit=1`);
   check('Anónimo sin acceso directo al contenido', anon.status === 403, `HTTP ${anon.status}`);
 
-  const anonFiles = await fetch(`${BASE}/assets/${vid?.archivo || ''}`, { headers: { Range: 'bytes=0-10' } });
-  check('Anónimo SÍ puede ver los videos (assets)', anonFiles.status === 206, `HTTP ${anonFiles.status}`);
+  const files = await api('/files?fields=id&limit=1&meta=total_count');
+  check(
+    'Sin archivos en Directus (videos en /media, nada que proteger)',
+    files.meta.total_count === 0,
+    `${files.meta.total_count} archivos`,
+  );
 
   // El filtrado "solo publicado" (que usará el servidor en Fase 2) excluye borradores
   const draft = await api('/items/comandos', {
@@ -205,7 +209,9 @@ async function main() {
 
   /* Resumen */
   const fallidos = resultados.filter((r) => !r.ok).length;
-  console.log(`\n${fallidos === 0 ? '✅ VERIFICACIÓN PASADA' : `❌ ${fallidos} comprobación(es) fallida(s)`} (${resultados.length} total)`);
+  console.log(
+    `\n${fallidos === 0 ? '✅ VERIFICACIÓN PASADA' : `❌ ${fallidos} comprobación(es) fallida(s)`} (${resultados.length} total)`,
+  );
   process.exit(fallidos === 0 ? 0 : 1);
 }
 

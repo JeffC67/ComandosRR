@@ -1,6 +1,21 @@
 import type { NextConfig } from 'next';
 
+/* `next dev` y `next build`/`next start` comparten `.next` por defecto.
+   Si se dejan correr a la vez, el dev reescribe el build de producción
+   y entonces el servidor de producción responde 400 a sus propios CSS:
+   el HTML que sigue en memoria apunta a un hash de fichero que ya no
+   existe, la página se queda sin ninguna hoja de estilos y se ve sin
+   maquetar (texto serif, enlaces morados, viñetas del navegador).
+
+   Se separan en dos directorios para que convivan. NEXT_DIST_DIR manda
+   si se quiere fijar a mano; si no, se deduce del modo en el que arranca
+   Next (next dev → development, next build/start → production). */
+const distDir = process.env.NEXT_DIST_DIR || (process.env.NODE_ENV === 'development' ? '.next-dev' : '.next');
+
 const nextConfig: NextConfig = {
+  // Artefactos de compilación (ver arriba)
+  distDir,
+
   // Optimización de imágenes
   images: {
     remotePatterns: [
@@ -16,21 +31,10 @@ const nextConfig: NextConfig = {
   // Compresión
   compress: true,
 
-  // Rewrites para assets de Directus
-  // Ojo: `rewrites()` se evalúa al compilar, así que el destino queda
-  // congelado en el routes-manifest. Por eso los <video> y <img> se
-  // sirven por el mismo origen (mismo dominio, sin CORS) y no por
-  // https://portal.rr.local: así el proxy de Caddy sirve los assets sin
-  // depender de un segundo dominio y el video admite Range.
+  // Rewrites: los videos viven en public/media y los sirve el CDN
+  // con Range nativo. No hay proxy de assets.
   async rewrites() {
-    const base =
-      process.env.DIRECTUS_URL || process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://portal.rr.local';
-    return [
-      {
-        source: '/assets/:path*',
-        destination: `${base}/assets/:path*`,
-      },
-    ];
+    return [];
   },
 
   // Headers de seguridad y caché
@@ -54,15 +58,6 @@ const nextConfig: NextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'origin-when-cross-origin',
-          },
-        ],
-      },
-      {
-        source: '/assets/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
           },
         ],
       },

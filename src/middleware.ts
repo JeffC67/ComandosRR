@@ -1,5 +1,7 @@
 /* ============================================================
    Middleware — Portal Capacitación RR / AS400
+   Sin rol visitante: todo el portal exige login.
+   Solo 3 roles: agente, editor, admin.
    Protege rutas que requieren autenticación
    Edge Runtime compatible (sin Node.js APIs)
    ============================================================ */
@@ -31,43 +33,58 @@ async function verifyTokenEdge(token: string): Promise<{ sub: string; email: str
   }
 }
 
-const PROTECTED_PATHS = ['/mi-progreso', '/quiz'];
-const AUTH_PATHS = ['/login'];
+/* Rutas que NO exigen sesión (el resto sí: sin visitante) */
+function esPublica(pathname: string): boolean {
+  return (
+    pathname === '/login' ||
+    pathname.startsWith('/api/auth/') ||
+    pathname.startsWith('/_next/') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/manifest.json' ||
+    pathname === '/og-image.svg'
+  );
+}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Verificar si la ruta está protegida
-  const isProtected = PROTECTED_PATHS.some((path) => pathname.startsWith(path));
-  const isAuthPage = AUTH_PATHS.some((path) => pathname.startsWith(path));
+  if (esPublica(pathname)) {
+    // Con sesión, /login sobra: al inicio
+    if (pathname === '/login') {
+      const accessToken = request.cookies.get('access_token')?.value;
+      if (accessToken && (await verifyTokenEdge(accessToken))) {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
+    }
+    return NextResponse.next();
+  }
 
-  // Obtener token de la cookie
+  // /api/revalidate se protege con su propio secreto, no con sesión
+  if (pathname.startsWith('/api/revalidate')) return NextResponse.next();
+
+  // Todo lo demás (páginas, /api/procesos, /api/pasos…)
+  // exige sesión: sin visitante
   const accessToken = request.cookies.get('access_token')?.value;
+  const session = accessToken ? await verifyTokenEdge(accessToken) : null;
 
-  let session = null;
-  if (accessToken) {
-    session = await verifyTokenEdge(accessToken);
-  }
-
-  // Si está en página de auth y ya tiene sesión, redirigir a mi-progreso
-  if (isAuthPage && session) {
-    return NextResponse.redirect(new URL('/mi-progreso', request.url));
-  }
-
-  // Si ruta protegida y no hay sesión, redirigir a login
-  if (isProtected && !session) {
+  if (!session) {
+    // Las API responden 401; las páginas redirigen al login
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'No autenticado' }, { status: 401 });
+    }
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('redirect', pathname);
     return NextResponse.redirect(loginUrl);
+  }
+
+  // Cola de validación: solo editor/admin (el agente propone, no valida)
+  if (pathname.startsWith('/editor') && session.role !== 'editor' && session.role !== 'admin') {
+    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/mi-progreso/:path*',
-    '/quiz/:path*',
-    '/login',
-  ],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 };

@@ -8,7 +8,6 @@
    ========================================================== */
 
 import { readFileSync, existsSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -42,9 +41,7 @@ export async function api(path, options = {}) {
     ...options,
     headers: {
       Authorization: `Bearer ${token}`,
-      ...(options.body && !(options.body instanceof FormData)
-        ? { 'Content-Type': 'application/json' }
-        : {}),
+      ...(options.body && !(options.body instanceof FormData) ? { 'Content-Type': 'application/json' } : {}),
       ...options.headers,
     },
   });
@@ -278,7 +275,8 @@ async function main() {
     await clearAll();
   }
 
-  const data = parse();  console.log(
+  const data = parse();
+  console.log(
     `→ Parseado: ${data.modulos.length} módulos, ${data.comandos.length} comandos, ` +
       `${data.categorias.length} categorías, ` +
       `${data.procesos.length} procesos (${data.procesos.reduce((n, p) => n + p._pasos.length, 0)} pasos), ` +
@@ -322,19 +320,18 @@ async function main() {
     }
   }
 
-  // 5. Videos (subida de archivo + registro)
+  // 5. Videos (sin subida: el mp4 vive en public/media del frontend y lo
+  // sirve el CDN. En Render free el disco es efímero: lo subido a
+  // directus_files se evaporaría. `archivo` = nombre del archivo.)
   for (const v of data.videos) {
     const { _modulo, archivo, ...body } = v;
     const filePath = resolve(MEDIA_DIR, archivo);
     if (!existsSync(filePath)) throw new Error(`No existe el video: ${filePath}`);
-    const form = new FormData();
-    form.append('file', new Blob([await readFile(filePath)], { type: 'video/mp4' }), archivo);
-    const uploaded = await api('/files', { method: 'POST', body: form });
     await api('/items/videos', {
       method: 'POST',
-      body: JSON.stringify({ ...body, archivo: uploaded.data.id, modulo: moduloIds[_modulo] }),
+      body: JSON.stringify({ ...body, archivo, modulo: moduloIds[_modulo] }),
     });
-    console.log(`  video subido: ${archivo}`);
+    console.log(`  video registrado: ${archivo} (sirve /media/${archivo})`);
   }
 
   // Resumen final

@@ -57,8 +57,10 @@ export interface Proceso {
   codigo: string | null;
   nota: string | null;
   orden: number;
-  estado: 'borrador' | 'publicado';
+  estado: 'borrador' | 'publicado' | 'archivado';
   categoria: string | null; // slug de la categoría
+  /** Agente que propuso el proceso (cola de validación). Null = contenido base. */
+  creado_por?: string | { id: string; email?: string | null } | null;
 }
 
 /* Proceso + sus pasos y categoría, tal como lo consume /procesos/[slug] */
@@ -77,7 +79,7 @@ export interface Paso {
 export interface Video {
   id: string;
   titulo: string;
-  archivo: string; // Directus file ID
+  archivo: string; // nombre del mp4 en public/media (p. ej. Bunny.mp4)
   poster: string | null;
   orden: number;
   estado: 'borrador' | 'publicado';

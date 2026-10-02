@@ -8,18 +8,9 @@
    (ACCESS_TOKEN_TTL=1d en docker-compose).
    ============================================================ */
 
-import { createDirectus, rest, readItems, readItem, authentication } from '@directus/sdk';
+import { createDirectus, rest, readItems, authentication } from '@directus/sdk';
 import { directusUrl } from '@/lib/directus-url';
-import type {
-  Modulo,
-  Comando,
-  Categoria,
-  Proceso,
-  Paso,
-  Video,
-  DirectusFile,
-  DirectusListResponse,
-} from '@/types';
+import type { Modulo, Comando, Categoria, Proceso, Paso, Video } from '@/types';
 
 function crearCliente(url: string) {
   return createDirectus(url).with(rest());
@@ -89,7 +80,7 @@ export async function getModulos(): Promise<Modulo[]> {
       filter: publishedFilter,
       sort: sortByOrden,
       fields: ['id', 'slug', 'titulo', 'descripcion', 'orden', 'estado', 'icono', 'layout', 'titulo_tarjetas'],
-    })
+    }),
   );
   return data as Modulo[];
 }
@@ -101,7 +92,7 @@ export async function getModuloBySlug(slug: string): Promise<Modulo | null> {
       filter: { slug: { _eq: slug }, ...publishedFilter },
       limit: 1,
       fields: ['id', 'slug', 'titulo', 'descripcion', 'orden', 'estado', 'icono', 'layout', 'titulo_tarjetas'],
-    })
+    }),
   );
   return (items as Modulo[])[0] ?? null;
 }
@@ -114,7 +105,7 @@ export async function getComandosByModulo(moduloSlug: string): Promise<Comando[]
       filter: { modulo: { slug: { _eq: moduloSlug } }, ...publishedFilter },
       sort: sortByOrden,
       fields: ['id', 'etiqueta', 'tecla', 'tipo', 'icono', 'orden', 'estado', 'modulo'],
-    })
+    }),
   );
   return data as Comando[];
 }
@@ -126,7 +117,7 @@ export async function getAllComandos(): Promise<Comando[]> {
       filter: publishedFilter,
       sort: sortByOrden,
       fields: ['id', 'etiqueta', 'tecla', 'tipo', 'icono', 'orden', 'estado', 'modulo'],
-    })
+    }),
   );
   return data as Comando[];
 }
@@ -145,25 +136,36 @@ const PROCESO_FIELDS = [
   'orden',
   'estado',
   'categoria.slug',
+  'creado_por.id',
+  'creado_por.email',
 ];
 
 /* Directus devuelve categoria como { slug }, pero el resto del portal
-   trabaja con el slug plano.
-
-   `id` se pasa a texto aquí: Proceso.id está declarado como string, y
-   con `...p` crudo seguía siendo un número de Postgres. Ese desajuste
-   es lo que hace que un Set<string> de ids no encuentre a `proceso.id`
-   en ProgresoGrid, y que la nota de quiz nunca se pueda mostrar. */
-type ProcesoRaw = Omit<Proceso, 'categoria'> & {
+   trabaja con el slug plano. `id` se pasa a texto: Proceso.id está
+   declarado como string y crudo vendría como número de Postgres. */
+type ProcesoRaw = Omit<Proceso, 'categoria' | 'creado_por'> & {
   id: number | string;
   categoria: { slug: string } | string | null;
+  creado_por: { id: string; email?: string | null } | string | null;
 };
 
 const toProceso = (p: ProcesoRaw): Proceso => ({
   ...p,
   id: String(p.id),
-  categoria: typeof p.categoria === 'string' ? p.categoria : p.categoria?.slug ?? null,
+  categoria: typeof p.categoria === 'string' ? p.categoria : (p.categoria?.slug ?? null),
+  creado_por:
+    typeof p.creado_por === 'string'
+      ? p.creado_por
+      : p.creado_por
+        ? { id: String(p.creado_por.id), email: p.creado_por.email ?? null }
+        : null,
 });
+
+export function idCreador(proceso: Pick<Proceso, 'creado_por'>): string | null {
+  const c = proceso.creado_por;
+  if (!c) return null;
+  return typeof c === 'string' ? c : String(c.id);
+}
 
 export async function getProcesos(): Promise<Proceso[]> {
   const client = await getDirectusClient();
@@ -172,7 +174,7 @@ export async function getProcesos(): Promise<Proceso[]> {
       filter: publishedFilter,
       sort: sortByOrden,
       fields: PROCESO_FIELDS,
-    })
+    }),
   );
   return (data as ProcesoRaw[]).map(toProceso);
 }
@@ -185,7 +187,7 @@ export async function getProcesosByCategoria(categoriaSlug: string): Promise<Pro
       filter: { categoria: { slug: { _eq: categoriaSlug } }, ...publishedFilter },
       sort: sortByOrden,
       fields: PROCESO_FIELDS,
-    })
+    }),
   );
   return (data as ProcesoRaw[]).map(toProceso);
 }
@@ -197,7 +199,38 @@ export async function getProcesoBySlug(slug: string): Promise<Proceso | null> {
       filter: { slug: { _eq: slug }, ...publishedFilter },
       limit: 1,
       fields: PROCESO_FIELDS,
-    })
+    }),
+  );
+  return items.length ? toProceso(items[0] as ProcesoRaw) : null;
+}
+
+/* ---------- COLA DE VALIDACIÓN (editor/admin) ----------
+   Borradores pendientes: lo que propusieron los agentes y aún no
+   se publica. Solo la usa el servidor (cuenta Portal): el portal
+   público filtra "solo publicado" y nunca los muestra. */
+export async function getProcesosPendientes(): Promise<Proceso[]> {
+  const client = await getDirectusClient();
+  const data = await client.request(
+    readItems('procesos', {
+      filter: { estado: { _eq: 'borrador' as const } },
+      sort: sortByOrden,
+      fields: PROCESO_FIELDS,
+    }),
+  );
+  return (data as ProcesoRaw[]).map(toProceso);
+}
+
+/* Un proceso cualquiera por id, sin filtrar estado: para editar y
+   validar. El control de quién puede verlo vive en la ruta que lo
+   llama, no aquí. */
+export async function getProcesoByIdSinFiltro(id: string | number): Promise<Proceso | null> {
+  const client = await getDirectusClient();
+  const items = await client.request(
+    readItems('procesos', {
+      filter: { id: { _eq: id } },
+      limit: 1,
+      fields: PROCESO_FIELDS,
+    }),
   );
   return items.length ? toProceso(items[0] as ProcesoRaw) : null;
 }
@@ -213,7 +246,7 @@ export async function getPasosPorProcesoSlug(): Promise<Record<string, number>> 
     readItems('pasos', {
       fields: ['proceso.slug'],
       limit: -1,
-    })
+    }),
   );
 
   const conteo: Record<string, number> = {};
@@ -232,7 +265,7 @@ export async function getPasosByProceso(procesoId: string): Promise<Paso[]> {
       filter: { proceso: { _eq: procesoId } },
       sort: ['orden'],
       fields: ['id', 'proceso', 'orden', 'grupo', 'contenido'],
-    })
+    }),
   );
   return data as Paso[];
 }
@@ -271,7 +304,7 @@ async function countProcesosPorCategoria(): Promise<Map<string, number>> {
       // pedir el anidado.
       fields: ['categoria.slug'],
       limit: -1,
-    })
+    }),
   );
 
   const conteo = new Map<string, number>();
@@ -291,7 +324,7 @@ export async function getCategorias(): Promise<Categoria[]> {
         filter: publishedFilter,
         sort: sortByOrden,
         fields: CATEGORIA_FIELDS,
-      })
+      }),
     ),
     countProcesosPorCategoria(),
   ]);
@@ -307,7 +340,7 @@ export async function getCategoriaBySlug(slug: string): Promise<Categoria | null
         filter: { slug: { _eq: slug }, ...publishedFilter },
         limit: 1,
         fields: CATEGORIA_FIELDS,
-      })
+      }),
     ),
     countProcesosPorCategoria(),
   ]);
@@ -324,7 +357,7 @@ export async function getVideosByModulo(moduloSlug: string): Promise<Video[]> {
       filter: { modulo: { slug: { _eq: moduloSlug } }, ...publishedFilter },
       sort: sortByOrden,
       fields: ['id', 'titulo', 'archivo', 'poster', 'orden', 'estado', 'modulo'],
-    })
+    }),
   );
   return data as Video[];
 }
@@ -336,42 +369,35 @@ export async function getAllVideos(): Promise<Video[]> {
       filter: publishedFilter,
       sort: sortByOrden,
       fields: ['id', 'titulo', 'archivo', 'poster', 'orden', 'estado', 'modulo'],
-    })
+    }),
   );
   return data as Video[];
 }
 
-/* ---------- ASSETS / ARCHIVOS ---------- */
-export async function getVideoFile(fileId: string): Promise<DirectusFile | null> {
-  const client = await getDirectusClient();
-  try {
-    return await client.request(readItem('files', fileId, { fields: ['*'] })) as DirectusFile;
-  } catch {
-    return null;
-  }
+/* ---------- ASSETS / VIDEOS ----------
+   Los mp4 viven en public/media del frontend y los sirve el CDN con
+   Range nativo: `videos.archivo` es el NOMBRE del archivo
+   (p. ej. "Bunny.mp4"), no un file-id de Directus. No se sube nada a
+   directus_files: en Render free el disco es efímero y las subidas se
+   evaporarían en cada reinicio. */
+export function getAssetUrl(archivo: string): string {
+  const nombre = String(archivo || '').split('/').pop() || '';
+  if (!nombre || nombre === '.' || nombre === '..') return '';
+  return `/media/${encodeURIComponent(nombre)}`;
 }
 
-export function getAssetUrl(fileId: string): string {
-  const base = directusUrl();
-  return `${base}/assets/${fileId}`;
+export function getVideoUrl(archivo: string): string {
+  return getAssetUrl(archivo);
 }
 
-export function getVideoUrl(fileId: string): string {
-  return getAssetUrl(fileId);
-}
-
-export function getPosterUrl(fileId: string | null): string | null {
-  if (!fileId) return null;
-  return getAssetUrl(fileId);
+export function getPosterUrl(poster: string | null): string | null {
+  if (!poster) return null;
+  return getAssetUrl(poster);
 }
 
 /* ---------- STATS PARA HERO ---------- */
 export async function getHeroStats() {
-  const [comandos, videos, procesos] = await Promise.all([
-    getAllComandos(),
-    getAllVideos(),
-    getProcesos(),
-  ]);
+  const [comandos, videos, procesos] = await Promise.all([getAllComandos(), getAllVideos(), getProcesos()]);
   return {
     totalComandos: comandos.length,
     totalVideos: videos.length,
