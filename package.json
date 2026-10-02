@@ -21,7 +21,10 @@
     "verify:workflow": "node scripts/verify-workflow.mjs",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "seed:enlaces": "npm --prefix scripts run seed:enlaces",
+    "seed:enlaces:check": "npm --prefix scripts run seed:enlaces:check",
+    "seed:enlaces:force": "npm --prefix scripts run seed:enlaces:force"
   },
   "dependencies": {
     "@directus/sdk": "^18.0.0",

@@ -19,11 +19,12 @@
    Dos cosas que cuesta aprender de Directus 12, y que por eso están
    escritas aquí:
 
-   1. `POST /collections` ignora el bloque `schema`: crea la tabla con
-      un único `id integer` autogenerado y nada más. Hay que crear la
-      colección primero y añadir cada campo con `POST /fields/:col`.
-      (Peor: si la colección se creara sin tabla, `/fields/<col>`
-      respondería 403 para siempre y el script no se puede recuperar.)
+   1. `POST /collections` SIN bloque `schema` crea la colección sin tabla
+      física (solo metadato): luego `/fields/<col>` responde 403 para
+      siempre y solo queda borrar la colección y recrearla CON
+      `schema: {}` (crea la tabla con un único `id` integer
+      autogenerado; las columnas se añaden después con
+      `POST /fields/:col`).
 
    2. Los permisos con reglas condicionales (`{ agente: { _eq:
       '$CURRENT_USER' } }`) son el recurso de pago
@@ -289,7 +290,11 @@ async function main() {
     } else {
       await api('/collections', {
         method: 'POST',
-        body: JSON.stringify({ collection: nombre, meta: def.meta }),
+        // Sin `schema` Directus crea la colección SIN tabla física (solo
+        // metadato) y luego `/fields/<col>` responde 403 para siempre.
+        // Con `schema: {}` crea la tabla con un único `id` integer
+        // autogenerado; las columnas se añaden después una por una.
+        body: JSON.stringify({ collection: nombre, meta: def.meta, schema: {} }),
       });
       console.log(`\n→ ${nombre} creada`);
     }

@@ -150,13 +150,7 @@ export function FormularioEnlace({
       <div className="form-row">
         <label className="form-field">
           <span>Orden</span>
-          <input
-            type="number"
-            value={form.orden}
-            onChange={(e) => set('orden')(e.target.value)}
-            min={0}
-            step={1}
-          />
+          <input type="number" value={form.orden} onChange={(e) => set('orden')(e.target.value)} min={0} step={1} />
         </label>
 
         <label className="form-field">

@@ -97,9 +97,9 @@ const m2oField = (note) => ({
 });
 
 const archivoField = () => ({
-  type: 'uuid',
-  meta: { interface: 'file-image', special: ['file'], note: 'Archivo MP4 subido a Directus' },
-  schema: { max_length: 36 },
+  type: 'string',
+  meta: { interface: 'input', note: 'Nombre del MP4 en public/media (p. ej. Bunny.mp4)' },
+  schema: { max_length: 255 },
 });
 
 const textoField = (note) => ({

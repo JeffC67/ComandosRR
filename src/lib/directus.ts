@@ -442,7 +442,10 @@ export async function getEnlace(id: string | number): Promise<Enlace | null> {
    directus_files: en Render free el disco es efímero y las subidas se
    evaporarían en cada reinicio. */
 export function getAssetUrl(archivo: string): string {
-  const nombre = String(archivo || '').split('/').pop() || '';
+  const nombre =
+    String(archivo || '')
+      .split('/')
+      .pop() || '';
   if (!nombre || nombre === '.' || nombre === '..') return '';
   return `/media/${encodeURIComponent(nombre)}`;
 }

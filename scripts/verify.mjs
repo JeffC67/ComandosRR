@@ -153,6 +153,16 @@ async function main() {
     check(`Video "${v.titulo}"`, ok, real?.archivo ? `sirve /media/${real.archivo}` : 'sin archivo');
   }
 
+  /* 6b. Enlaces (sección Aplicaciones): catálogo vivo en Directus, sin
+     JSON (no pasa por sync). Solo se exige integridad mínima. */
+  const enlaces = await api('/items/enlaces?fields=categoria,grupo,nombre,url,estado&limit=-1');
+  const enlOk = (enlaces.data || []).every((e) => e.categoria && e.grupo && e.nombre && e.estado === 'publicado');
+  check(
+    'Enlaces publicados íntegros',
+    (enlaces.data || []).length > 0 && enlOk,
+    `${(enlaces.data || []).length} enlaces`,
+  );
+
   /* 7. Los mp4 existen en public/media (el Range 206 de la barra de
      progreso lo da el CDN de Vercel de forma nativa). */
   const mp4s = [...new Set(esperado.videos.map((v) => v.archivo))];
@@ -165,11 +175,7 @@ async function main() {
       mp4Ok = false;
     }
   }
-  check(
-    'Videos presentes en public/media',
-    mp4Ok,
-    `${mp4s.length} archivos · ${(bytesMp4 / 1048576).toFixed(1)} MB`,
-  );
+  check('Videos presentes en public/media', mp4Ok, `${mp4s.length} archivos · ${(bytesMp4 / 1048576).toFixed(1)} MB`);
 
   /* 8. Sin borradores por accidente */
   const borradores = ['modulos', 'comandos', 'categorias', 'procesos', 'videos'].flatMap((c) =>

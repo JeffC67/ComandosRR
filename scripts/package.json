@@ -14,7 +14,10 @@
     "setup:phase3": "node setup-phase3.mjs",
     "setup:workflow": "node setup-workflow.mjs",
     "verify": "node verify.mjs",
-    "verify:workflow": "node verify-workflow.mjs"
+    "verify:workflow": "node verify-workflow.mjs",
+    "seed:enlaces": "node seed-enlaces.mjs",
+    "seed:enlaces:check": "node seed-enlaces.mjs --check",
+    "seed:enlaces:force": "node seed-enlaces.mjs --force"
   },
   "dependencies": {
     "cheerio": "^1.0.0"
